@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig" isInitGenerateDdl="true">
+    <option name="initGenerateDdl" value="true" />
+    <option name="snapshotDbValue" value="7a5aee58-307b-4dd9-bc70-f76c6b5efa81" />
+    <option name="snapshotDirValue" value="$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration" />
+    <option name="sourceDbValue" value="7a5aee58-307b-4dd9-bc70-f76c6b5efa81" />
+    <option name="sourceDiffType" value="DB" />
+    <option name="sourceModelValue" value="DA-GWAN:DA-GWAN" />
+    <option name="targetDbValue" value="7a5aee58-307b-4dd9-bc70-f76c6b5efa81" />
+  </component>
+</project>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="dsql" targetRuntime="MyBatis3DynamicSql">
+        <!-- JDBC 연결 설정 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3307/ipsagwi?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"
+                        userId="ipsagwi"
+                        password="ipsagwi" />
+        <!-- Java 모델 생성 설정 -->
+        <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java"/>
+        <!-- SQL 매퍼 XML 파일 생성 설정 -->
+        <sqlMapGenerator targetPackage="com.example.mapper" targetProject="src/main/resources"/>
+        <!-- Java Client 생성 설정 (매퍼 인터페이스) -->
+        <javaClientGenerator targetPackage="com.example.mapper" targetProject="src/main/java"/>
+        <!-- 테이블 설정 -->
+        <table tableName="category" domainObjectName="Category" />
+    </context>
+</generatorConfiguration>
