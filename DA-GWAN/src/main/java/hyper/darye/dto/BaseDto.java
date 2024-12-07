@@ -1,17 +1,18 @@
 package hyper.darye.dto;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public abstract class BaseDto {
 
     protected Long id;
-    protected LocalDateTime createdDate;
-    protected LocalDateTime lastModifiedDate;
+    protected Instant createdDate;
+    protected Instant lastModifiedDate;
 
     public BaseDto() {
     }
 
-    public BaseDto(Long id, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public BaseDto(Long id, Instant createdDate, Instant lastModifiedDate) {
         this.id = id;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
@@ -25,19 +26,19 @@ public abstract class BaseDto {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Instant getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getLastModifiedDate() {
+    public Instant getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+    public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

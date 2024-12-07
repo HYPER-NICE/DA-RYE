@@ -1,16 +1,29 @@
 package hyper.darye.model;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public class Product {
+/**
+ * product
+ */
+public class Product implements Serializable {
     private Long id;
+
     private String name;
+
     private String description;
+
     private Integer price;
+
     private Integer stockQuantity;
+
     private Long categoryId;
+
     private Instant createdDate;
+
     private Instant lastModifiedDate;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -52,12 +65,12 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    public Long getCategory() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategory(Long category) {
-        this.categoryId = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Instant getCreatedDate() {
@@ -76,4 +89,59 @@ public class Product {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        Product other = (Product) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+                && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+                && (this.getStockQuantity() == null ? other.getStockQuantity() == null : this.getStockQuantity().equals(other.getStockQuantity()))
+                && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
+                && (this.getCreatedDate() == null ? other.getCreatedDate() == null : this.getCreatedDate().equals(other.getCreatedDate()))
+                && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
+        result = prime * result + ((getStockQuantity() == null) ? 0 : getStockQuantity().hashCode());
+        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
+        result = prime * result + ((getCreatedDate() == null) ? 0 : getCreatedDate().hashCode());
+        result = prime * result + ((getLastModifiedDate() == null) ? 0 : getLastModifiedDate().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", description=").append(description);
+        sb.append(", price=").append(price);
+        sb.append(", stockQuantity=").append(stockQuantity);
+        sb.append(", categoryId=").append(categoryId);
+        sb.append(", createdDate=").append(createdDate);
+        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }
