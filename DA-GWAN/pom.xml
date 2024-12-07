@@ -11,8 +11,8 @@
     <groupId>hyper</groupId>
     <artifactId>DA-GWAN</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>back-end</name>
-    <description>back-end</description>
+    <name>DA-GWAN</name>
+    <description>다례 프로젝트의 백엔드입니다.</description>
     <url/>
     <licenses>
         <license/>
