@@ -69,5 +69,5 @@ public interface InboundDao {
         WHERE id = #{id} 
         AND deleted_date IS NULL
     """)
-    int softDelete(@Param("id") Long id);
+    int deleteByPrimaryKey(@Param("id") Long id);
 }

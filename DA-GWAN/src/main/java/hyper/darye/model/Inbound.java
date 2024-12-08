@@ -52,6 +52,9 @@ public class Inbound implements Serializable {
      */
     private LocalDateTime  lastModifiedDate;
 
+    public Inbound() {
+    }
+
     public Inbound(Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate) {
         this.productId = productId;
         this.batchNumber = batchNumber;
