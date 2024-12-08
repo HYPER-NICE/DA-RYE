@@ -1,4 +1,4 @@
--- V2__create_product_tables.sql (수정)
+-- V2__create_product_tables.sql
 -- 생성 날짜: 2024-12-08
 -- 설명: 제품, 카테고리, 입고 테이블 생성 및 트리거 추가
 
@@ -12,7 +12,8 @@ CREATE TABLE category (
                           name VARCHAR(255) NOT NULL UNIQUE COMMENT '카테고리 이름',
                           parent_id BIGINT NULL COMMENT '부모 카테고리 ID',
                           created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜'
+                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
 
 -- 제품 테이블 생성
@@ -25,6 +26,7 @@ CREATE TABLE product (
                          category_id BIGINT NOT NULL COMMENT '카테고리 ID (외래 키)',
                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
                          CHECK (price >= 0),
                          CHECK (stock_quantity >= 0)
 );
@@ -39,5 +41,6 @@ CREATE TABLE inventory (
                            expiry_date DATETIME(6) NOT NULL COMMENT '유통기한',
                            received_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '입고 날짜',
                            created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                           last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜'
+                           last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                           deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
