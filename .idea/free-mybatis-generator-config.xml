@@ -138,12 +138,12 @@
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
               <option name="daoName" value="ProductDao" />
-              <option name="daoPackage" value="hyper.darye" />
+              <option name="daoPackage" value="hyper.darye.dao" />
               <option name="daoPostfix" value="Dao" />
               <option name="jsr310Support" value="true" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="Product" />
-              <option name="modelPackage" value="hyper.darye" />
+              <option name="modelPackage" value="hyper.darye.model" />
               <option name="name" value="product" />
               <option name="needToStringHashcodeEquals" value="true" />
               <option name="offsetLimit" value="true" />
@@ -154,7 +154,7 @@
               <option name="tableName" value="product" />
               <option name="useSchemaPrefix" value="true" />
               <option name="xmlMvnPath" value="src/main/resources" />
-              <option name="xmlPackage" value="mapper2" />
+              <option name="xmlPackage" value="mapper" />
             </Config>
           </value>
         </entry>
