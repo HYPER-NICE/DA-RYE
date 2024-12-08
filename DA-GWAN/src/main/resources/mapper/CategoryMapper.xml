@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="hyper.darye.mapper.CategoryDao">
+<mapper namespace="hyper.darye.dao.CategoryDao">
 
     <!-- 모든 카테고리 조회 -->
     <select id="selectAll" resultType="hyper.darye.dto.Category.CategoryDto">
