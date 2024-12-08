@@ -36,7 +36,7 @@ CREATE TABLE inventory (
                            batch_number VARCHAR(255) NOT NULL COMMENT '배치 번호',
                            quantity INT NOT NULL COMMENT '입고 수량',
                            purchase_price INT NOT NULL COMMENT '입고 가격 (원)',
-                           expiry_date DATE NOT NULL COMMENT '유통기한',
+                           expiry_date TIMESTAMP NOT NULL COMMENT '유통기한',
                            received_date TIMESTAMP DEFAULT NOW() NOT NULL COMMENT '입고 날짜',
                            created_date TIMESTAMP DEFAULT NOW() NULL COMMENT '생성 날짜',
                            last_modified_date TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP NULL COMMENT '수정 날짜'

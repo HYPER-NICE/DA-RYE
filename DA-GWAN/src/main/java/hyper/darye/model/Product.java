@@ -7,20 +7,44 @@ import java.time.Instant;
  * product
  */
 public class Product implements Serializable {
+    /**
+     * 제품 ID (기본 키)
+     */
     private Long id;
 
+    /**
+     * 제품 이름
+     */
     private String name;
 
+    /**
+     * 제품 설명
+     */
     private String description;
 
+    /**
+     * 판매 가격
+     */
     private Integer price;
 
+    /**
+     * 재고 수량
+     */
     private Integer stockQuantity;
 
+    /**
+     * 카테고리 ID (외래 키)
+     */
     private Long categoryId;
 
+    /**
+     * 생성 날짜
+     */
     private Instant createdDate;
 
+    /**
+     * 수정 날짜
+     */
     private Instant lastModifiedDate;
 
     private static final long serialVersionUID = 1L;
@@ -102,13 +126,13 @@ public class Product implements Serializable {
         }
         Product other = (Product) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-                && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
-                && (this.getStockQuantity() == null ? other.getStockQuantity() == null : this.getStockQuantity().equals(other.getStockQuantity()))
-                && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
-                && (this.getCreatedDate() == null ? other.getCreatedDate() == null : this.getCreatedDate().equals(other.getCreatedDate()))
-                && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()));
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+            && (this.getStockQuantity() == null ? other.getStockQuantity() == null : this.getStockQuantity().equals(other.getStockQuantity()))
+            && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
+            && (this.getCreatedDate() == null ? other.getCreatedDate() == null : this.getCreatedDate().equals(other.getCreatedDate()))
+            && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()));
     }
 
     @Override

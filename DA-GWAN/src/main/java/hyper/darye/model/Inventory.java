@@ -1,6 +1,7 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -35,22 +36,22 @@ public class Inventory implements Serializable {
     /**
      * 유통기한
      */
-    private Date expiryDate;
+    private Instant expiryDate;
 
     /**
      * 입고 날짜
      */
-    private Date receivedDate;
+    private Instant receivedDate;
 
     /**
      * 생성 날짜
      */
-    private Date createdDate;
+    private Instant createdDate;
 
     /**
      * 수정 날짜
      */
-    private Date lastModifiedDate;
+    private Instant lastModifiedDate;
 
     private static final long serialVersionUID = 1L;
 
@@ -94,35 +95,35 @@ public class Inventory implements Serializable {
         this.purchasePrice = purchasePrice;
     }
 
-    public Date getExpiryDate() {
+    public Instant getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(Instant expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public Date getReceivedDate() {
+    public Instant getReceivedDate() {
         return receivedDate;
     }
 
-    public void setReceivedDate(Date receivedDate) {
+    public void setReceivedDate(Instant receivedDate) {
         this.receivedDate = receivedDate;
     }
 
-    public Date getCreatedDate() {
+    public Instant getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getLastModifiedDate() {
+    public Instant getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
