@@ -31,7 +31,7 @@ public interface CategoryDao {
     List<CategoryDto> selectAllSubCategoriesByName(@Param("parentName") String parentName);
 
     // 새로운 카테고리 추가
-    void insertCategory(CategoryDto categoryDto);
+    int insertCategory(CategoryDto categoryDto);
 
     // 카테고리 삭제
     void deleteCategory(@Param("id") Long id);
