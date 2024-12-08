@@ -1,4 +1,4 @@
-package hyper.darye.mapper;
+package hyper.darye.dao;
 
 import hyper.darye.dto.InsertMemberDto;
 import hyper.darye.model.Member;
