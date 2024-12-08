@@ -1,7 +1,9 @@
 package hyper.darye.dao;
 
 import hyper.darye.model.Inventory;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface InventoryDao {
     int deleteByPrimaryKey(Long id);
 
