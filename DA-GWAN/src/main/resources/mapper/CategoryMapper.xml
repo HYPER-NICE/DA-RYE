@@ -72,14 +72,7 @@
     <!-- 카테고리 업데이트 -->
     <update id="updateCategory">
         UPDATE category
-        <set>
-            <if test="categoryDto.name != null">
-                name = #{categoryDto.name},
-            </if>
-            <if test="categoryDto.parentId != null">
-                parent_id = #{categoryDto.parentId},
-            </if>
-        </set>
+        SET name = #{categoryDto.name}, parent_id = #{categoryDto.parentId}
         WHERE id = #{categoryDto.id}
     </update>
 
