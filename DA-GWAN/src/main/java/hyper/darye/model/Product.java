@@ -28,11 +28,6 @@ public class Product implements Serializable {
     private Integer price;
 
     /**
-     * 재고 수량
-     */
-    private Integer stockQuantity;
-
-    /**
      * 카테고리 ID (외래 키)
      */
     private Long categoryId;
@@ -49,20 +44,18 @@ public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Product(String name, String description, Integer price, Integer stockQuantity, Long categoryId) {
+    public Product(String name, String description, Integer price, Long categoryId) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.stockQuantity = stockQuantity;
         this.categoryId = categoryId;
     }
 
-    public Product(Long id, String name, String description, Integer price, Integer stockQuantity, Long categoryId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public Product(Long id, String name, String description, Integer price, Long categoryId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.stockQuantity = stockQuantity;
         this.categoryId = categoryId;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
@@ -98,14 +91,6 @@ public class Product implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
     }
 
     public Long getCategoryId() {
@@ -148,7 +133,6 @@ public class Product implements Serializable {
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
-            && (this.getStockQuantity() == null ? other.getStockQuantity() == null : this.getStockQuantity().equals(other.getStockQuantity()))
             && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
             && (this.getCreatedDate() == null ? other.getCreatedDate() == null : this.getCreatedDate().equals(other.getCreatedDate()))
             && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()));
@@ -162,7 +146,6 @@ public class Product implements Serializable {
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
-        result = prime * result + ((getStockQuantity() == null) ? 0 : getStockQuantity().hashCode());
         result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
         result = prime * result + ((getCreatedDate() == null) ? 0 : getCreatedDate().hashCode());
         result = prime * result + ((getLastModifiedDate() == null) ? 0 : getLastModifiedDate().hashCode());
@@ -179,7 +162,6 @@ public class Product implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
         sb.append(", price=").append(price);
-        sb.append(", stockQuantity=").append(stockQuantity);
         sb.append(", categoryId=").append(categoryId);
         sb.append(", createdDate=").append(createdDate);
         sb.append(", lastModifiedDate=").append(lastModifiedDate);

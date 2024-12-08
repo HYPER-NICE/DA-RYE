@@ -6,13 +6,12 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="price" jdbcType="INTEGER" property="price" />
-    <result column="stock_quantity" jdbcType="INTEGER" property="stockQuantity" />
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_modified_date" jdbcType="TIMESTAMP" property="lastModifiedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, description, price, stock_quantity, category_id, created_date, last_modified_date
+    id, `name`, description, price, category_id, created_date, last_modified_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,10 +25,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Product" useGeneratedKeys="true">
     insert into product (`name`, description, price, 
-      stock_quantity, category_id, created_date, 
+      category_id, created_date,
       last_modified_date)
     values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
-      #{stockQuantity,jdbcType=INTEGER}, #{categoryId,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{categoryId,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP},
       #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Product" useGeneratedKeys="true">
@@ -43,9 +42,6 @@
       </if>
       <if test="price != null">
         price,
-      </if>
-      <if test="stockQuantity != null">
-        stock_quantity,
       </if>
       <if test="categoryId != null">
         category_id,
@@ -66,9 +62,6 @@
       </if>
       <if test="price != null">
         #{price,jdbcType=INTEGER},
-      </if>
-      <if test="stockQuantity != null">
-        #{stockQuantity,jdbcType=INTEGER},
       </if>
       <if test="categoryId != null">
         #{categoryId,jdbcType=BIGINT},
@@ -93,9 +86,6 @@
       <if test="price != null">
         price = #{price,jdbcType=INTEGER},
       </if>
-      <if test="stockQuantity != null">
-        stock_quantity = #{stockQuantity,jdbcType=INTEGER},
-      </if>
       <if test="categoryId != null">
         category_id = #{categoryId,jdbcType=BIGINT},
       </if>
@@ -113,7 +103,6 @@
     set `name` = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       price = #{price,jdbcType=INTEGER},
-      stock_quantity = #{stockQuantity,jdbcType=INTEGER},
       category_id = #{categoryId,jdbcType=BIGINT},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
