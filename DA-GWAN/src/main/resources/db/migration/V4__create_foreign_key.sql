@@ -2,7 +2,10 @@
 -- 외래 키 추가
 -- =======================
 ALTER TABLE member
-    ADD CONSTRAINT FK_member_grade FOREIGN KEY (grade_id) REFERENCES member_grade (id) ON DELETE SET NULL;
+    ADD CONSTRAINT FK_member_grade FOREIGN KEY (grade_id) REFERENCES member_grade (id) ON DELETE RESTRICT;
+
+ALTER TABLE category
+    ADD CONSTRAINT FK_category_parent FOREIGN KEY (parent_id) REFERENCES category (id) ON DELETE RESTRICT;
 
 ALTER TABLE product
     ADD CONSTRAINT FK_product_category FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE NO ACTION;

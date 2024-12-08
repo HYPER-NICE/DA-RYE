@@ -1,8 +1,7 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * inventory
@@ -36,22 +35,43 @@ public class Inventory implements Serializable {
     /**
      * 유통기한
      */
-    private Instant expiryDate;
+    private LocalDateTime  expiryDate;
 
     /**
      * 입고 날짜
      */
-    private Instant receivedDate;
+    private LocalDateTime  receivedDate;
 
     /**
      * 생성 날짜
      */
-    private Instant createdDate;
+    private LocalDateTime  createdDate;
 
     /**
      * 수정 날짜
      */
-    private Instant lastModifiedDate;
+    private LocalDateTime  lastModifiedDate;
+
+    public Inventory(Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate) {
+        this.productId = productId;
+        this.batchNumber = batchNumber;
+        this.quantity = quantity;
+        this.purchasePrice = purchasePrice;
+        this.expiryDate = expiryDate;
+        this.receivedDate = receivedDate;
+    }
+
+    public Inventory(Long id, Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate, LocalDateTime  createdDate, LocalDateTime  lastModifiedDate) {
+        this.id = id;
+        this.productId = productId;
+        this.batchNumber = batchNumber;
+        this.quantity = quantity;
+        this.purchasePrice = purchasePrice;
+        this.expiryDate = expiryDate;
+        this.receivedDate = receivedDate;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -95,35 +115,35 @@ public class Inventory implements Serializable {
         this.purchasePrice = purchasePrice;
     }
 
-    public Instant getExpiryDate() {
+    public LocalDateTime  getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Instant expiryDate) {
+    public void setExpiryDate(LocalDateTime  expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public Instant getReceivedDate() {
+    public LocalDateTime  getReceivedDate() {
         return receivedDate;
     }
 
-    public void setReceivedDate(Instant receivedDate) {
+    public void setReceivedDate(LocalDateTime  receivedDate) {
         this.receivedDate = receivedDate;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime  getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime  createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime  getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime  lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

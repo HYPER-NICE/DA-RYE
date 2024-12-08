@@ -1,7 +1,7 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * member_order
@@ -13,7 +13,7 @@ public class MemberOrder implements Serializable {
 
     private Integer totalPrice;
 
-    private Instant orderDate;
+    private LocalDateTime orderDate;
 
     private String deliveryAddress;
 
@@ -23,9 +23,9 @@ public class MemberOrder implements Serializable {
 
     private Object status;
 
-    private Instant createdDate;
+    private LocalDateTime createdDate;
 
-    private Instant lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,11 +53,11 @@ public class MemberOrder implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public Instant getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Instant orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -93,19 +93,19 @@ public class MemberOrder implements Serializable {
         this.status = status;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

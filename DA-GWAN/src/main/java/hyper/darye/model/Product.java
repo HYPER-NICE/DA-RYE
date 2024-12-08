@@ -1,7 +1,7 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * product
@@ -40,14 +40,33 @@ public class Product implements Serializable {
     /**
      * 생성 날짜
      */
-    private Instant createdDate;
+    private LocalDateTime createdDate;
 
     /**
      * 수정 날짜
      */
-    private Instant lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     private static final long serialVersionUID = 1L;
+
+    public Product(String name, String description, Integer price, Integer stockQuantity, Long categoryId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.categoryId = categoryId;
+    }
+
+    public Product(Long id, String name, String description, Integer price, Integer stockQuantity, Long categoryId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.categoryId = categoryId;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public Long getId() {
         return id;
@@ -97,19 +116,19 @@ public class Product implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

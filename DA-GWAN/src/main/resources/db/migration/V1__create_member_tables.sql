@@ -14,8 +14,8 @@ CREATE TABLE member_grade (
                               max_amount INT NOT NULL COMMENT '최대 구매 금액',
                               period_days INT NOT NULL COMMENT '등급 기준 기간 (일)',
                               description VARCHAR(255) NULL COMMENT '등급 설명',
-                              created_date TIMESTAMP DEFAULT NOW() NULL COMMENT '생성 날짜',
-                              last_modified_date TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP NULL COMMENT '수정 날짜',
+                              created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL COMMENT '생성 날짜',
+                              last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) NULL COMMENT '수정 날짜',
                               CONSTRAINT chk_min_less_than_max CHECK (min_amount <= max_amount)
 );
 
@@ -28,8 +28,8 @@ CREATE TABLE member (
                         address VARCHAR(255) NULL COMMENT '주소',
                         mobile VARCHAR(255) NULL COMMENT '휴대폰 번호',
                         grade_id BIGINT NULL COMMENT '등급 ID (외래 키)',
-                        created_date TIMESTAMP DEFAULT NOW() NULL COMMENT '생성 날짜',
-                        last_modified_date TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP NULL COMMENT '수정 날짜'
+                        created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL COMMENT '생성 날짜',
+                        last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) NULL COMMENT '수정 날짜'
 );
 
 
