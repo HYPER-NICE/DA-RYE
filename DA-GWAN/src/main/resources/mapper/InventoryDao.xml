@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.dao.InventoryDao">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.Inventory">
+<mapper namespace="hyper.darye.dao.InboundDao">
+  <resultMap id="BaseResultMap" type="hyper.darye.model.Inbound">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
     <result column="batch_number" jdbcType="VARCHAR" property="batchNumber" />
@@ -19,23 +19,23 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from inventory
+    from inbound
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from inventory
+    delete from inbound
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Inventory" useGeneratedKeys="true">
-    insert into inventory (product_id, batch_number, quantity, 
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Inbound" useGeneratedKeys="true">
+    insert into inbound (product_id, batch_number, quantity,
       purchase_price, expiry_date, received_date, 
       created_date, last_modified_date)
     values (#{productId,jdbcType=BIGINT}, #{batchNumber,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
       #{purchasePrice,jdbcType=INTEGER}, #{expiryDate,jdbcType=DATE}, #{receivedDate,jdbcType=TIMESTAMP}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Inventory" useGeneratedKeys="true">
-    insert into inventory
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="hyper.darye.model.Inbound" useGeneratedKeys="true">
+    insert into inbound
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         product_id,
@@ -89,8 +89,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.Inventory">
-    update inventory
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.Inbound">
+    update inbound
     <set>
       <if test="productId != null">
         product_id = #{productId,jdbcType=BIGINT},
@@ -119,8 +119,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.Inventory">
-    update inventory
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.Inbound">
+    update inbound
     set product_id = #{productId,jdbcType=BIGINT},
       batch_number = #{batchNumber,jdbcType=VARCHAR},
       quantity = #{quantity,jdbcType=INTEGER},

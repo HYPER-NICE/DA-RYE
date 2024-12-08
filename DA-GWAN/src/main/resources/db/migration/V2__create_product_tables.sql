@@ -22,17 +22,15 @@ CREATE TABLE product (
                          name VARCHAR(255) NOT NULL COMMENT '제품 이름',
                          description TEXT NULL COMMENT '제품 설명',
                          price INT DEFAULT 0 NOT NULL COMMENT '판매 가격',
-                         stock_quantity INT DEFAULT 0 NOT NULL COMMENT '재고 수량',
                          category_id BIGINT NOT NULL COMMENT '카테고리 ID (외래 키)',
                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                         CHECK (price >= 0),
-                         CHECK (stock_quantity >= 0)
+                         CHECK (price >= 0)
 );
 
 -- 입고 테이블 생성
-CREATE TABLE inventory (
+CREATE TABLE inbound (
                            id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '입고 ID (기본 키)',
                            product_id BIGINT NOT NULL COMMENT '제품 ID (외래 키)',
                            batch_number VARCHAR(255) NOT NULL COMMENT '배치 번호',
@@ -44,3 +42,34 @@ CREATE TABLE inventory (
                            last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                            deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
+
+-- 출고 테이블 생성
+CREATE TABLE outbound (
+                          id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '출고 ID (기본 키)',
+                          inbound_id BIGINT NOT NULL COMMENT '입고 ID (외래 키)',
+                          quantity INT NOT NULL COMMENT '출고 수량',
+                          outbound_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '출고 날짜',
+                          reason_id BIGINT NOT NULL COMMENT '출고 사유 ID (외래 키)',
+                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+                          CHECK (quantity > 0)
+);
+
+-- 출고 사유 테이블
+CREATE TABLE outbound_reason (
+                                 id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '출고 사유 ID (기본 키)',
+                                 name VARCHAR(255) NOT NULL UNIQUE COMMENT '출고 사유 이름',
+                                 description VARCHAR(255) NULL COMMENT '출고 사유 설명',
+                                 created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                 last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                 deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+);
+
+-- 기본 출고 사유 데이터 삽입
+INSERT INTO outbound_reason (name, description)
+VALUES
+    ('ORDER', '고객 주문'),
+    ('EXPIRED', '유통기한 만료');
+
+

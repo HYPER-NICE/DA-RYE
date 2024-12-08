@@ -15,7 +15,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="ipsagwi@localhost test" uuid="24dfbec7-cfcf-451f-9639-830a9796faac">
+    <data-source source="LOCAL" name="ipsagwi@localhost test" uuid="529bb1f8-745b-4a1f-9e42-6965461aaf2c">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <remarks>database : ipsagwi_test , user : ipsagwi , pw : ipsagwi</remarks>

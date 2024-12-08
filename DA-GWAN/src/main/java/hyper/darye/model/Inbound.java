@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * inventory
+ * inbound
  */
-public class Inventory implements Serializable {
+public class Inbound implements Serializable {
     /**
      * 입고 ID (기본 키)
      */
@@ -52,7 +52,7 @@ public class Inventory implements Serializable {
      */
     private LocalDateTime  lastModifiedDate;
 
-    public Inventory(Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate) {
+    public Inbound(Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate) {
         this.productId = productId;
         this.batchNumber = batchNumber;
         this.quantity = quantity;
@@ -61,7 +61,7 @@ public class Inventory implements Serializable {
         this.receivedDate = receivedDate;
     }
 
-    public Inventory(Long id, Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate, LocalDateTime  createdDate, LocalDateTime  lastModifiedDate) {
+    public Inbound(Long id, Long productId, String batchNumber, Integer quantity, Integer purchasePrice, LocalDateTime  expiryDate, LocalDateTime  receivedDate, LocalDateTime  createdDate, LocalDateTime  lastModifiedDate) {
         this.id = id;
         this.productId = productId;
         this.batchNumber = batchNumber;
@@ -158,7 +158,7 @@ public class Inventory implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Inventory other = (Inventory) that;
+        Inbound other = (Inbound) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
             && (this.getBatchNumber() == null ? other.getBatchNumber() == null : this.getBatchNumber().equals(other.getBatchNumber()))

@@ -17,6 +17,22 @@ public class Category implements Serializable {
 
     private LocalDateTime lastModifiedDate;
 
+    public Category() {
+    }
+
+    public Category(String name, Long parentId) {
+        this.name = name;
+        this.parentId = parentId;
+    }
+
+    public Category(Long id, String name, Long parentId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.name = name;
+        this.parentId = parentId;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
