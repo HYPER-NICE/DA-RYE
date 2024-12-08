@@ -5,27 +5,27 @@
 <mapper namespace="hyper.darye.dao.CategoryDao">
 
     <!-- 모든 카테고리 조회 -->
-    <select id="selectAll" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectAll" resultType="hyper.darye.dto.CategoryDto">
         SELECT * FROM category
     </select>
 
     <!-- ID로 특정 카테고리 조회 -->
-    <select id="selectCategoryById" parameterType="long" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectCategoryById" parameterType="long" resultType="hyper.darye.dto.CategoryDto">
         SELECT * FROM category WHERE id = #{id}
     </select>
 
     <!-- 이름으로 특정 카테고리 조회 -->
-    <select id="selectCategoryByName" parameterType="string" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectCategoryByName" parameterType="string" resultType="hyper.darye.dto.CategoryDto">
         SELECT * FROM category WHERE name = #{name}
     </select>
 
     <!-- 특정 카테고리의 직계 하위 카테고리 조회 -->
-    <select id="selectDirectSubCategoriesById" parameterType="long" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectDirectSubCategoriesById" parameterType="long" resultType="hyper.darye.dto.CategoryDto">
         SELECT * FROM category WHERE parent_id = #{parentId}
     </select>
 
     <!-- 특정 카테고리를 부모로 가지는 전체 하위 카테고리 조회 -->
-    <select id="selectAllSubCategories" parameterType="long" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectAllSubCategories" parameterType="long" resultType="hyper.darye.dto.CategoryDto">
         WITH RECURSIVE subcategories AS (
             SELECT * FROM category WHERE id = #{parentId}
             UNION ALL
@@ -36,7 +36,7 @@
     </select>
 
     <!-- 이름을 기준으로 특정 카테고리를 부모로 가지는 직계 하위 카테고리 조회 -->
-    <select id="selectDirectSubCategoriesByName" parameterType="string" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectDirectSubCategoriesByName" parameterType="string" resultType="hyper.darye.dto.CategoryDto">
         SELECT c.id, c.name, c.parent_id AS parentId
         FROM category c
                  INNER JOIN category p ON c.parent_id = p.id
@@ -44,7 +44,7 @@
     </select>
 
     <!-- 이름을 기준으로 특정 카테고리를 부모로 가지는 전체 하위 카테고리 조회 -->
-    <select id="selectAllSubCategoriesByName" parameterType="string" resultType="hyper.darye.dto.Category.CategoryDto">
+    <select id="selectAllSubCategoriesByName" parameterType="string" resultType="hyper.darye.dto.CategoryDto">
         WITH RECURSIVE subcategories AS (
             SELECT c.id, c.name, c.parent_id AS parentId
             FROM category c

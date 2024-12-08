@@ -1,6 +1,6 @@
 package hyper.darye.dao;
 
-import hyper.darye.dto.Category.CategoryDto;
+import hyper.darye.dto.CategoryDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

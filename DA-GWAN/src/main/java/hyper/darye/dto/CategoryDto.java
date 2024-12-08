@@ -1,6 +1,4 @@
-package hyper.darye.dto.Category;
-
-import hyper.darye.dto.BaseDto;
+package hyper.darye.dto;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
 package hyper.darye.dao;
 
-import hyper.darye.dto.Category.CategoryDto;
+import hyper.darye.dto.CategoryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
