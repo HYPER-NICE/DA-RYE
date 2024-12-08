@@ -1,9 +1,9 @@
 package hyper.darye.dao;
 
 import hyper.darye.model.Product;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
-@Repository
+@Mapper
 public interface ProductDao {
     int deleteByPrimaryKey(Long id);
 
