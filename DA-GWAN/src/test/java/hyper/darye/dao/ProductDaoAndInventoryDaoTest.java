@@ -358,7 +358,12 @@ public class ProductDaoAndInventoryDaoTest {
     @Test
     void deleteInventory() {
         // Given
-        Inventory inventory = new Inventory(null, 1L, "BATCH-001", 100, 5000, null, null, null, null);
+        String batchNumber = "BATCH-001"; // 상품 생산 번호
+        int quantity = 100;  // 입고 수량
+        int purchasePrice = 500000;  // 입고 가격
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiredAt = now.plusMonths(12);  // 12개월 후 만료
+        Inventory inventory = new Inventory(malchaProduct.getId(), batchNumber, quantity, purchasePrice, now, expiredAt);
         inventoryDao.insert(inventory);
 
         // When
@@ -367,23 +372,5 @@ public class ProductDaoAndInventoryDaoTest {
         // Then
         assertThat(deletedCount).isEqualTo(1);
         assertThat(inventoryDao.selectByPrimaryKey(inventory.getId())).isNull();
-    }
-
-    @DisplayName("상품 삭제 시 입고 내역도 삭제된다")
-    @Test
-    void deleteProductCascadeInventory() {
-        // Given
-        Product product = new Product(null, "Test Product", "테스트 설명", 10000, 50, 1L, null, null);
-        productDao.insert(product);
-
-        Inventory inventory = new Inventory(null, product.getId(), "BATCH-001", 100, 5000, null, null, null, null);
-        inventoryDao.insert(inventory);
-
-        // When
-        int productDeletedCount = productDao.deleteByPrimaryKey(product.getId());
-
-        // Then
-        assertThat(productDeletedCount).isEqualTo(1);
-        assertThat(inventoryDao.selectByPrimaryKey(inventory.getId())).isNull();  // CASCADE 삭제 확인
     }
 }

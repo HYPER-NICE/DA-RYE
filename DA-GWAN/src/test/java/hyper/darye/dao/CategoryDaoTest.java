@@ -25,25 +25,19 @@ class CategoryDaoTest {
 
     private Set<CategoryDto> categories;
 
-    private CategoryDto rootCategory;
     private CategoryDto dummyCategory;
 
     @BeforeEach
     void setUp() {
         categories = new HashSet<>();
 
-        rootCategory = new CategoryDto("루트", null);
-        categoryDao.insertCategory(rootCategory);
-        categories.add(rootCategory);
-        rootCategory = this.categoryDao.selectCategoryById(rootCategory.getId());
-
         // 최상위 카테고리 삽입
-        CategoryDto teaRoot = new CategoryDto("차", rootCategory.getId());
+        CategoryDto teaRoot = new CategoryDto("차", null);
         categoryDao.insertCategory(teaRoot);
         categories.add(teaRoot);
         dummyCategory = this.categoryDao.selectCategoryById(teaRoot.getId());
 
-        CategoryDto teawareRoot = new CategoryDto("다기", rootCategory.getId());
+        CategoryDto teawareRoot = new CategoryDto("다기", null);
         categoryDao.insertCategory(teawareRoot);
         categories.add(teawareRoot);
 
@@ -355,7 +349,7 @@ class CategoryDaoTest {
         List<CategoryDto> subCategories = categoryDao.selectDirectSubCategoriesById(parentCategory.getId());
 
         for (CategoryDto subCategory : subCategories) {
-            subCategory.setParentId(rootCategory.getId()); // 부모 제거 (최상위로 이동)
+            subCategory.setParentId(null); // 부모 제거 (최상위로 이동)
             categoryDao.updateCategory(subCategory.getId(), subCategory);
         }
 

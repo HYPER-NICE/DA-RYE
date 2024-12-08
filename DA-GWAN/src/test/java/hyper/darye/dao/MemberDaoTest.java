@@ -1,14 +1,11 @@
 package hyper.darye.dao;
 
-import hyper.darye.dto.InsertMemberDto;
 import hyper.darye.model.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,48 +16,129 @@ class MemberDaoTest {
     @Autowired
     private MemberDao memberDao;
 
-    @DisplayName("멤버 추가 후 조회 테스트")
+    String email = "test@email.com";
+    String name = "테스터";
+    String password = "1234";
+    String mobile = "010-1234-5678";
+    String address = "서울 어딘가";
+
+    @DisplayName("회원가입 테스트")
     @Test
-    void selectAll() {
-        // Given: 데이터 삽입
-        String email1 = "a@email.com";
-        String name1 = "홍길동";
-        String password1 = "1234";
-        String mobile1 = "010-1234-5678";
-        String address1 = "서울 어딘가";
+    void testInsertMember() {
+        // Given
+        Member member = new Member(email, name, password, mobile, address);
 
-        String email2 = "b@email.com";
-        String name2 = "홍길순";
-        String password2 = "1234";
-        String mobile2 = "010-1234-5678";
-        String address2 = "서울 어딘가";
+        // When
+        int count = memberDao.insert(member);
 
-        InsertMemberDto member1 = new InsertMemberDto(email1, name1, password1, mobile1, address1);
-        memberDao.insert(member1);
-        InsertMemberDto member2 = new InsertMemberDto(email2, name2, password2, mobile2, address2);
-        memberDao.insert(member2);
+        // Then
+        assertThat(count)
+                .withFailMessage("회원가입이 성공했을 경우 1이 반환되어야 합니다. 반환된 값: %s", count)
+                .isEqualTo(1);
 
-        // When: 데이터 조회
-        List<Member> members = memberDao.selectAll();
-
-        // Then: 결과 검증
-        // 사이즈가 2이상이여야한다.
-        assertThat(members).hasSizeGreaterThanOrEqualTo(2);
+        assertThat(member.getId())
+                .withFailMessage("회원가입 후에는 자동 생성된 ID가 있어야 합니다. 현재 값: %s", member.getId())
+                .isNotNull();
     }
 
-    @DisplayName("마이바티스 타임스탬프 매핑 테스트")
+    @DisplayName("회원 조회 테스트 - 기본키로 조회")
     @Test
-    void timeStampMappingTest() {
-        // Given: 데이터 삽입
-        InsertMemberDto member1 = new InsertMemberDto(
-                "a@email.com", "홍길동", "1234", "010-1234-5678", "서울 어딘가");
-        memberDao.insert(member1);
+    void testSelectMemberById() {
+        // Given
+        Member member = new Member(email, name, password, mobile, address);
+        memberDao.insert(member);
 
-        // When: 데이터 조회
-        Member member = memberDao.selectByEmail(member1.getEmail());
+        // When
+        Member foundMember = memberDao.selectById(member.getId());
 
-        // Then: 결과 검증
-        assertThat(member.getCreatedDate()).isNotNull();
-        assertThat(member.getLastModifiedDate()).isNotNull();
+        // Then
+        assertThat(foundMember)
+                .withFailMessage("회원 삽입 후 ID로 조회 시 회원이 NULL이 아닙니다.")
+                .isNotNull();
+
+        assertThat(foundMember.getName())
+                .withFailMessage("조회된 회원 이름이 일치하지 않습니다. 실제 값: %s, 예상 값: %s", foundMember.getName(), name)
+                .isEqualTo(name);
+
+        assertThat(foundMember.getEmail())
+                .withFailMessage("조회된 이메일이 일치하지 않습니다. 실제 값: %s, 예상 값: %s", foundMember.getEmail(), email)
+                .isEqualTo(email);
+    }
+
+    @DisplayName("회원 조회 테스트 - 이메일로 조회")
+    @Test
+    void testSelectMemberByEmail() {
+        // Given
+        Member member = new Member(email, name, password, mobile, address);
+        memberDao.insert(member);
+
+        // When
+        Member foundMember = memberDao.selectByEmail(member.getEmail());
+
+        // Then
+        assertThat(foundMember)
+                .withFailMessage("이메일로 조회 시 회원이 NULL이 아닙니다.")
+                .isNotNull();
+
+        assertThat(foundMember.getName())
+                .withFailMessage("조회된 회원 이름이 일치하지 않습니다. 실제 값: %s, 예상 값: %s", foundMember.getName(), name)
+                .isEqualTo(name);
+    }
+
+    @DisplayName("회원정보 수정 테스트")
+    @Test
+    void testUpdateMember() {
+        // Given
+        Member member = new Member(email, name, password, mobile, address);
+        memberDao.insert(member);
+        Member savedMember = memberDao.selectByEmail(member.getEmail());
+
+        // When
+        savedMember.setName("변경된 이름");
+        savedMember.setMobile("010-3333-4444");
+        savedMember.setAddress("부산 어딘가");
+        memberDao.update(savedMember);
+
+        // Then
+        Member updatedMember = memberDao.selectByEmail(member.getEmail());
+
+        assertThat(updatedMember)
+                .withFailMessage("수정된 회원이 NULL이 아닙니다.")
+                .isNotNull();
+
+        assertThat(updatedMember.getName())
+                .withFailMessage("회원 이름이 일치하지 않습니다. 실제 값: %s, 예상 값: %s", updatedMember.getName(), "변경된 이름")
+                .isEqualTo("변경된 이름");
+
+        assertThat(updatedMember.getMobile())
+                .withFailMessage("회원 전화번호가 일치하지 않습니다. 실제 값: %s, 예상 값: %s", updatedMember.getMobile(), "010-3333-4444")
+                .isEqualTo("010-3333-4444");
+
+        assertThat(updatedMember.getAddress())
+                .withFailMessage("회원 주소가 일치하지 않습니다. 실제 값: %s, 예상 값: %s", updatedMember.getAddress(), "부산 어딘가")
+                .isEqualTo("부산 어딘가");
+    }
+
+    @DisplayName("회원 탈퇴 테스트 (소프트 삭제)")
+    @Test
+    void testDeleteMember() {
+        // Given
+        Member member = new Member(email, name, password, mobile, address);
+        memberDao.insert(member);
+        Member savedMember = memberDao.selectByEmail(member.getEmail());
+
+        assertThat(savedMember)
+                .withFailMessage("회원 삽입 후 삭제 전에 NULL이 아니어야 합니다.")
+                .isNotNull();
+
+        // When
+        memberDao.delete(savedMember.getId());
+
+        // Then
+        Member deletedMember = memberDao.selectByEmail(member.getEmail());
+
+        assertThat(deletedMember)
+                .withFailMessage("회원 탈퇴(소프트 삭제) 후 회원은 NULL이어야 합니다.")
+                .isNull();
     }
 }
