@@ -27,7 +27,9 @@ CREATE TABLE member_grade_policy_history (
                                              last_modified_date DATETIME(6) NULL COMMENT '등급 원래 수정 날짜(이전)',
                                              deleted_date DATETIME(6) NULL COMMENT '등급 원래 삭제 날짜(이전)',
                                              operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형(UPDATE/DELETE)',
-                                             history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜'
+                                             history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
+                                             CONSTRAINT FK_member_grade_policy_history_grade
+                                                 FOREIGN KEY (grade_id) REFERENCES member_grade_policy (id) ON DELETE CASCADE
 );
 
 CREATE TABLE member (
@@ -57,7 +59,9 @@ CREATE TABLE member_history (
                                 last_modified_date DATETIME(6) NULL COMMENT '회원 원래 수정 날짜(이전)',
                                 deleted_date DATETIME(6) NULL COMMENT '회원 원래 삭제 날짜(이전)',
                                 operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형(UPDATE/DELETE)',
-                                history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜'
+                                history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
+                                CONSTRAINT FK_member_history_member
+                                    FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE
 );
 
 CREATE TABLE category (
@@ -79,7 +83,9 @@ CREATE TABLE category_history (
                                   last_modified_date DATETIME(6) NULL COMMENT '카테고리 원래 수정 날짜(이전)',
                                   deleted_date DATETIME(6) NULL COMMENT '카테고리 원래 삭제 날짜(이전)',
                                   operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형(UPDATE/DELETE)',
-                                  history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜'
+                                  history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
+                                  CONSTRAINT FK_category_history_category
+                                      FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE
 );
 
 CREATE TABLE product (
@@ -106,5 +112,7 @@ CREATE TABLE product_history (
                                  last_modified_date DATETIME(6) NULL COMMENT '제품 원래 수정 날짜(이전)',
                                  deleted_date DATETIME(6) NULL COMMENT '제품 원래 삭제 날짜(이전)',
                                  operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형(UPDATE/DELETE)',
-                                 history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜'
+                                 history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
+                                 CONSTRAINT FK_product_history_product
+                                     FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
 );

@@ -79,21 +79,51 @@ VALUES
     ('PAYMENT_PENDING', '결제 대기'),
     ('PAYMENT_COMPLETED', '결제 완료'),
     ('CANCELLATION_REQUESTED', '취소 요청 대기'),
-    ('CANCELLATION_COMPLETED', '취소 완료');
+    ('CANCELLATION_COMPLETED', '취소 완료'),
+    ('PARTIAL_CANCELLATION_COMPLETED', '주문 일부 상품만 취소 완료'),
+    ('FULL_CANCELLATION_COMPLETED', '주문 전체 취소 완료');
 
 -- 배송 상태 기본 데이터 삽입
 INSERT INTO delivery_code (name, description)
 VALUES
     ('PREPARING_SHIPMENT', '배송 준비 중'),
     ('SHIPPED', '배송 중'),
-    ('DELIVERED', '배송 완료');
+    ('DELIVERED', '배송 완료'),
+    ('RETURN_REQUESTED', '반품 요청 대기'),
+    ('RETURN_COMPLETED', '반품 완료'),
+    ('EXCHANGE_REQUESTED', '교환 요청 대기'),
+    ('EXCHANGE_COMPLETED', '교환 완료');
 
 -- 결제 코드 기본 데이터 삽입
-INSERT INTO payment_code (name, description)
-VALUES
-    ('CREDIT_CARD', '신용 카드 결제'),
-    ('BANK_TRANSFER', '계좌이체');
+INSERT INTO payment_method_code (name, description) VALUES
+     ('POINT', '포인트 결제'),
+     ('BANK_TRANSFER', '계좌 이체 결제');
 
+-- 결제 상태 코드 초기 데이터 삽입
+INSERT INTO payment_status_code (name, description)
+VALUES
+    ('PENDING', '결제가 대기 상태입니다.'),
+    ('COMPLETED', '결제가 성공적으로 완료되었습니다.'),
+    ('FAILED', '결제가 실패했습니다.'),
+    ('CANCELED', '결제가 취소되었습니다.'),
+    ('REFUNDED', '결제가 환불되었습니다.');
+
+-- 상태 코드 예시 데이터
+INSERT INTO after_sales_status_code (name, description)
+VALUES
+    ('REQUESTED', '사후 처리 요청됨'),
+    ('REJECTED', '요청 거부됨'),
+    ('COMPLETED', '처리 완료됨');
+
+
+-- 사유 코드 예시 데이터
+INSERT INTO after_sales_reason_code (name, description)
+VALUES
+    ('CHANGE_OF_MIND', '단순 변심'),
+    ('PRODUCT_DEFECT', '상품 불량'),
+    ('WRONG_ITEM_SENT', '잘못된 상품 배송'),
+    ('DAMAGE_IN_TRANSIT', '배송 중 파손'),
+    ('OTHER', '기타 사유');
 
 -- 포인트 거래 코드 기본 데이터 삽입
 INSERT INTO point_transaction_code (name, description)
@@ -135,6 +165,12 @@ SELECT id,
        NOW()
 FROM member_grade_policy;
 
+
+-- 데이터 초기값 설정
+INSERT INTO refund_method_code (id, name, description)
+VALUES
+    ('ORIGINAL_PAYMENT_METHOD', '기존 결제 방식으로 환불', '기존 결제 수단으로 환불을 진행'),
+    ('STORE_CREDIT', '스토어 크레딧', '스토어 적립금으로 환불');
 
 -- 약관 메인 데이터 삽입
 INSERT INTO terms (name, description)
