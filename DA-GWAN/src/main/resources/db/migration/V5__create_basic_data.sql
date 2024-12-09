@@ -1,8 +1,7 @@
 -- =========================================
--- 기초 데이터 삽입 (예시)
+-- 기본 데이터 삽입
 -- =========================================
 
--- 기본 멤버 등급 데이터 삽입
 INSERT INTO member_grade_policy (grade_name, min_amount, max_amount, period_days, description)
 VALUES
     ('나누리', 100000, 999999999, 360, '최근 360일 동안 10만원 이상 구매 고객'),
@@ -10,24 +9,21 @@ VALUES
     ('다소니', 10000, 49999, 180, '최근 180일 동안 1만원 이상 5만원 미만 구매 고객'),
     ('마루한', 0, 9999, 90, '최근 90일 동안 1만원 미만 구매 고객');
 
--- 기본 입고 사유 데이터 삽입
-INSERT INTO inbound_reason (name, description)
+INSERT INTO inbound_code (name, description)
 VALUES
     ('PURCHASE', '공급업체로부터 신규 구매 입고'),
     ('CUSTOMER_RETURN', '고객 반품 상품 재입고'),
     ('PROMOTIONAL_EVENT', '프로모션 목적 재고 확보 입고'),
     ('CORRECTION', '재고 오류 정정 입고');
 
--- 기본 출고 사유 데이터 삽입
-INSERT INTO outbound_reason (name, description)
+INSERT INTO outbound_code (name, description)
 VALUES
     ('DAMAGED', '상품 파손 폐기 출고'),
     ('DONATION', '기부 목적 출고'),
     ('TRANSFER_OUT', '외부 창고 이동 출고'),
     ('INTERNAL_USE', '사내 용도 사용 출고');
 
--- 기본 주문 상태 데이터 삽입
-INSERT INTO order_status (name, description)
+INSERT INTO order_code (name, description)
 VALUES
     ('PAYMENT_PENDING', '결제 대기'),
     ('PAYMENT_COMPLETED', '결제 완료'),
@@ -36,8 +32,7 @@ VALUES
     ('REFUND_REQUESTED', '환불 요청 대기'),
     ('REFUNDED', '환불 완료');
 
--- 기본 배송 상태 데이터 삽입
-INSERT INTO delivery_status (name, description)
+INSERT INTO delivery_code (name, description)
 VALUES
     ('PREPARING_SHIPMENT', '배송 준비 중'),
     ('SHIPPED', '배송 중'),
@@ -46,21 +41,18 @@ VALUES
     ('RETURN_PICKUP', '수거 중'),
     ('RETURN_COMPLETED', '수거 완료');
 
--- 기본 결제 수단 데이터 삽입
-INSERT INTO payment_method (name, description)
+INSERT INTO payment_code (name, description)
 VALUES
     ('CREDIT_CARD', '신용 카드 결제'),
     ('BANK_TRANSFER', '계좌이체');
 
--- 기본 포인트 거래 상태 데이터 삽입
-INSERT INTO point_transaction_status (name, description)
+INSERT INTO point_transaction_code (name, description)
 VALUES
     ('PENDING', '포인트 적립/사용 대기'),
     ('COMPLETED', '포인트 적립/사용 완료'),
     ('CANCELLED', '포인트 적립/사용 취소');
 
--- 등급별 포인트 적립율 (예제)
-INSERT INTO percentage_point_policy (percentage_point_policy.member_grade_policy_id, percentage)
+INSERT INTO percentage_point_policy (member_grade_policy_id, percentage)
 SELECT id, CASE grade_name
                WHEN '마루한' THEN 1.00
                WHEN '다소니' THEN 2.00
@@ -69,7 +61,6 @@ SELECT id, CASE grade_name
     END
 FROM member_grade_policy;
 
--- 고정 포인트 정책 (예제)
 INSERT INTO fixed_point_policy (policy_name, description, point_amount)
 VALUES
     ('FRIEND_INVITE', '친구 초대 포인트 지급', 500),
