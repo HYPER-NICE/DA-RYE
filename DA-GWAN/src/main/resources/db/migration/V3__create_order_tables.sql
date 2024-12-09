@@ -61,9 +61,20 @@ VALUES
 CREATE TABLE member_order (
                               id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '주문 ID (기본 키)',
                               member_id BIGINT NOT NULL COMMENT '회원 ID (외래 키)',
+
+                              orderer_name VARCHAR(255) NOT NULL COMMENT '주문자 이름',
+                              orderer_contact VARCHAR(50) NOT NULL COMMENT '주문자 연락처',
+
+                              receiver_name VARCHAR(255) NOT NULL COMMENT '수령인 이름',
+                              receiver_contact VARCHAR(50) NOT NULL COMMENT '수령인 연락처',
+
+                              delivery_address VARCHAR(255) NOT NULL COMMENT '배송 기본 주소',
+                              delivery_detail_address VARCHAR(255) NULL COMMENT '배송 상세 주소',
+                              tracking_number VARCHAR(50) NULL COMMENT '송장 번호',
+                              delivery_request_note VARCHAR(255) NULL COMMENT '배송 요청 사항',
+
                               total_price INT NOT NULL COMMENT '실제 결제 금액',
                               order_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '주문 날짜',
-                              delivery_address VARCHAR(255) NOT NULL COMMENT '배송 주소',
 
                               delivery_status_id BIGINT NOT NULL COMMENT '배송 상태 ID (외래 키)',
                               order_status_id BIGINT NOT NULL COMMENT '주문 상태 ID (외래 키)',
