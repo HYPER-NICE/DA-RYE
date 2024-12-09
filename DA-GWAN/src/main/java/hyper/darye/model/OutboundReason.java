@@ -1,65 +1,43 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
- * product
+ * outbound_reason
  */
-public class Product implements Serializable {
+public class OutboundReason implements Serializable {
     /**
-     * 제품 ID (기본 키)
+     * 출고 사유 ID (기본 키)
      */
     private Long id;
 
     /**
-     * 제품 이름
+     * 출고 사유 이름
      */
     private String name;
 
     /**
-     * 제품 설명
+     * 출고 사유 설명
      */
     private String description;
 
     /**
-     * 판매 가격
-     */
-    private Integer price;
-
-    /**
-     * 카테고리 ID (외래 키)
-     */
-    private Long categoryId;
-
-    /**
      * 생성 날짜
      */
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     /**
      * 수정 날짜
      */
-    private LocalDateTime lastModifiedDate;
+    private Date lastModifiedDate;
+
+    /**
+     * 삭제 날짜
+     */
+    private Date deletedDate;
 
     private static final long serialVersionUID = 1L;
-
-    public Product(String name, String description, Integer price, Long categoryId) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.categoryId = categoryId;
-    }
-
-    public Product(Long id, String name, String description, Integer price, Long categoryId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.categoryId = categoryId;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     public Long getId() {
         return id;
@@ -85,36 +63,28 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getLastModifiedDate() {
+    public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+    public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     @Override
@@ -128,14 +98,13 @@ public class Product implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Product other = (Product) that;
+        OutboundReason other = (OutboundReason) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
-            && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
             && (this.getCreatedDate() == null ? other.getCreatedDate() == null : this.getCreatedDate().equals(other.getCreatedDate()))
-            && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()));
+            && (this.getLastModifiedDate() == null ? other.getLastModifiedDate() == null : this.getLastModifiedDate().equals(other.getLastModifiedDate()))
+            && (this.getDeletedDate() == null ? other.getDeletedDate() == null : this.getDeletedDate().equals(other.getDeletedDate()));
     }
 
     @Override
@@ -145,10 +114,9 @@ public class Product implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
-        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
         result = prime * result + ((getCreatedDate() == null) ? 0 : getCreatedDate().hashCode());
         result = prime * result + ((getLastModifiedDate() == null) ? 0 : getLastModifiedDate().hashCode());
+        result = prime * result + ((getDeletedDate() == null) ? 0 : getDeletedDate().hashCode());
         return result;
     }
 
@@ -161,10 +129,9 @@ public class Product implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
-        sb.append(", price=").append(price);
-        sb.append(", categoryId=").append(categoryId);
         sb.append(", createdDate=").append(createdDate);
         sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", deletedDate=").append(deletedDate);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

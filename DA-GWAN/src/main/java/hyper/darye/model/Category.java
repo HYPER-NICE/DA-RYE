@@ -1,7 +1,6 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -14,9 +13,25 @@ public class Category implements Serializable {
 
     private Long parentId;
 
-    private Instant createdDate;
+    private LocalDateTime createdDate;
 
-    private Instant lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
+
+    public Category() {
+    }
+
+    public Category(String name, Long parentId) {
+        this.name = name;
+        this.parentId = parentId;
+    }
+
+    public Category(Long id, String name, Long parentId, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.name = name;
+        this.parentId = parentId;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -44,19 +59,19 @@ public class Category implements Serializable {
         this.parentId = parentId;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

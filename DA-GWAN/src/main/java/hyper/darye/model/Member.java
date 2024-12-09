@@ -1,7 +1,7 @@
 package hyper.darye.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * member
@@ -9,9 +9,9 @@ import java.time.Instant;
 public class Member implements Serializable {
     private Long id;
 
-    private String name;
-
     private String email;
+
+    private String name;
 
     private String password;
 
@@ -19,9 +19,31 @@ public class Member implements Serializable {
 
     private String mobile;
 
-    private Instant createdDate;
+    private LocalDateTime createdDate;
 
-    private Instant lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
+
+    public Member() {
+    }
+
+    public Member(String email, String name, String password, String address, String mobile) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+    }
+
+    public Member(Long id, String name, String email, String password, String address, String mobile, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +55,10 @@ public class Member implements Serializable {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getName() {
         return name;
     }
@@ -40,11 +66,6 @@ public class Member implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -73,19 +94,19 @@ public class Member implements Serializable {
         this.mobile = mobile;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

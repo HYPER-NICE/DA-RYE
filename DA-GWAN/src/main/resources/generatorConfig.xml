@@ -7,8 +7,8 @@
         <!-- JDBC 연결 설정 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3307/ipsagwi?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"
-                        userId="ipsagwi"
-                        password="ipsagwi" />
+                        userId="root"
+                        password="root" />
         <!-- Java 모델 생성 설정 -->
         <javaModelGenerator targetPackage="com.example.model" targetProject="src/main/java"/>
         <!-- SQL 매퍼 XML 파일 생성 설정 -->
