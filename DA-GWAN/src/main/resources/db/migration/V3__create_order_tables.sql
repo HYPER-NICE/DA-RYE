@@ -91,6 +91,7 @@ CREATE TABLE member_order_detail (
                                      id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '주문 상세 ID (기본 키)',
                                      order_id BIGINT NOT NULL COMMENT '주문 ID (외래 키)',
                                      product_id BIGINT NOT NULL COMMENT '제품 ID (외래 키)',
+                                     unit_price INT NOT NULL COMMENT '제품 단가',
                                      amount INT NOT NULL COMMENT '구매 수량',
                                      created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                      last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
