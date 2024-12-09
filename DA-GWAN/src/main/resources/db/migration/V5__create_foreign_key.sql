@@ -11,7 +11,7 @@ ALTER TABLE outbound
     ADD CONSTRAINT FK_outbound_inbound FOREIGN KEY (inbound_id) REFERENCES inbound (id) ON DELETE CASCADE;
 
 ALTER TABLE outbound
-    ADD CONSTRAINT FK_outbound_product FOREIGN KEY (reason_id) REFERENCES outbound_reason (id) ON DELETE CASCADE;
+    ADD CONSTRAINT FK_outbound_reason FOREIGN KEY (reason_id) REFERENCES outbound_reason (id) ON DELETE CASCADE;
 
 ALTER TABLE member_order
     ADD CONSTRAINT FK_member_order_member FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE NO ACTION;
