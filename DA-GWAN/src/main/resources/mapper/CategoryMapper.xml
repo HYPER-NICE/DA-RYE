@@ -71,7 +71,7 @@
     <!-- 소프트 삭제 (deleted_date 설정) -->
     <update id="deleteCategory">
         UPDATE category
-        SET deleted_date = CURRENT_TIMESTAMP(6)
+        SET deleted_date = NOW()
         WHERE id = #{id} AND deleted_date IS NULL
     </update>
 
