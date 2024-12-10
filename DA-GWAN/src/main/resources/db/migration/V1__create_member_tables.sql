@@ -97,6 +97,7 @@ CREATE TABLE product (
                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+
                          CHECK (price >= 0),
                          CONSTRAINT FK_product_category FOREIGN KEY (category_id) REFERENCES category (id)
 );
