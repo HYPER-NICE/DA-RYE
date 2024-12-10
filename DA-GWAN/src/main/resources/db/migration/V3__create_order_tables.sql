@@ -85,22 +85,22 @@ CREATE TABLE member_order_detail (
 
 -- 사후 처리 상태 코드 테이블
 CREATE TABLE after_sales_status_code (
-                                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                         id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '사후 처리 상태 코드 ID (기본 키)',
                                          name VARCHAR(50) NOT NULL UNIQUE COMMENT '사후 처리 상태 이름 (예: REQUESTED, APPROVED, REJECTED, COMPLETED)',
-                                         description VARCHAR(255) NULL,
-                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
-                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-                                         deleted_date DATETIME(6) DEFAULT NULL
+                                         description VARCHAR(255) NULL COMMENT '사후 처리 상태 코드 설명',
+                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
 
 -- 사후 처리 사유 코드 테이블
 CREATE TABLE after_sales_reason_code (
-                                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                         id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '사후 처리 사유 코드 ID (기본 키)',
                                          name VARCHAR(50) NOT NULL UNIQUE COMMENT '사유 이름 (예: 단순 변심, 상품 불량 등)',
-                                         description VARCHAR(255) NULL,
-                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
-                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-                                         deleted_date DATETIME(6) DEFAULT NULL
+                                         description VARCHAR(255) NULL COMMENT '사후 처리 사유 코드 설명',
+                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
 
 -- after_sales_type : 'CANCELLATION', 'RETURN', 'EXCHANGE', 'REFUND' 등
@@ -114,9 +114,24 @@ CREATE TABLE order_after_sales_main (
                                         completed_date DATETIME(6) DEFAULT NULL COMMENT '완료 날짜',
                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-                                        deleted_date DATETIME(6) DEFAULT NULL,
+                                        deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
                                         CONSTRAINT FK_after_sales_main_order FOREIGN KEY (member_order_main_id) REFERENCES member_order_main (id) ON DELETE CASCADE,
                                         CONSTRAINT FK_after_sales_main_status FOREIGN KEY (after_sales_status_code_id) REFERENCES after_sales_status_code (id)
+);
+
+CREATE TABLE order_after_sales_main_history (
+                                                id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '사후 처리 메인 이력 ID',
+                                                after_sales_main_id BIGINT NOT NULL COMMENT '원래 사후 처리 메인 ID',
+                                                member_order_main_id BIGINT NOT NULL COMMENT '주문 메인 ID (이력)',
+                                                after_sales_type VARCHAR(50) NOT NULL COMMENT '사후 처리 유형 (CANCELLATION/RETURN/EXCHANGE/REFUND)',
+                                                after_sales_status_code_id BIGINT NOT NULL COMMENT '사후 처리 상태 코드 ID',
+                                                request_date DATETIME(6) NULL COMMENT '요청 날짜(이전)',
+                                                approved_date DATETIME(6) NULL COMMENT '승인 날짜(이전)',
+                                                completed_date DATETIME(6) NULL COMMENT '완료 날짜(이전)',
+                                                operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형 (INSERT/UPDATE/DELETE)',
+                                                history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
+
+                                                CONSTRAINT FK_after_sales_history_main FOREIGN KEY (after_sales_main_id) REFERENCES order_after_sales_main (id) ON DELETE CASCADE
 );
 
 CREATE TABLE order_after_sales_detail (

@@ -24,10 +24,6 @@ CREATE TABLE outbound_code (
 
 CREATE TABLE inbound_main (
                               id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '입고 메인 ID (기본 키)',
-                              reference_code VARCHAR(255) NOT NULL UNIQUE COMMENT '참조 코드',
-                              total_quantity INT NOT NULL COMMENT '총 입고 수량',
-                              total_cost INT NOT NULL COMMENT '총 입고 비용',
-
                               received_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '입고 날짜',
                               created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                               last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
@@ -54,9 +50,6 @@ CREATE TABLE inbound_detail (
 
 CREATE TABLE outbound_main (
                                id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '출고 메인 ID (기본 키)',
-                               reference_code VARCHAR(255) NOT NULL UNIQUE COMMENT '참조 코드',
-                               total_quantity INT NOT NULL COMMENT '총 출고 수량',
-                               total_cost INT NOT NULL COMMENT '총 출고 비용',
                                outbound_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '출고 날짜',
                                created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',

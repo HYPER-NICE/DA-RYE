@@ -45,6 +45,7 @@ CREATE TABLE point_transaction (
 CREATE TABLE percentage_point_policy (
                                          id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '퍼센트 기반 포인트 정책 ID (기본 키)',
                                          member_grade_policy_id BIGINT NOT NULL COMMENT '등급 ID (외래 키)',
+                                         description VARCHAR(255) NULL COMMENT '정책 설명',
                                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
