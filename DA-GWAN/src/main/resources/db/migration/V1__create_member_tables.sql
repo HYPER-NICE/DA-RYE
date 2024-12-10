@@ -91,13 +91,26 @@ CREATE TABLE category_history (
 CREATE TABLE product (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '제품 ID (기본 키)',
                          name VARCHAR(255) NOT NULL COMMENT '제품 이름',
-                         description TEXT NULL COMMENT '제품 설명',
+                         short_description TEXT NULL COMMENT '제품 간단 설명',
+                         long_description TEXT NULL COMMENT '제품 상세 설명',
+                         main_description VARCHAR(1000) NULL COMMENT '제품 본문 내용',
                          price INT DEFAULT 0 NOT NULL COMMENT '판매 가격',
                          category_id BIGINT NOT NULL COMMENT '카테고리 ID (외래 키)',
+                         status_id BIGINT NOT NULL COMMENT '상품 상태 ID (외래 키)',
+                         importer VARCHAR(255) NULL COMMENT '수입원',
+                         manufacturer VARCHAR(255) NULL COMMENT '제조원',
+                         expiration_date DATETIME(6) NOT NULL COMMENT '소비기한',
+                         size VARCHAR(255) NULL COMMENT '사이즈',
+                         capacity VARCHAR(255) NULL COMMENT '용량(수량)',
+                         ingredients VARCHAR(255) NULL COMMENT '원재료명 및 성분',
+                         precautions VARCHAR(255) NULL COMMENT '주의사항',
+                         sale_date DATETIME(6) NOT NULL COMMENT '판매시작일',
+                         new BOOLEAN DEFAULT FALSE COMMENT '신상품',
+                         hot BOOLEAN DEFAULT FALSE COMMENT '최근 인기 상품',
+                         best BOOLEAN DEFAULT FALSE COMMENT '인기 상품',
                          created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-
                          CHECK (price >= 0),
                          CONSTRAINT FK_product_category FOREIGN KEY (category_id) REFERENCES category (id)
 );
@@ -116,4 +129,13 @@ CREATE TABLE product_history (
                                  history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
                                  CONSTRAINT FK_product_history_product
                                      FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
+);
+
+CREATE TABLE product_status_code (
+                              id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 상태 코드 ID (기본 키)',
+                              name VARCHAR(255) NOT NULL UNIQUE COMMENT '상품 상태 코드 이름',
+                              description VARCHAR(255) NULL COMMENT '상품 상태 코드 설명',
+                              created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                              last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                              deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
