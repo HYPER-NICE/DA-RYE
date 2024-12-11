@@ -11,50 +11,50 @@ VALUES
     ('마루한', 0, 9999, 90, '최근 90일 동안 1만원 미만 구매 고객');
 
 -- 루트 카테고리 삽입
-INSERT INTO category (name, parent_id)
+INSERT INTO category (name, parent_id, screen_order)
 VALUES
-    ('차', NULL),
-    ('차기', NULL);
+    ('차', NULL, 1),
+    ('차기', NULL, 2);
 
 -- 2뎁스 카테고리 삽입
-INSERT INTO category (name, parent_id)
-SELECT name, id
+INSERT INTO category (name, parent_id, screen_order)
+SELECT name, id, screen_order
 FROM (
-         SELECT '녹차' AS name, id FROM category WHERE name = '차'
+         SELECT '녹차' AS name, id, 1 as screen_order FROM category WHERE name = '차'
          UNION
-         SELECT '홍차' AS name, id FROM category WHERE name = '차'
+         SELECT '홍차' AS name, id, 2 as screen_order FROM category WHERE name = '차'
          UNION
-         SELECT '다기 세트' AS name, id FROM category WHERE name = '차기'
+         SELECT '다기 세트' AS name, id, 3 as screen_order FROM category WHERE name = '차기'
          UNION
-         SELECT '찻잔' AS name, id FROM category WHERE name = '차기'
+         SELECT '찻잔' AS name, id, 4 as screen_order FROM category WHERE name = '차기'
      ) AS sub_categories;
 
 -- 3뎁스 카테고리 삽입
-INSERT INTO category (name, parent_id)
-SELECT name, id
+INSERT INTO category (name, parent_id, screen_order)
+SELECT name, id, screen_order
 FROM (
          -- 차 - 녹차 하위
-         SELECT '유기농 녹차' AS name, id FROM category WHERE name = '녹차'
+         SELECT '유기농 녹차' AS name, id, 1 as screen_order FROM category WHERE name = '녹차'
          UNION
-         SELECT '보성 녹차' AS name, id FROM category WHERE name = '녹차'
+         SELECT '보성 녹차' AS name, id, 2 FROM category WHERE name = '녹차'
 
          -- 차 - 홍차 하위
          UNION
-         SELECT '다즐링 홍차' AS name, id FROM category WHERE name = '홍차'
+         SELECT '다즐링 홍차' AS name, id,3 FROM category WHERE name = '홍차'
          UNION
-         SELECT '아쌈 홍차' AS name, id FROM category WHERE name = '홍차'
+         SELECT '아쌈 홍차' AS name, id, 4 FROM category WHERE name = '홍차'
 
          -- 차기 - 다기 세트 하위
          UNION
-         SELECT '전통 다기 세트' AS name, id FROM category WHERE name = '다기 세트'
+         SELECT '전통 다기 세트' AS name, id, 5 FROM category WHERE name = '다기 세트'
          UNION
-         SELECT '현대식 다기 세트' AS name, id FROM category WHERE name = '다기 세트'
+         SELECT '현대식 다기 세트' AS name, id, 6 FROM category WHERE name = '다기 세트'
 
          -- 차기 - 찻잔 하위
          UNION
-         SELECT '도자기 찻잔' AS name, id FROM category WHERE name = '찻잔'
+         SELECT '도자기 찻잔' AS name, id, 7 FROM category WHERE name = '찻잔'
          UNION
-         SELECT '유리 찻잔' AS name, id FROM category WHERE name = '찻잔'
+         SELECT '유리 찻잔' AS name, id, 8 FROM category WHERE name = '찻잔'
      ) AS sub_categories;
 
 

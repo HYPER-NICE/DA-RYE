@@ -73,14 +73,6 @@ CREATE TABLE outbound_detail (
                                  CONSTRAINT FK_outbound_detail_outbound FOREIGN KEY (outbound_code_id) REFERENCES outbound_code (id) ON DELETE CASCADE
 );
 
-CREATE TABLE outbound_main (
-                               id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '출고 메인 ID (기본 키)',
-                               outbound_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '출고 날짜',
-                               created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                               last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
-);
-
 CREATE TABLE stock (
                                id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '재고 ID (기본 키)',
                                product_id BIGINT NOT NULL COMMENT '제품 ID (외래 키)',
