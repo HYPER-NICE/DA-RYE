@@ -183,7 +183,8 @@ CREATE TABLE payment_main (
                               last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
 
-                              CONSTRAINT FK_payment_main_order FOREIGN KEY (order_id) REFERENCES member_order_main (id) ON DELETE CASCADE
+                              CONSTRAINT FK_payment_main_order FOREIGN KEY (order_id) REFERENCES member_order_main (id) ON DELETE CASCADE,
+                              CONSTRAINT FK_payment_main_status FOREIGN KEY (payment_status_code) REFERENCES payment_status_code (id)
 );
 
 -- 결제 메인 이력 테이블
