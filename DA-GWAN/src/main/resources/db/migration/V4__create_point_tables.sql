@@ -2,91 +2,85 @@
 -- 4. 포인트 및 정책 관련 코드 테이블
 -- =========================================
 
-# -- 회원 포인트 테이블
-# CREATE TABLE member_point (
-#                               member_id BIGINT PRIMARY KEY COMMENT '회원 ID (기본 키), (외래 키)',
-#                               current_points INT NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
-#                               total_earned_points INT NOT NULL DEFAULT 0 COMMENT '총 얻은 포인트',
-#                               total_redeemed_points INT NOT NULL DEFAULT 0 COMMENT '총 사용한 포인트',
-#                               created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-#                               last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-#                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-#                               CONSTRAINT FK_member_point_member FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE
-# );
-
 -- 포인트 거래 유형 테이블
-CREATE TABLE point_transaction_type (
-                                        id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '포인트 거래 유형 ID (기본 키)',
-                                        name VARCHAR(50) NOT NULL UNIQUE COMMENT '포인트 거래 유형 이름',
-                                        description VARCHAR(255) NULL COMMENT '포인트 거래 유형 설명',
-                                        created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                        last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                        deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+CREATE TABLE POINT_TRANSACTION_TYPE
+(
+    ID                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '포인트 거래 유형 ID (기본 키)',
+    NAME               VARCHAR(50)  NOT NULL UNIQUE COMMENT '포인트 거래 유형 이름',
+    DESCRIPTION        VARCHAR(255) NULL COMMENT '포인트 거래 유형 설명',
+    CREATED_DATE       DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE       DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
 
 -- 포인트 이력 테이블
-CREATE TABLE point_history (
-                                   id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '포인트 거래 ID (기본 키)',
-                                   member_id BIGINT NOT NULL COMMENT '회원 ID (외래 키)',
-                                   amount INT NOT NULL COMMENT '포인트 증감량(양수: 적립, 음수: 차감)',
-                                   point_transaction_type_id BIGINT NOT NULL COMMENT '포인트 거래 유형 ID (외래 키)',
-                                   description VARCHAR(255) NULL COMMENT '거래 설명',
-                                   reference_order_id BIGINT NULL COMMENT '연관된 주문 ID',
-                                   created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                   last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                   deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                                   CHECK (amount <> 0),
-                                   CONSTRAINT FK_point_transaction_member FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE,
-                                   CONSTRAINT FK_point_transaction_type FOREIGN KEY (point_transaction_type_id) REFERENCES point_transaction_type (id),
-                                   CONSTRAINT FK_point_transaction_order FOREIGN KEY (reference_order_id) REFERENCES member_order_main (id)
+CREATE TABLE POINT_HISTORY
+(
+    ID                        BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '포인트 거래 ID (기본 키)',
+    MEMBER_ID                 BIGINT       NOT NULL COMMENT '회원 ID (외래 키)',
+    AMOUNT                    INT          NOT NULL COMMENT '포인트 증감량(양수: 적립, 음수: 차감)',
+    POINT_TRANSACTION_TYPE_ID BIGINT       NOT NULL COMMENT '포인트 거래 유형 ID (외래 키)',
+    DESCRIPTION               VARCHAR(255) NULL COMMENT '거래 설명',
+    REFERENCE_ORDER_ID        BIGINT       NULL COMMENT '연관된 주문 ID',
+    CREATED_DATE              DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE        DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE              DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+    CHECK (AMOUNT <> 0),
+    CONSTRAINT FK_POINT_TRANSACTION_MEMBER FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER (ID) ON DELETE CASCADE,
+    CONSTRAINT FK_POINT_TRANSACTION_TYPE FOREIGN KEY (POINT_TRANSACTION_TYPE_ID) REFERENCES POINT_TRANSACTION_TYPE (ID),
+    CONSTRAINT FK_POINT_TRANSACTION_ORDER FOREIGN KEY (REFERENCE_ORDER_ID) REFERENCES ORDER_MAIN (ID)
 );
 
 -- 퍼센테이지 기반 포인트 정책 테이블 (상위 정책 정의)
-CREATE TABLE percentage_point_policy (
-                                         id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '퍼센트 기반 포인트 정책 ID (기본 키)',
-                                         member_grade_policy_id BIGINT NOT NULL COMMENT '등급 ID (외래 키)',
-                                         description VARCHAR(255) NULL COMMENT '정책 설명',
-                                         activated BOOLEAN NOT NULL DEFAULT TRUE COMMENT '정책 활성화 여부',
-                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                                         CONSTRAINT FK_percentage_point_policy_grade FOREIGN KEY (member_grade_policy_id) REFERENCES member_grade_policy (id)
+CREATE TABLE PERCENTAGE_POINT_POLICY
+(
+    ID                     BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '퍼센트 기반 포인트 정책 ID (기본 키)',
+    MEMBER_GRADE_POLICY_ID BIGINT       NOT NULL COMMENT '등급 ID (외래 키)',
+    DESCRIPTION            VARCHAR(255) NULL COMMENT '정책 설명',
+    ACTIVATED              BOOLEAN      NOT NULL DEFAULT TRUE COMMENT '정책 활성화 여부',
+    CREATED_DATE           DATETIME(6)           DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE     DATETIME(6)           DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE           DATETIME(6)           DEFAULT NULL COMMENT '삭제 날짜',
+    CONSTRAINT FK_PERCENTAGE_POINT_POLICY_GRADE FOREIGN KEY (MEMBER_GRADE_POLICY_ID) REFERENCES MEMBER_GRADE_POLICY (ID)
 );
 
 -- 퍼센테이지 포인트 액/비율 관리 테이블 (기간, 비율을 여기에 관리)
-CREATE TABLE percentage_point_amount (
-                                         id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '퍼센트 포인트 비율 관리 ID (기본 키)',
-                                         percentage_policy_id BIGINT NOT NULL COMMENT '퍼센트 기반 포인트 정책 ID (외래 키)',
-                                         percentage DECIMAL(5,2) NOT NULL COMMENT '적립율(%)',
-                                         effective_start_date DATETIME(6) NOT NULL COMMENT '정책 유효 시작 날짜',
-                                         effective_end_date DATETIME(6) DEFAULT NULL COMMENT '정책 유효 종료 날짜',
-                                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                                         CONSTRAINT FK_percentage_point_amount_policy FOREIGN KEY (percentage_policy_id) REFERENCES percentage_point_policy (id)
+CREATE TABLE PERCENTAGE_POINT_AMOUNT
+(
+    ID                   BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '퍼센트 포인트 비율 관리 ID (기본 키)',
+    PERCENTAGE_POLICY_ID BIGINT        NOT NULL COMMENT '퍼센트 기반 포인트 정책 ID (외래 키)',
+    PERCENTAGE           DECIMAL(5, 2) NOT NULL COMMENT '적립율(%)',
+    EFFECTIVE_START_DATE DATETIME(6)   NOT NULL COMMENT '정책 유효 시작 날짜',
+    EFFECTIVE_END_DATE   DATETIME(6) DEFAULT NULL COMMENT '정책 유효 종료 날짜',
+    CREATED_DATE         DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE   DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE         DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+    CONSTRAINT FK_PERCENTAGE_POINT_AMOUNT_POLICY FOREIGN KEY (PERCENTAGE_POLICY_ID) REFERENCES PERCENTAGE_POINT_POLICY (ID)
 );
 
 -- 고정 포인트 정책 테이블 (상위 정책 정의)
-CREATE TABLE fixed_point_policy (
-                                    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고정 포인트 정책 ID (기본 키)',
-                                    policy_name VARCHAR(50) NOT NULL UNIQUE COMMENT '정책 이름',
-                                    description VARCHAR(255) NULL COMMENT '정책 설명',
-                                    activated BOOLEAN NOT NULL  DEFAULT TRUE COMMENT '정책 활성화 여부',
-                                    created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                    last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                    deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+CREATE TABLE FIXED_POINT_POLICY
+(
+    ID                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고정 포인트 정책 ID (기본 키)',
+    POLICY_NAME        VARCHAR(50)  NOT NULL UNIQUE COMMENT '정책 이름',
+    DESCRIPTION        VARCHAR(255) NULL COMMENT '정책 설명',
+    ACTIVATED          BOOLEAN      NOT NULL DEFAULT TRUE COMMENT '정책 활성화 여부',
+    CREATED_DATE       DATETIME(6)           DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE DATETIME(6)           DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE       DATETIME(6)           DEFAULT NULL COMMENT '삭제 날짜'
 );
 
 -- 고정 포인트 액 관리 테이블 (기간, 액수를 여기에 관리)
-CREATE TABLE fixed_point_amount (
-                                    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고정 포인트 액 관리 ID (기본 키)',
-                                    fixed_policy_id BIGINT NOT NULL COMMENT '고정 포인트 정책 ID (외래 키)',
-                                    point_amount INT NOT NULL COMMENT '지급 포인트 양',
-                                    effective_start_date DATETIME(6) NOT NULL COMMENT '정책 유효 시작 날짜(이벤트 기간 시작)',
-                                    effective_end_date DATETIME(6) DEFAULT NULL COMMENT '정책 유효 종료 날짜(이벤트 기간 종료)',
-                                    created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                                    last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                    deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                                    CONSTRAINT FK_fixed_point_amount_policy FOREIGN KEY (fixed_policy_id) REFERENCES fixed_point_policy (id)
+CREATE TABLE FIXED_POINT_AMOUNT
+(
+    ID                   BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고정 포인트 액 관리 ID (기본 키)',
+    FIXED_POLICY_ID      BIGINT      NOT NULL COMMENT '고정 포인트 정책 ID (외래 키)',
+    POINT_AMOUNT         INT         NOT NULL COMMENT '지급 포인트 양',
+    EFFECTIVE_START_DATE DATETIME(6) NOT NULL COMMENT '정책 유효 시작 날짜(이벤트 기간 시작)',
+    EFFECTIVE_END_DATE   DATETIME(6) DEFAULT NULL COMMENT '정책 유효 종료 날짜(이벤트 기간 종료)',
+    CREATED_DATE         DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+    LAST_MODIFIED_DATE   DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+    DELETED_DATE         DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+    CONSTRAINT FK_FIXED_POINT_AMOUNT_POLICY FOREIGN KEY (FIXED_POLICY_ID) REFERENCES FIXED_POINT_POLICY (ID)
 );
 
