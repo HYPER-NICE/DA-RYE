@@ -2,6 +2,7 @@
 -- 3. 주문/결제 관련 코드 테이블
 -- =========================================
 
+
 -- 주문 코드 테이블
 CREATE TABLE order_code (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '주문 코드 ID (기본 키)',
