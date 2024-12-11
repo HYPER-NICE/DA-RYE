@@ -68,6 +68,7 @@ CREATE TABLE category (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 ID (기본 키)',
                           name VARCHAR(255) NOT NULL UNIQUE COMMENT '카테고리 이름',
                           parent_id BIGINT NULL COMMENT '부모 카테고리 ID',
+                          screen_order BIGINT NOT NULL COMMENT '화면에 보여질 정렬 순서',
                           created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                           last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                           deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
@@ -138,4 +139,15 @@ CREATE TABLE product_status_code (
                               created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                               last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+);
+
+CREATE TABLE price_history (
+                                     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '가격 이력 ID (기본 키)',
+                                     product_id BIGINT NOT NULL COMMENT '원래 상품 ID(외래 키)',
+                                     price INT NOT NULL COMMENT '판매 가격',
+                                     change_start_date DATETIME(6) NULL COMMENT '변경 시작 일자',
+                                     change_end_date DATETIME(6) NULL COMMENT '변경 종료 일자',
+                                     created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                     last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                     deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
 );
