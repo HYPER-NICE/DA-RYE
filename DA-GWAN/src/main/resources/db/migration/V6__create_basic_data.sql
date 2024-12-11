@@ -134,7 +134,7 @@ INSERT INTO PAYMENT_METHOD_CODE (NAME, DESCRIPTION)
 VALUES ('POINT', '포인트 결제'),
        ('BANK_TRANSFER', '계좌 이체 결제'),
        ('CANCEL', '결제 취소');
-       -- 포인트 결제, 카드 결제, 취소 예정, 취소 완료, 이제 예정, 결제 예정, 카드결제 완료
+-- 포인트 결제, 카드 결제, 취소 예정, 취소 완료, 이제 예정, 결제 예정, 카드결제 완료
 
 -- 결제 상태 코드 초기 데이터 삽입
 INSERT INTO PAYMENT_STATUS_CODE (NAME, DESCRIPTION)
