@@ -7,6 +7,8 @@ CREATE TABLE terms (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '약관 ID (기본 키)',
                        name VARCHAR(100) NOT NULL UNIQUE COMMENT '약관 이름 (예: 이용약관, 개인정보처리방침 등)',
                        description VARCHAR(255) NULL COMMENT '약관 설명',
+                       required BOOLEAN NOT NULL DEFAULT TRUE COMMENT '필수 동의 여부',
+                       activated BOOLEAN NOT NULL DEFAULT TRUE COMMENT '약관 활성화 여부',
                        created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                        last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                        deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
@@ -32,6 +34,8 @@ CREATE TABLE sub_terms (
                            terms_id BIGINT NOT NULL COMMENT '메인 약관 ID (외래 키)',
                            name VARCHAR(100) NOT NULL COMMENT '서브 약관 이름 (예: 개인정보 이용동의, 위치정보 이용동의 등)',
                            description VARCHAR(255) NULL COMMENT '서브 약관 설명',
+                           required BOOLEAN NOT NULL DEFAULT TRUE COMMENT '필수 동의 여부',
+                           activated BOOLEAN NOT NULL DEFAULT TRUE COMMENT '약관 활성화 여부',
                            created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                            last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                            deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
@@ -56,10 +60,12 @@ CREATE TABLE sub_terms_version (
 CREATE TABLE member_terms_agreement (
                                         id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '멤버 약관 동의 ID (기본 키)',
                                         member_id BIGINT NOT NULL COMMENT '회원 ID (외래 키)',
-                                        terms_version_id BIGINT NULL COMMENT '약관 버전 ID (외래 키) - 메인 약관 동의 시',
-                                        sub_terms_version_id BIGINT NULL COMMENT '서브 약관 버전 ID (외래 키) - 서브 약관 동의 시',
+                                        agreed_terms_version_id BIGINT NULL COMMENT '약관 버전 ID (외래 키) - 메인 약관 동의 시',
+                                        agreed_sub_terms_version_id BIGINT NULL COMMENT '서브 약관 버전 ID (외래 키) - 서브 약관 동의 시',
                                         agreed_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '동의한 날짜',
+                                        last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '동의 변경 날짜',
+                                        deleted_date DATETIME(6) DEFAULT NULL COMMENT '동의 취소 날짜',
                                         CONSTRAINT FK_member_terms_agreement_member FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE,
-                                        CONSTRAINT FK_member_terms_agreement_terms_version FOREIGN KEY (terms_version_id) REFERENCES terms_version (id),
-                                        CONSTRAINT FK_member_terms_agreement_sub_terms_version FOREIGN KEY (sub_terms_version_id) REFERENCES sub_terms_version (id)
+                                        CONSTRAINT FK_member_terms_agreement_terms_version FOREIGN KEY (agreed_terms_version_id) REFERENCES terms_version (id),
+                                        CONSTRAINT FK_member_terms_agreement_sub_terms_version FOREIGN KEY (agreed_sub_terms_version_id) REFERENCES sub_terms_version (id)
 );
