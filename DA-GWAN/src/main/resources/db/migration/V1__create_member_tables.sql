@@ -89,6 +89,15 @@ CREATE TABLE category_history (
                                       FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE
 );
 
+CREATE TABLE product_status_code (
+                                     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 상태 코드 ID (기본 키)',
+                                     name VARCHAR(255) NOT NULL UNIQUE COMMENT '상품 상태 코드 이름',
+                                     description VARCHAR(255) NULL COMMENT '상품 상태 코드 설명',
+                                     created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                     last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                     deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+);
+
 CREATE TABLE product (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '제품 ID (기본 키)',
                          name VARCHAR(255) NOT NULL COMMENT '제품 이름',
@@ -113,7 +122,8 @@ CREATE TABLE product (
                          last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                          deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
                          CHECK (price >= 0),
-                         CONSTRAINT FK_product_category FOREIGN KEY (category_id) REFERENCES category (id)
+                         CONSTRAINT FK_product_category FOREIGN KEY (category_id) REFERENCES category (id),
+                         CONSTRAINT FK_product_status_code FOREIGN KEY (status_id) REFERENCES product_status_code (id)
 );
 
 CREATE TABLE product_history (
@@ -132,15 +142,6 @@ CREATE TABLE product_history (
                                      FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
 );
 
-CREATE TABLE product_status_code (
-                              id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '상품 상태 코드 ID (기본 키)',
-                              name VARCHAR(255) NOT NULL UNIQUE COMMENT '상품 상태 코드 이름',
-                              description VARCHAR(255) NULL COMMENT '상품 상태 코드 설명',
-                              created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
-                              last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                              deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
-);
-
 CREATE TABLE price_history (
                                      id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '가격 이력 ID (기본 키)',
                                      product_id BIGINT NOT NULL COMMENT '원래 상품 ID(외래 키)',
@@ -149,5 +150,6 @@ CREATE TABLE price_history (
                                      change_end_date DATETIME(6) NULL COMMENT '변경 종료 일자',
                                      created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                      last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                                     deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+                                     deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+                                     CONSTRAINT FK_product_id FOREIGN KEY (product_id) REFERENCES product (id)
 );

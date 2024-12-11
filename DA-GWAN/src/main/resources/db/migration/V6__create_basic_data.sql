@@ -24,9 +24,11 @@ FROM (
          UNION
          SELECT '홍차' AS name, id, 2 as screen_order FROM category WHERE name = '차'
          UNION
-         SELECT '다기 세트' AS name, id, 3 as screen_order FROM category WHERE name = '차기'
+         SELECT '다기 세트' AS name, id, 1 as screen_order FROM category WHERE name = '차기'
          UNION
-         SELECT '찻잔' AS name, id, 4 as screen_order FROM category WHERE name = '차기'
+         SELECT '찻잔' AS name, id, 2 as screen_order FROM category WHERE name = '차기'
+         UNION
+         SELECT '허브차' AS name, id, 3 as screen_order FROM category WHERE name = '차'
      ) AS sub_categories;
 
 -- 3뎁스 카테고리 삽입
@@ -40,22 +42,35 @@ FROM (
 
          -- 차 - 홍차 하위
          UNION
-         SELECT '다즐링 홍차' AS name, id,3 FROM category WHERE name = '홍차'
+         SELECT '다즐링 홍차' AS name, id,1 FROM category WHERE name = '홍차'
          UNION
-         SELECT '아쌈 홍차' AS name, id, 4 FROM category WHERE name = '홍차'
+         SELECT '아쌈 홍차' AS name, id, 2 FROM category WHERE name = '홍차'
+
+         -- 차 - 허브차 하위
+         UNION
+         SELECT '루이보스 차' AS name, id,1 FROM category WHERE name = '허브차'
+         UNION
+         SELECT '히비스커스 차' AS name, id, 2 FROM category WHERE name = '허브차'
 
          -- 차기 - 다기 세트 하위
          UNION
-         SELECT '전통 다기 세트' AS name, id, 5 FROM category WHERE name = '다기 세트'
+         SELECT '전통 다기 세트' AS name, id, 1 FROM category WHERE name = '다기 세트'
          UNION
-         SELECT '현대식 다기 세트' AS name, id, 6 FROM category WHERE name = '다기 세트'
+         SELECT '현대식 다기 세트' AS name, id, 2 FROM category WHERE name = '다기 세트'
 
          -- 차기 - 찻잔 하위
          UNION
-         SELECT '도자기 찻잔' AS name, id, 7 FROM category WHERE name = '찻잔'
+         SELECT '도자기 찻잔' AS name, id, 1 FROM category WHERE name = '찻잔'
          UNION
-         SELECT '유리 찻잔' AS name, id, 8 FROM category WHERE name = '찻잔'
+         SELECT '유리 찻잔' AS name, id, 2 FROM category WHERE name = '찻잔'
      ) AS sub_categories;
+
+-- 상품 상태 코드 기본 데이터 삽입
+INSERT INTO product_status_code (name, description)
+VALUES
+    ('ON_SALE', '판매중'),
+    ('SOLD OUT', '품절'),
+    ('DISCONTINUED', '단종');
 
 
 -- 입고 코드 기본 데이터 삽입
@@ -200,3 +215,24 @@ SELECT id,
        '서비스 제공을 위해 개인정보 이용에 동의합니다.',
        NOW()
 FROM sub_terms;
+
+-- 상품 데이터 삽입
+INSERT INTO product (
+    name, short_description, long_description, main_description, price,
+    category_id, status_id, importer, manufacturer, expiration_date,
+    size, capacity, ingredients, precautions, sale_date, new, hot, best
+) VALUES
+      ('녹차', '순수한 녹차 잎', '전통 방식으로 가공한 녹차로, 신선하고 건강한 맛을 제공합니다.', '고급스러운 맛의 순수 녹차, 차 한 잔으로 자연을 느껴보세요.', 5000,
+       11, 1, '한국차유통', '차나라', '2025-12-31 00:00:00', '중', '100g', '녹차', '직사광선을 피해서 보관하세요.', '2024-01-01 00:00:00', TRUE, FALSE, TRUE),
+
+      ('홍차', '진한 향과 맛의 홍차', '영국식 전통 홍차로, 우려내면 깊고 진한 향이 퍼집니다.', '진한 홍차의 향기를 즐기세요. 영국식 다도에 적합한 홍차입니다.', 6000,
+       12, 2, '영국차수입', '홍차명가', '2026-06-30 00:00:00', '대', '150g', '홍차', '뜨거운 물에 3-5분 우려서 드세요.', '2024-02-01 00:00:00', FALSE, TRUE, FALSE),
+
+      ('루이보스 퓨어 차', '다양한 허브가 어우러진 루이보스차', '허브와 꽃을 혼합하여 만든 건강에 좋은 허브차입니다.', '스트레스를 풀어주는 허브차, 잠자리 전 마시기 좋습니다.', 7000,
+       14, 1, '허브유통', '허브가든', '2025-06-30 00:00:00', '소', '50g', '카모마일, 라벤더, 민트', '알레르기 반응을 확인 후 섭취하세요.', '2024-03-01 00:00:00', TRUE, FALSE, FALSE),
+
+      ('유기농 녹차', '유기농으로 재배한 녹차', '자연에서 기른 유기농 녹차, 인공 첨가물이 없습니다.', '100% 유기농으로 재배된 녹차로 건강한 맛을 제공합니다.', 8000,
+       10, 1, '유기농차회사', '그린티코퍼레이션', '2025-12-31 00:00:00', '중', '200g', '녹차', '서늘하고 건조한 곳에 보관하세요.', '2024-04-01 00:00:00', FALSE, TRUE, FALSE),
+
+      ('얼그레이', '향긋한 얼그레이 차', '유럽에서 전통적인 방식으로 만든 얼그레이 차입니다.', '얼그레이 특유의 은은한 향을 느끼실 수 있습니다.', 7500,
+       13, 3, '프랑스차수입', '벨로르티', '2026-01-01 00:00:00', '소', '75g', '홍차, 베르가못', '직사광선을 피하고 서늘한 곳에 보관하세요.', '2024-05-01 00:00:00', FALSE, FALSE, TRUE);

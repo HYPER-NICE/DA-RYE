@@ -80,5 +80,6 @@ CREATE TABLE stock (
                                batch_number VARCHAR(255) NOT NULL COMMENT '배치 번호',
                                created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+                               deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
+                               CONSTRAINT FK_product_id_stock FOREIGN KEY (product_id) REFERENCES product (id)
 );
