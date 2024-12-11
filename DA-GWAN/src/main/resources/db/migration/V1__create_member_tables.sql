@@ -1,14 +1,10 @@
--- =========================================
--- 1. 등급, 멤버, 카테고리, 상품 관련 테이블
--- =========================================
-
 CREATE TABLE member_grade_policy (
-                                     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '등급 ID (기본 키)',
-                                     grade_name VARCHAR(50) NOT NULL COMMENT '등급 이름',
+                                     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고객 등급 ID (기본 키)',
+                                     grade_name VARCHAR(50) NOT NULL COMMENT '고객 등급 이름',
                                      min_amount INT NOT NULL COMMENT '최소 구매 금액',
                                      max_amount INT NOT NULL COMMENT '최대 구매 금액',
                                      period_days INT NOT NULL COMMENT '등급 기준 기간(일)',
-                                     description VARCHAR(255) NULL COMMENT '등급 설명',
+                                     description VARCHAR(255) NULL COMMENT '고객 등급 설명',
                                      created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                                      last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                                      deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
@@ -16,34 +12,60 @@ CREATE TABLE member_grade_policy (
 );
 
 CREATE TABLE member_grade_policy_history (
-                                             id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '등급 이력 ID (기본 키)',
-                                             grade_id BIGINT NOT NULL COMMENT '원래 등급 ID',
-                                             grade_name VARCHAR(50) NOT NULL COMMENT '등급 이름(이전 데이터)',
+                                             id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '고객 등급 이력 ID (기본 키)',
+                                             grade_id BIGINT NOT NULL COMMENT '원래 고객 등급 ID',
+                                             grade_name VARCHAR(50) NOT NULL COMMENT '고객 등급 이름(이전 데이터)',
                                              min_amount INT NOT NULL COMMENT '최소 구매 금액(이전 데이터)',
                                              max_amount INT NOT NULL COMMENT '최대 구매 금액(이전 데이터)',
-                                             period_days INT NOT NULL COMMENT '등급 기간(이전 데이터)',
-                                             description VARCHAR(255) NULL COMMENT '등급 설명(이전 데이터)',
-                                             created_date DATETIME(6) NULL COMMENT '등급 원래 생성 날짜(이전)',
-                                             last_modified_date DATETIME(6) NULL COMMENT '등급 원래 수정 날짜(이전)',
-                                             deleted_date DATETIME(6) NULL COMMENT '등급 원래 삭제 날짜(이전)',
+                                             period_days INT NOT NULL COMMENT '고객 등급 기간(이전 데이터)',
+                                             description VARCHAR(255) NULL COMMENT '고객 등급 설명(이전 데이터)',
+                                             created_date DATETIME(6) NULL COMMENT '고객 등급 원래 생성 날짜(이전)',
+                                             last_modified_date DATETIME(6) NULL COMMENT '고객 등급 원래 수정 날짜(이전)',
+                                             deleted_date DATETIME(6) NULL COMMENT '고객 등급 원래 삭제 날짜(이전)',
                                              operation_type VARCHAR(10) NOT NULL COMMENT '조작 유형(UPDATE/DELETE)',
                                              history_created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '이력 생성 날짜',
                                              CONSTRAINT FK_member_grade_policy_history_grade
                                                  FOREIGN KEY (grade_id) REFERENCES member_grade_policy (id) ON DELETE CASCADE
 );
 
+
+CREATE TABLE delivery_address (
+                                  id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '배송지 주소 ID (기본 키)',
+                                  delivery_address VARCHAR(255) NOT NULL COMMENT '배송지 주소',
+                                  delivery_address_line VARCHAR(255) NOT NULL COMMENT '배송지 상세주소',
+                                  delivery_address_zip_code INT NOT NULL COMMENT '배송지 우편번호',
+                                  address_type VARCHAR(255) NOT NULL COMMENT '주소 별명',
+                                  is_primary_address BOOLEAN NOT NULL COMMENT '기본배송지 여부',
+                                  is_latest_address BOOLEAN NOT NULL COMMENT '최근배송지 여부',
+                                  created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
+                                  last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
+                                  deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜'
+);
+
 CREATE TABLE member (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '회원 ID (기본 키)',
+                        id BIGINT NOT NULL PRIMARY KEY COMMENT '회원 ID (기본 키)',
                         name VARCHAR(255) NOT NULL COMMENT '회원 이름',
+                        sex CHAR(1) NOT NULL COMMENT '성별',
+                        birthdate DATE NOT NULL COMMENT '생년월일',
                         email VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
                         password VARCHAR(255) NOT NULL COMMENT '비밀번호',
                         address VARCHAR(255) NULL COMMENT '주소',
+                        address_line VARCHAR(255) NULL COMMENT '상세주소',
+                        address_zip_code VARCHAR(255) NULL COMMENT '우편번호',
+                        delivery_address_id BIGINT NULL COMMENT '배송지 주소',
                         mobile VARCHAR(255) NULL COMMENT '휴대폰 번호',
+                        landline VARCHAR(255) NULL COMMENT '전화번호',
                         grade_id BIGINT NULL COMMENT '등급 ID (외래 키)',
+                        current_points INT NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
+                        total_earned_points INT NOT NULL DEFAULT 0 COMMENT '총 얻은 포인트',
+                        total_redeemed_points INT NOT NULL DEFAULT 0 COMMENT '총 사용한 포인트',
+                        member_status VARCHAR(255) NULL COMMENT '회원 상태',
+                        latest_login_date DATETIME NULL COMMENT '마지막 로그인 날짜',
                         created_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '생성 날짜',
                         last_modified_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
                         deleted_date DATETIME(6) DEFAULT NULL COMMENT '삭제 날짜',
-                        CONSTRAINT FK_member_grade_policy FOREIGN KEY (grade_id) REFERENCES member_grade_policy (id)
+                        CONSTRAINT FK_member_grade_policy FOREIGN KEY (grade_id) REFERENCES member_grade_policy (id),
+                        CONSTRAINT FK_delivery_address FOREIGN KEY (delivery_address_id) REFERENCES delivery_address (id)
 );
 
 CREATE TABLE member_history (
@@ -63,6 +85,7 @@ CREATE TABLE member_history (
                                 CONSTRAINT FK_member_history_member
                                     FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE category (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '카테고리 ID (기본 키)',

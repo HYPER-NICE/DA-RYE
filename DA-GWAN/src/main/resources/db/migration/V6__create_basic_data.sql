@@ -141,7 +141,7 @@ VALUES
     ('OTHER', '기타 사유');
 
 -- 포인트 거래 코드 기본 데이터 삽입
-INSERT INTO point_transaction_code (name, description)
+INSERT INTO point_transaction_type (name, description)
 VALUES
     ('PENDING', '포인트 적립/사용 대기'),
     ('COMPLETED', '포인트 적립/사용 완료'),
