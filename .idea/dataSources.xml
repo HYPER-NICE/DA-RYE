@@ -15,10 +15,10 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="ipsagwi@localhost test" uuid="529bb1f8-745b-4a1f-9e42-6965461aaf2c">
+    <data-source source="LOCAL" name="ipsagwi@localhost test" uuid="1c82af14-c2d4-4690-8cab-231ca2daa5b7">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <remarks>database : ipsagwi_test , user : ipsagwi , pw : ipsagwi</remarks>
+      <remarks>database : ipsagwi_test , user : root, pw: root</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3308/ipsagwi_test</jdbc-url>
       <jdbc-additional-properties>
