@@ -43,7 +43,7 @@ CREATE TABLE MEMBER
     ADDRESS_ZIP_CODE      VARCHAR(255) NULL COMMENT '우편번호',
     MOBILE                VARCHAR(255) NULL COMMENT '휴대폰 번호',
     LANDLINE              VARCHAR(255) NULL COMMENT '전화번호',
-    GRADE_ID              BIGINT       NULL COMMENT '등급 ID (외래 키)',
+    GRADE_ID              BIGINT       NULL COMMENT '고객 등급 ID (외래 키)',
     CURRENT_POINTS        INT          NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
     TOTAL_EARNED_POINTS   INT          NOT NULL DEFAULT 0 COMMENT '총 얻은 포인트',
     TOTAL_REDEEMED_POINTS INT          NOT NULL DEFAULT 0 COMMENT '총 사용한 포인트',
