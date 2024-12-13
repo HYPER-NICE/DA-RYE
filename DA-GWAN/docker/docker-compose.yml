@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql-main:
     image: mysql:8.4.3
-    container_name: mysql-main-container
+    container_name: da-rye-main
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -17,7 +17,7 @@ services:
 
   mysql-test:
     image: mysql:8.4.3
-    container_name: mysql-test-container
+    container_name: dar-rye-test
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
