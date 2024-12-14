@@ -9,6 +9,13 @@ VALUES ('나누리', 100000, 999999999, 360, '최근 360일 동안 10만원 이�
        ('다소니', 10000, 49999, 180, '최근 180일 동안 1만원 이상 5만원 미만 구매 고객'),
        ('마루한', 0, 9999, 90, '최근 90일 동안 1만원 미만 구매 고객');
 
+INSERT INTO MEMBER_GRADE_POLICY_HISTORY (GRADE_ID, GRADE_NAME, MIN_AMOUNT, MAX_AMOUNT, PERIOD_DAYS, DESCRIPTION, OPERATION_TYPE, HISTORY_CREATED_DATE)
+VALUES
+    (1, '나누리', 200000, 999999999, 360, '최근 360일 동안 10만원 이상 구매 고객', 'UPDATE', CURRENT_TIMESTAMP),
+    (2, '벗드리', 100000, 19999, 270, '최근 270일 동안 5만원 이상 10만원 미만 구매 고객', 'UPDATE', CURRENT_TIMESTAMP),
+    (3, '다소니', 30000, 99999, 180, '최근 180일 동안 1만원 이상 5만원 미만 구매 고객', 'UPDATE', CURRENT_TIMESTAMP),
+    (4, '마루한', 0, 29999, 90, '최근 90일 동안 1만원 미만 구매 고객', 'UPDATE', CURRENT_TIMESTAMP);
+
 -- 멤버 삽입
 INSERT INTO MEMBER (ID, NAME, SEX, BIRTHDATE, EMAIL, PASSWORD, ADDRESS, ADDRESS_LINE, ADDRESS_ZIP_CODE, MOBILE, LANDLINE, GRADE_ID, CURRENT_POINTS, TOTAL_EARNED_POINTS, TOTAL_REDEEMED_POINTS, MEMBER_STATUS, LATEST_LOGIN_DATE, REG_DATE)
 VALUES
@@ -35,6 +42,8 @@ VALUES
     (2, '김영희', 'kim.younghee@example.com', 'password456', '서울특별시 송파구 올림픽로 456', '010-2345-6789', 2, 'UPDATE', '2024-02-18 09:30:00'),
     (3, '이수진', 'lee.sujin@example.com', 'password789', '부산광역시 해운대구 센텀동로 789', '010-3456-7890', 3, 'DELETE', '2024-03-20 10:15:00'),
     (4, '박철수', 'park.chulsoo@example.com', 'password101', '경기도 수원시 영통구 광교로 101', '010-4567-8901', 4, 'DELETE', '2024-04-25 11:00:00');
+
+
 
 -- 루트 카테고리 삽입
 INSERT INTO CATEGORY (NAME, PARENT_ID, SCREEN_ORDER)
@@ -304,3 +313,66 @@ VALUES
     (3, 3, 3, 1500, 13500, 135, 300, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 4, 1, 0, 7000, 70, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (5, 5, 4, 800, 16000, 160, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 주문 메인 삽입
+INSERT INTO ORDER_MAIN (MEMBER_ID, ORDER_DATE)
+VALUES
+    (1, '2024-12-01 10:35:00'),
+    (2, '2024-12-02 11:15:00'),
+    (3, '2024-12-03 14:45:00'),
+    (4, '2024-12-04 16:20:00'),
+    (5, '2024-12-05 09:10:00');
+
+-- 주문 상세 삽입
+INSERT INTO ORDER_DETAIL (ORDER_ID, PRODUCT_ID, AMOUNT)
+VALUES
+    (1, 1, 2),
+    (1, 2, 1),
+    (2, 3, 3),
+    (3, 4, 1),
+    (4, 5, 4);
+
+-- 주문 상세 상태 변경 이력 삽입
+INSERT INTO ORDER_DETAIL_STATUS (ORDER_DETAIL_ID, ORDER_STATUS_CODE_ID, ORDER_DATE)
+VALUES
+    (1, 1, '2024-12-01 10:45:00'),
+    (2, 2, '2024-12-01 11:00:00'),
+    (3, 3, '2024-12-02 13:30:00'),
+    (4, 4, '2024-12-03 14:00:00'),
+    (5, 5, '2024-12-04 15:10:00');
+
+-- 주문 배송 메인 삽입
+INSERT INTO ORDER_DELIVERY_MAIN (ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE)
+VALUES
+    (1, 'CJ대한통운', '1234567890', '빠른 배송 요청'),
+    (2, '한진택배', '9876543210', '토요일 배송 희망'),
+    (3, '로젠택배', '1122334455', '집앞에 놓아주세요'),
+    (4, '우체국택배', '9988776655', '직접 수령'),
+    (5, '쿠팡로지스틱스', '5566778899', '사무실로 배송');
+
+-- 주문 배송 상태 변경 이력 삽입
+INSERT INTO ORDER_DELIVERY_STATUS (ORDER_DELIVERY_MAIN_ID, DELIVERY_STATUS_CODE_ID, DELIVERY_DATE)
+VALUES
+    (1, 1, '2024-12-01 11:00:00'),
+    (2, 2, '2024-12-02 12:30:00'),
+    (3, 3, '2024-12-03 13:45:00'),
+    (4, 4, '2024-12-04 14:20:00'),
+    (5, 5, '2024-12-05 15:10:00');
+
+-- 주문 결제 메인 더미 데이터
+INSERT INTO ORDER_PAYMENT_MAIN (ORDER_ID, TOTAL_AMOUNT)
+VALUES
+    (1, 50000),
+    (2, 30000),
+    (3, 45000),
+    (4, 20000),
+    (5, 60000);
+
+-- 주문 결제 상세 더미 데이터
+INSERT INTO ORDER_PAYMENT_DETAIL (ORDER_PAYMENT_MAIN_ID, PAYMENT_METHOD_CODE_ID, ORDER_PAYMENT_STATUS_CODE_ID, PAYMENT_AMOUNT, PAYMENT_DATE, COMMENT)
+VALUES
+    (1, 1, 1, 50000, '2024-12-01 12:00:00', '신용카드 결제'),
+    (2, 2, 2, 30000, '2024-12-02 14:00:00', '계좌이체 결제'),
+    (3, 1, 3, 45000, '2024-12-03 15:30:00', '신용카드 결제, 할부 3개월'),
+    (4, 3, 1, 20000, '2024-12-04 16:45:00', '휴대폰 결제'),
+    (5, 2, 2, 60000, '2024-12-05 17:00:00', '계좌이체 결제');
