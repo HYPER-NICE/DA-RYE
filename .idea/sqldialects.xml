@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/dummy/V6__create_trigger.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V1__create_member_tables.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V2__create_product_tables.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V3__create_order_tables.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V4__create_point_tables.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V6__create_basic_data.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V2__CREATE_MEMBER_TABLE.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V3__CREATE_PRODUCT_TABLE.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V4__CREATE_ORDER_TABLE.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V5__CREATE_AFTER_TABLE.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V6__CREATE_BASIC_DATA.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/db/migration/V9__ORDER_DATA.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>
