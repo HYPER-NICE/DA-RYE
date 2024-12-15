@@ -126,24 +126,26 @@ FROM (
          FROM CATEGORY
          WHERE NAME = '찻잔') AS SUB_CATEGORIES;
 
--- 상품 상태 코드 기본 데이터 삽입
-INSERT INTO PRODUCT_STATUS_CODE (NAME, DESCRIPTION)
-VALUES ('ON_SALE', '판매중'),
-       ('SOLD OUT', '품절'),
-       ('DISCONTINUED', '단종');
-
-
--- 입고 코드 기본 데이터 삽입
-INSERT INTO INBOUND_CODE (NAME, DESCRIPTION)
-VALUES ('PURCHASE', '공급업체로부터 신규 구매 입고'),
-       ('CUSTOMER_RETURN', '고객 반품 상품 재입고'),
-       ('PROMOTIONAL_EVENT', '프로모션 목적 재고 확보 입고');
-
--- 출고 코드 기본 데이터 삽입
-INSERT INTO OUTBOUND_CODE (NAME, DESCRIPTION)
-VALUES ('DAMAGED', '상품 파손 폐기 출고'),
-       ('DONATION', '기부 목적 출고'),
-       ('TRANSFER_OUT', '외부 창고 이동 출고');
+# -- 상품 상태 코드 기본 데이터 삽입
+# INSERT INTO PRODUCT_STATUS_CODE (NAME, DESCRIPTION)
+# VALUES ('ON_SALE', '판매중'),
+#        ('SOLD OUT', '품절'),
+#        ('DISCONTINUED', '단종');
+#
+#
+#
+#
+# -- 입고 코드 기본 데이터 삽입
+# INSERT INTO INBOUND_CODE (NAME, DESCRIPTION)
+# VALUES ('PURCHASE', '공급업체로부터 신규 구매 입고'),
+#        ('CUSTOMER_RETURN', '고객 반품 상품 재입고'),
+#        ('PROMOTIONAL_EVENT', '프로모션 목적 재고 확보 입고');
+#
+# -- 출고 코드 기본 데이터 삽입
+# INSERT INTO OUTBOUND_CODE (NAME, DESCRIPTION)
+# VALUES ('DAMAGED', '상품 파손 폐기 출고'),
+#        ('DONATION', '기부 목적 출고'),
+#        ('TRANSFER_OUT', '외부 창고 이동 출고');
 
 
 -- 주문 상태 기본 데이터 삽입
@@ -282,29 +284,36 @@ SELECT ID,
        NOW()
 FROM SUB_TERMS;
 
+-- 공통 코드 삽입
+INSERT INTO COMMON_CODE (code, name, description)
+VALUES ('P0301', '입고 상태(입고 완료)', '입고가 완료되어 입고 로케이션에 배치해둔 상태'),
+       ('P0302', '입고 상태(반품 수거)', '반품으로 인해 다시 입고가 되었음을 나타내는 상태'),
+       ('P0303', '입고 상태(교환 수거)', '교환으로 인해 다시 입고가 되었음을 나타내는 상태');
+
 -- 상품 데이터 삽입
 INSERT INTO PRODUCT (NAME, SHORT_DESCRIPTION, LONG_DESCRIPTION, MAIN_DESCRIPTION, PRICE,
-                     CATEGORY_ID, STATUS_ID, IMPORTER, MANUFACTURER, EXPIRATION_DATE,
-                     SIZE, CAPACITY, INGREDIENTS, PRECAUTIONS, SALE_DATE, NEW, HOT, BEST)
+                     CATEGORY_ID, IMPORTER, MANUFACTURER, EXPIRATION_DATE, SIZE, CAPACITY,
+                     INGREDIENTS, PRECAUTIONS, SALE_DATE,REGISTRATION_DATE, NEW, HOT, BEST,
+                     COMMON_CODE_ID)
 VALUES ('녹차', '순수한 녹차 잎', '전통 방식으로 가공한 녹차로, 신선하고 건강한 맛을 제공합니다.', '고급스러운 맛의 순수 녹차, 차 한 잔으로 자연을 느껴보세요.', 5000,
-        11, 1, '한국차유통', '차나라', '2025-12-31 00:00:00', '중', '100g', '녹차', '직사광선을 피해서 보관하세요.', '2024-01-01 00:00:00',
-        TRUE, FALSE, TRUE),
+        27, '한국차유통', '차나라', '2025-12-31 00:00:00', '중', '100g', '녹차', '직사광선을 피해서 보관하세요.', '2024-01-01 00:00:00',
+        '2024-01-01 00:00:00',TRUE, FALSE, TRUE, 1),
 
        ('홍차', '진한 향과 맛의 홍차', '영국식 전통 홍차로, 우려내면 깊고 진한 향이 퍼집니다.', '진한 홍차의 향기를 즐기세요. 영국식 다도에 적합한 홍차입니다.', 6000,
-        12, 2, '영국차수입', '홍차명가', '2026-06-30 00:00:00', '대', '150g', '홍차', '뜨거운 물에 3-5분 우려서 드세요.', '2024-02-01 00:00:00',
-        FALSE, TRUE, FALSE),
+        28, '영국차수입', '홍차명가', '2026-06-30 00:00:00', '대', '150g', '홍차', '뜨거운 물에 3-5분 우려서 드세요.', '2024-02-01 00:00:00',
+        '2024-02-01 00:00:00',FALSE, TRUE, FALSE, 2),
 
        ('루이보스 퓨어 차', '다양한 허브가 어우러진 루이보스차', '허브와 꽃을 혼합하여 만든 건강에 좋은 허브차입니다.', '스트레스를 풀어주는 허브차, 잠자리 전 마시기 좋습니다.', 7000,
-        14, 1, '허브유통', '허브가든', '2025-06-30 00:00:00', '소', '50g', '카모마일, 라벤더, 민트', '알레르기 반응을 확인 후 섭취하세요.',
-        '2024-03-01 00:00:00', TRUE, FALSE, FALSE),
+        29, '허브유통', '허브가든', '2025-06-30 00:00:00', '소', '50g', '카모마일, 라벤더, 민트', '알레르기 반응을 확인 후 섭취하세요.',
+        '2024-03-01 00:00:00', '2024-03-01 00:00:00',TRUE, FALSE, FALSE, 1),
 
        ('유기농 녹차', '유기농으로 재배한 녹차', '자연에서 기른 유기농 녹차, 인공 첨가물이 없습니다.', '100% 유기농으로 재배된 녹차로 건강한 맛을 제공합니다.', 8000,
-        10, 1, '유기농차회사', '그린티코퍼레이션', '2025-12-31 00:00:00', '중', '200g', '녹차', '서늘하고 건조한 곳에 보관하세요.',
-        '2024-04-01 00:00:00', FALSE, TRUE, FALSE),
+        30, '유기농차회사', '그린티코퍼레이션', '2025-12-31 00:00:00', '중', '200g', '녹차', '서늘하고 건조한 곳에 보관하세요.',
+        '2024-04-01 00:00:00', '2024-04-01 00:00:00',FALSE, TRUE, FALSE, 1),
 
        ('얼그레이', '향긋한 얼그레이 차', '유럽에서 전통적인 방식으로 만든 얼그레이 차입니다.', '얼그레이 특유의 은은한 향을 느끼실 수 있습니다.', 7500,
-        13, 3, '프랑스차수입', '벨로르티', '2026-01-01 00:00:00', '소', '75g', '홍차, 베르가못', '직사광선을 피하고 서늘한 곳에 보관하세요.',
-        '2024-05-01 00:00:00', FALSE, FALSE, TRUE);
+        31, '프랑스차수입', '벨로르티', '2026-01-01 00:00:00', '소', '75g', '홍차, 베르가못', '직사광선을 피하고 서늘한 곳에 보관하세요.',
+        '2024-05-01 00:00:00', '2024-05-01 00:00:00',FALSE, FALSE, TRUE, 3);
 
 -- 장바구니 삽입
 INSERT INTO CART (MEMBER_ID, TOTAL_PRICE, TOTAL_DISCOUNT, TOTAL_EARNING_POINTS, REDEEMED_POINTS, CREATED_DATE, LAST_MODIFIED_DATE)
