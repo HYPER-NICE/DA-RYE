@@ -93,16 +93,27 @@ CREATE TABLE STOCK
 
 CREATE TABLE CART
 (
-    MEMBER_ID               BIGINT                PRIMARY KEY        NOT NULL COMMENT '회원 ID (기본 키, 외래 키)',
-    PRODUCT_ID              BIGINT                                   NOT NULL COMMENT '제품 ID (외래 키)',
-    ORDER_QUANTITY          INT         DEFAULT 1                    NOT NULL COMMENT '주문 수량',
-    TOTAL_PRODUCT_DISCOUNT  INT                                      NULL COMMENT '상품별 총 할인 금액',
-    TOTAL_PRODUCT_PRICE     INT                                      NULL COMMENT '상품별 총 금액',
-    PRODUCT_EARNING_POINTS  INT                                      NULL COMMENT '상품별 적립 포인트',
-    REDEEMED_POINTS         INT         DEFAULT 0                    NOT NULL COMMENT '사용한 적립 포인트',
+    ID                      BIGINT AUTO_INCREMENT PRIMARY KEY        COMMENT '장바구니 ID (기본 키)',
+    MEMBER_ID               BIGINT                                   NOT NULL COMMENT '회원 ID (외래 키)',
+    TOTAL_PRICE             BIGINT      DEFAULT 0                    NOT NULL COMMENT '총 금액',
+    TOTAL_DISCOUNT          BIGINT      DEFAULT 0                    NOT NULL COMMENT '총 할인 금액',
+    TOTAL_EARNING_POINTS    BIGINT      DEFAULT 0                    NOT NULL COMMENT '총 적립 포인트',
+    REDEEMED_POINTS         BIGINT      DEFAULT 0                    NOT NULL COMMENT '사용한 포인트',
     CREATED_DATE            DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL COMMENT '생성 날짜',
     LAST_MODIFIED_DATE      DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '수정 날짜',
-    CONSTRAINT FK_CART_ITEM_PRODUCT FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT (ID),
-    CONSTRAINT FK_CART_MEMBER FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER (ID) ON DELETE CASCADE,
-    CHECK (`ORDER_QUANTITY` > 0)
+    CONSTRAINT FK_CART_MEMBER FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER (ID) ON DELETE CASCADE
+);
+
+CREATE TABLE CART_ITEM
+(
+    ID                      BIGINT AUTO_INCREMENT PRIMARY KEY        COMMENT '장바구니 항목 ID (기본 키)',
+    CART_ID                 BIGINT                                   NOT NULL COMMENT '장바구니 ID (외래 키)',
+    PRODUCT_ID              BIGINT                                   NOT NULL COMMENT '상품 ID (외래 키)',
+    ORDER_QUANTITY          BIGINT         DEFAULT 1                 NOT NULL COMMENT '상품별 주문 수량',
+    TOTAL_PRODUCT_PRICE     BIGINT         DEFAULT 0                 NOT NULL COMMENT '상품별 총 금액',
+    TOTAL_PRODUCT_DISCOUNT  BIGINT         DEFAULT 0                 NOT NULL COMMENT '상품별 총 할인 금액',
+    PRODUCT_EARNING_POINTS  BIGINT         DEFAULT 0                 NOT NULL COMMENT '상품별 적립 포인트',
+    CHECK (`ORDER_QUANTITY` > 0),
+    CONSTRAINT FK_CART_ITEM_CART FOREIGN KEY (CART_ID) REFERENCES CART (ID) ON DELETE CASCADE,
+    CONSTRAINT FK_CART_ITEM_PRODUCT FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT (ID) ON DELETE CASCADE
 );
