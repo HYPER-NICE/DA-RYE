@@ -17,7 +17,7 @@ services:
 
   mysql-test:
     image: mysql:8.4.3
-    container_name: dar-rye-test
+    container_name: da-rye-test
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
