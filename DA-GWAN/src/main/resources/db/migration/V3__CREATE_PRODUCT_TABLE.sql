@@ -1,6 +1,25 @@
 -- =========================================
 -- 2. 입고/출고 관련 코드 테이블
 -- =========================================
+-- 상품 상태코드 테이블
+CREATE TABLE PRODUCT_STATUS
+(
+    -- 기본키
+    ID                   BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '상태코드 ID (기본 키)',
+    -- 데이터
+    NAME                 VARCHAR(50)  NOT NULL UNIQUE COMMENT '상품 상태 이름 (예: 판매중, 품절 등)',
+    DESCRIPTION          VARCHAR(255) NULL COMMENT '상품 상태 코드에 대한 상세 설명으로 상태의 의미와 용도를 설명합니다.',
+
+    -- 시스템 관리 컬럼
+    CREATED_DATE         DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '레코드 생성 날짜 및 시간',
+    LAST_MODIFIED_DATE   DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '마지막 수정된 날짜 및 시간',
+    LAST_MODIFIED_MEMBER BIGINT       NULL COMMENT '레코드를 마지막으로 수정한 회원 ID',
+    DELETED_DATE         DATETIME(6) DEFAULT NULL COMMENT '레코드가 삭제된 날짜 (논리 삭제)'
+)
+    comment '상품의 상태를 나타내는 테이블';
+
+
+
 
 -- 카테고리 테이블
 CREATE TABLE CATEGORY
@@ -34,8 +53,9 @@ CREATE TABLE PRODUCT
 
     -- 외래키
     CATEGORY_ID          BIGINT                NOT NULL COMMENT '카테고리 ID (외래 키)',
-    COMMON_CODE_ID       BIGINT                NOT NULL COMMENT '공통 코드 ID (외래 키)',
+    PRODUCT_STATUS_CODE_ID       BIGINT                NOT NULL COMMENT '상품 상태 코드 ID (외래 키)',
     CONSTRAINT FK_PRODUCT_CATEGORY FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORY (ID),
+    CONSTRAINT FK_PRODUCT_STATUS FOREIGN KEY (PRODUCT_STATUS_CODE_ID) REFERENCES PRODUCT_STATUS (ID),
     -- 외래키 하나 더 넣기
 
     -- 데이터
