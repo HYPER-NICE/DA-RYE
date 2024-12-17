@@ -1,7 +1,7 @@
 CREATE TABLE MEMBER
 (
     -- 기본키
-    ID                   BIGINT       NOT NULL PRIMARY KEY COMMENT '회원 ID (기본 키)',
+    ID                   BIGINT       AUTO_INCREMENT PRIMARY KEY COMMENT '회원 ID (기본 키)',
 
     -- 대체키
     EMAIL                VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
