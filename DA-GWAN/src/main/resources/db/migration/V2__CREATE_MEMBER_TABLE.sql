@@ -7,6 +7,7 @@ CREATE TABLE MEMBER
     EMAIL                VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
 
     -- 데이터
+    ROLE                 VARCHAR(20)  NOT NULL COMMENT '계정 역할',
     PASSWORD             VARCHAR(255) NOT NULL COMMENT '비밀번호',
     NAME                 VARCHAR(50) NOT NULL COMMENT '회원 이름',
     SEX                  CHAR(1)      NOT NULL COMMENT '성별',
