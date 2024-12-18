@@ -70,7 +70,7 @@ public class SignController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
 
-        memberService.insert(signUpRequest);
+        memberService.insertSelective(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "회원 가입 성공"));
     }
 
