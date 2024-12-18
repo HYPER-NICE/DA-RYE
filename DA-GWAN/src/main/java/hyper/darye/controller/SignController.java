@@ -9,8 +9,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -48,11 +51,27 @@ public class SignController {
      * 회원 가입 엔드포인트
      */
     @PostMapping("/sign-up")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> signUp(@Valid @RequestBody SignUp signUpRequest) {
-        // 회원 가입 실행
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUp signUpRequest, BindingResult bindingResult) {
+        Map<String, String> errors = new HashMap<>();
+
+        // 유효성 검증 오류 처리
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+        }
+
+        // 비밀번호 확인 로직
+        if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+            errors.put("confirmPassword", "비밀번호가 일치하지 않습니다.");
+        }
+
+        if (!errors.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
+
         memberService.insert(signUpRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "회원 가입 성공"));
     }
 
     /**
@@ -60,7 +79,6 @@ public class SignController {
      */
     @PostMapping("/sign-out")
     public ResponseEntity<String> signOut() {
-        // 로그아웃 처리 로직 필요 시 추가
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok("로그아웃 성공");
     }
