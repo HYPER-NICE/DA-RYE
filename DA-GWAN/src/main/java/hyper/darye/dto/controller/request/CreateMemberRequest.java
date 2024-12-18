@@ -8,8 +8,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class CreateMemberRequest {
     private Long id;
     private String email;
@@ -20,16 +18,6 @@ public class CreateMemberRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
     private String mobile;
-
-    public CreateMemberRequest(String email, String password, String rePassword, String username, Character sex, Date birthdate, String mobile) {
-        this.email = email;
-        this.password = password;
-        this.rePassword = rePassword;
-        this.name = username;
-        this.sex = sex;
-        this.birthdate = birthdate;
-        this.mobile = mobile;
-    }
 
     public void setSex(Character sex) {
         if (sex != 'M' && sex!= 'F' && sex!= 'O')
