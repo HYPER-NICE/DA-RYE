@@ -5,6 +5,7 @@ import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
@@ -15,6 +16,9 @@ public interface MemberMapper {
 
     @Select("SELECT * FROM MEMBER WHERE email = #{email}")
     Member selectByEmail(String email);
+
+    @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
+    int updateLatestLoginDate(String email);
 
     int deleteByPrimaryKey(Long id);
 

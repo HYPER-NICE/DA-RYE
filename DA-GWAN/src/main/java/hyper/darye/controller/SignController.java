@@ -44,7 +44,8 @@ public class SignController {
         // SecurityContext 업데이트
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(Map.of("message", "로그인 성공"));
+        // 로그인 성공 후 마지막 업데이트 시간 기록
+        memberService.latestLoginDate(email);
     }
 
     /**
