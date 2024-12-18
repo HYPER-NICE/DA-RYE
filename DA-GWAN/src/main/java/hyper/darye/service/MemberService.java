@@ -42,12 +42,12 @@ public class MemberService {
     public int insertSelective(SignUp signUp) {
         Member member = new Member();
         member.setEmail(signUp.getEmail());
+        member.setName(signUp.getName());
+        member.setMobile(signUp.getContact());
+        member.setRole(signUp.getRole());
 
         // 비밀번호 암호화 처리
         member.setPassword(passwordEncoder.encode(signUp.getPassword()));
-
-        member.setName(signUp.getName());
-        member.setMobile(signUp.getContact());
 
         return memberMapper.insertSelective(member);
     }
