@@ -51,4 +51,11 @@ public class MemberService {
 
         return memberMapper.insertSelective(member);
     }
+
+    /**
+     * 마지막 사인인 날짜 업데이트
+     */
+    public void latestLoginDate(String email) {
+        memberMapper.updateLatestLoginDate(email);
+    }
 }
