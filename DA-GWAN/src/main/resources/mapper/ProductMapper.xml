@@ -28,7 +28,7 @@
     <result column="DESCRIPTION_IMAGE" jdbcType="BLOB" property="descriptionImage" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, CATEGORY_ID, COMMON_CODE_ID, `NAME`, SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
+    ID, CATEGORY_ID, PRODUCT_STATUS_CODE_ID, `NAME`, SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE,
     MANUFACTURER, EXPIRATION_DATE, INGREDIENTS, PRECAUTIONS, IMPORTER, SALE_DATE, CAPACITY, 
     UNIT, QUANTITY, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
   </sql>
@@ -48,7 +48,7 @@
     where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
-    insert into PRODUCT (CATEGORY_ID, COMMON_CODE_ID, `NAME`, 
+    insert into PRODUCT (CATEGORY_ID, PRODUCT_STATUS_CODE_ID, `NAME`,
       SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
       MANUFACTURER, EXPIRATION_DATE, INGREDIENTS, 
       PRECAUTIONS, IMPORTER, SALE_DATE, 
@@ -65,6 +65,15 @@
       #{deletedDate,jdbcType=TIMESTAMP}, #{thumbnailImage,jdbcType=BLOB}, #{descriptionImage,jdbcType=BLOB}
       )
   </insert>
+  <!-- 전체 제품 조회 -->
+  <select id="selectAllProduct" resultType="hyper.darye.dto.Product">
+    SELECT
+      id, name, short_description AS shortDescription, long_description AS longDescription,
+      price, category_id AS categoryId, product_status_code_id AS productStatusCodeId,
+      manufacturer, expiration_date AS expirationDate, ingredients,
+      precautions, importer, sale_date AS saleDate, capacity, unit, quantity
+    FROM PRODUCT
+  </select>
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT
     <trim prefix="(" suffix=")" suffixOverrides=",">

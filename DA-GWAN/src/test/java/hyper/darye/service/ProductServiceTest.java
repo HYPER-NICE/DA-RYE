@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,4 +45,11 @@ class ProductServiceTest {
         assertEquals(1, result);
     }
 
+    @Test
+    void selectProduct() {
+        Product product = new Product();
+
+        List<Product> result = productService.selectAllProduct();
+        assertEquals(10, result.size());
+    }
 }

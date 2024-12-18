@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,22 +31,34 @@ class ProductControllerTest {
     void insertProduct() throws Exception {
         // given
         given(productService.insertProduct(any(Product.class))).willReturn(1);
-        String expirationDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String saleDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        String expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String saleDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+        String jsonContent = """
+        {
+            "id": 1,
+            "categoryId": 1,
+            "productStatusCodeId": 1,
+            "name": "title",
+            "price": 100,
+            "expirationDate": "%s",
+            "saleDate": "%s",
+            "quantity": 2
+        }
+        """.formatted(expirationDate, saleDate);
 
         // when
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("id", "1")
-                        .param("categoryId", "1")
-                        .param("productStatusCodeId", "1")
-                        .param("name", "title")
-                        .param("price", "100")
-                        .param("expirationDate", expirationDate)
-                        .param("SaleDate", saleDate)
-                        .param("quantity", "2"))
+                        .content(jsonContent))
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().string("success"));
+    }
+
+    @Test
+    void selectProduct() throws Exception {
+
     }
 }
