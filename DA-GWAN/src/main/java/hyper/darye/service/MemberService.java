@@ -1,5 +1,7 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.Member;
+import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +24,15 @@ public class MemberService {
         member.setBirthdate(birthdate);
         member.setMobile(mobile);
         return memberMapper.insertMember(member);
+    }
+
+    public int insert(SignUp signUp) {
+        Member member = new Member();
+        member.setEmail(signUp.getEmail());
+        member.setPassword(signUp.getPassword());
+        member.setName(signUp.getName());
+        member.setMobile(signUp.getContact());
+
+        return memberMapper.insertSelective(member);
     }
 }

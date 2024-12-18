@@ -5,6 +5,7 @@ import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface MemberMapper {
@@ -12,6 +13,9 @@ public interface MemberMapper {
             "VALUES (#{email}, #{password}, #{name}, #{sex}, #{birthdate}, #{mobile})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertMember(CreateMemberRequest member);
+
+    @Select("SELECT * FROM MEMBER WHERE email = #{email}")
+    Member selectByEmail(String email);
     
     int deleteByPrimaryKey(Long id);
 

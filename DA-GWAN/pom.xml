@@ -47,6 +47,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- 코어 디펜던시: 스프링 부트의 기본 설정을 제공하는 스타터 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
         <!-- ===================================================================== -->
         <!-- Database & Migration Dependencies                                     -->
         <!-- 데이터베이스 연결 및 마이그레이션 관련 의존성                           -->
@@ -85,6 +92,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Spring Validation: Bean Validation 지원 (JSR-303, JSR-380) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- ===================================================================== -->
         <!-- Test Dependencies                                                      -->
         <!-- 테스트용 의존성: 단위 테스트, 통합 테스트, MyBatis 테스트 지원 -->
@@ -93,6 +106,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 스프링 시큐리티 테스트 의존성: 스프링 시큐리티 테스트 지원 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 

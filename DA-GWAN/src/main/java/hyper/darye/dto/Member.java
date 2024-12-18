@@ -20,6 +20,11 @@ public class Member implements Serializable {
     private String email;
 
     /**
+     * 계정 역할
+     */
+    private String role;
+
+    /**
      * 비밀번호
      */
     private String password;

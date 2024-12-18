@@ -1,5 +1,6 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.mapper.MemberMapper;
 import org.junit.jupiter.api.Test;
@@ -26,5 +27,24 @@ class MemberServiceTest {
         int result = memberService.insertMember("test@example.com", "password123", "password123", "username", 'M', birthdate, "010-1234-5678");
 
         assertEquals(1, result);
+    }
+
+
+//    SIGN TEST
+    @Test
+    void signUpTest() {
+        // given
+        SignUp signUp = new SignUp();
+        signUp.setEmail("king@darye.dev");
+        signUp.setPassword("password123");
+        signUp.setConfirmPassword("password123");
+        signUp.setName("King");
+        signUp.setContact("010-1234-5678");
+
+        // when
+        int result = memberService.insert(signUp);
+
+        // then
+        assertThat(result).isEqualTo(1);
     }
 }
