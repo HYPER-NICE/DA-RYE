@@ -6,6 +6,8 @@ import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * 비밀번호 확인 검증 로직
+ *
+ * 사용하지 않지만 흔적으로 남겨둡니다.
  */
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, SignUp> {
 
