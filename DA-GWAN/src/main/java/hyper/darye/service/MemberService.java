@@ -1,13 +1,11 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 @Service
 public class MemberService {
@@ -51,5 +49,15 @@ public class MemberService {
             throw new NoSuchElementException("존재하지 않는 키입니다.");
 
         return result;
+    }
+
+    public int insert(SignUp signUp) {
+        Member member = new Member();
+        member.setEmail(signUp.getEmail());
+        member.setPassword(signUp.getPassword());
+        member.setName(signUp.getName());
+        member.setMobile(signUp.getContact());
+
+        return memberMapper.insertSelective(member);
     }
 }
