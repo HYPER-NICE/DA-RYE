@@ -7,9 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BoardMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(Board record);
+    int insert(Board board);
 
-    int insertSelective(Board record);
+    // insertSelective 메서드는 null인 필드를 제외한 나머지 필드만 insert하는 메서드
+    int insertSelective(Board board);
 
     Board selectByPrimaryKey(Long id);
 
