@@ -1,41 +1,114 @@
 package hyper.darye.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.io.Serializable;
+import java.util.Date;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+/**
+ * 판매하는 상품의 정보 테이블
+ * PRODUCT
+ */
+@Data
+public class Product implements Serializable {
+    /**
+     * 상품 ID (기본 키)
+     */
+    private Long id;
 
-@Getter
-@Setter
-@ToString
-public class Product {
-    private Integer id; // 상품 ID
-    private Integer categoryId; // 카테고리 ID
-    private Integer productStatusCodeId; // 상품 상태 코드
+    /**
+     * 카테고리 ID (외래 키)
+     */
+    private Long categoryId;
 
-    // 데이터
-    private String name; // 상품 이름
-    private byte[] thumbnailImage; // 썸네일 이미지
-    private String shortDescription; // 간단 설명
-    private byte[] descriptionImage; // 상세 설명 이미지
-    private String longDescription; // 상세 설명
-    private Integer price; // 판매 가격
+    /**
+     * 공통 코드 ID (외래 키)
+     */
+    private Long commonCodeId;
 
-    private String manufacturer; // 제조원
-    private LocalDateTime expirationDate; // 소비기한
-    private String ingredients; // 원재료명 및 성분
-    private String precautions; // 주의사항
-    private String importer; // 수입원
+    /**
+     * 상품 이름
+     */
+    private String name;
 
-    private LocalDateTime saleDate; // 판매 시작일
-    private Integer capacity; // 용량
-    private String unit; // 단위 (kg, g, ml 등)
-    private Integer quantity; // 수량
+    /**
+     * 상품 간단 설명
+     */
+    private String shortDescription;
 
-    // 시스템 값
-    private LocalDateTime createdDate;  // 생성 날짜
-    private LocalDateTime lastModifiedDate; // 수정 날짜
-    private Long lastModifiedMember; // 레코드를 마지막으로 수정한 회원 ID
-    private LocalDateTime deletedDate; //삭제 날짜
+    /**
+     * 상품 상세 설명
+     */
+    private String longDescription;
+
+    /**
+     * 판매 가격
+     */
+    private Integer price;
+
+    /**
+     * 제조원
+     */
+    private String manufacturer;
+
+    /**
+     * 소비기한
+     */
+    private Date expirationDate;
+
+    /**
+     * 원재료명 및 성분
+     */
+    private String ingredients;
+
+    /**
+     * 주의사항
+     */
+    private String precautions;
+
+    /**
+     * 수입원
+     */
+    private String importer;
+
+    /**
+     * 판매시작일
+     */
+    private Date saleDate;
+
+    /**
+     * 용량
+     */
+    private Integer capacity;
+
+    /**
+     * 단위 (kg, g, ml, ...)
+     */
+    private String unit;
+
+    /**
+     * 수량
+     */
+    private Integer quantity;
+
+    /**
+     * 생성 날짜
+     */
+    private Date createdDate;
+
+    /**
+     * 수정 날짜
+     */
+    private Date lastModifiedDate;
+
+    /**
+     * 레코드를 마지막으로 수정한 회원 ID
+     */
+    private Long lastModifiedMember;
+
+    /**
+     * 삭제 날짜
+     */
+    private Date deletedDate;
+
+    private static final long serialVersionUID = 1L;
 }

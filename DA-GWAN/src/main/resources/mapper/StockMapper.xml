@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.StockMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.Stock">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="STOCK_INOUT_QUANTITY" jdbcType="BIGINT" property="stockInoutQuantity" />
+    <result column="STOCK_INOUT_DATE" jdbcType="TIMESTAMP" property="stockInoutDate" />
+    <result column="CURRENT_STOCK" jdbcType="BIGINT" property="currentStock" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, 
+    LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from STOCK
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from STOCK
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Stock" useGeneratedKeys="true">
+    insert into STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, 
+      CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, 
+      LAST_MODIFIED_MEMBER, DELETED_DATE)
+    values (#{productId,jdbcType=BIGINT}, #{stockInoutQuantity,jdbcType=BIGINT}, #{stockInoutDate,jdbcType=TIMESTAMP}, 
+      #{currentStock,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Stock" useGeneratedKeys="true">
+    insert into STOCK
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="stockInoutQuantity != null">
+        STOCK_INOUT_QUANTITY,
+      </if>
+      <if test="stockInoutDate != null">
+        STOCK_INOUT_DATE,
+      </if>
+      <if test="currentStock != null">
+        CURRENT_STOCK,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stockInoutQuantity != null">
+        #{stockInoutQuantity,jdbcType=BIGINT},
+      </if>
+      <if test="stockInoutDate != null">
+        #{stockInoutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentStock != null">
+        #{currentStock,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.Stock">
+    update STOCK
+    <set>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stockInoutQuantity != null">
+        STOCK_INOUT_QUANTITY = #{stockInoutQuantity,jdbcType=BIGINT},
+      </if>
+      <if test="stockInoutDate != null">
+        STOCK_INOUT_DATE = #{stockInoutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentStock != null">
+        CURRENT_STOCK = #{currentStock,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Stock">
+    update STOCK
+    set PRODUCT_ID = #{productId,jdbcType=BIGINT},
+      STOCK_INOUT_QUANTITY = #{stockInoutQuantity,jdbcType=BIGINT},
+      STOCK_INOUT_DATE = #{stockInoutDate,jdbcType=TIMESTAMP},
+      CURRENT_STOCK = #{currentStock,jdbcType=BIGINT},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

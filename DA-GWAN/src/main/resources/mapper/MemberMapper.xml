@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.MemberMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.Member">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="CHAR" property="sex" />
+    <result column="BIRTHDATE" jdbcType="DATE" property="birthdate" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="POINT" jdbcType="INTEGER" property="point" />
+    <result column="LOCKED" jdbcType="BOOLEAN" property="locked" />
+    <result column="PW_FAILED_COUNT" jdbcType="INTEGER" property="pwFailedCount" />
+    <result column="LATEST_LOGIN_DATE" jdbcType="TIMESTAMP" property="latestLoginDate" />
+    <result column="REG_DATE" jdbcType="TIMESTAMP" property="regDate" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, EMAIL, `PASSWORD`, `NAME`, SEX, BIRTHDATE, MOBILE, POINT, LOCKED, PW_FAILED_COUNT, 
+    LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+    DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MEMBER
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from MEMBER
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Member" useGeneratedKeys="true">
+    insert into MEMBER (EMAIL, `PASSWORD`, `NAME`, 
+      SEX, BIRTHDATE, MOBILE, POINT, 
+      LOCKED, PW_FAILED_COUNT, LATEST_LOGIN_DATE, 
+      REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, 
+      LAST_MODIFIED_MEMBER, DELETED_DATE)
+    values (#{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=CHAR}, #{birthdate,jdbcType=DATE}, #{mobile,jdbcType=VARCHAR}, #{point,jdbcType=INTEGER}, 
+      #{locked,jdbcType=BOOLEAN}, #{pwFailedCount,jdbcType=INTEGER}, #{latestLoginDate,jdbcType=TIMESTAMP}, 
+      #{regDate,jdbcType=TIMESTAMP}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Member" useGeneratedKeys="true">
+    insert into MEMBER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="password != null">
+        `PASSWORD`,
+      </if>
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="birthdate != null">
+        BIRTHDATE,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="point != null">
+        POINT,
+      </if>
+      <if test="locked != null">
+        LOCKED,
+      </if>
+      <if test="pwFailedCount != null">
+        PW_FAILED_COUNT,
+      </if>
+      <if test="latestLoginDate != null">
+        LATEST_LOGIN_DATE,
+      </if>
+      <if test="regDate != null">
+        REG_DATE,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="birthdate != null">
+        #{birthdate,jdbcType=DATE},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null">
+        #{point,jdbcType=INTEGER},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BOOLEAN},
+      </if>
+      <if test="pwFailedCount != null">
+        #{pwFailedCount,jdbcType=INTEGER},
+      </if>
+      <if test="latestLoginDate != null">
+        #{latestLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null">
+        #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.Member">
+    update MEMBER
+    <set>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `PASSWORD` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="birthdate != null">
+        BIRTHDATE = #{birthdate,jdbcType=DATE},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null">
+        POINT = #{point,jdbcType=INTEGER},
+      </if>
+      <if test="locked != null">
+        LOCKED = #{locked,jdbcType=BOOLEAN},
+      </if>
+      <if test="pwFailedCount != null">
+        PW_FAILED_COUNT = #{pwFailedCount,jdbcType=INTEGER},
+      </if>
+      <if test="latestLoginDate != null">
+        LATEST_LOGIN_DATE = #{latestLoginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null">
+        REG_DATE = #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Member">
+    update MEMBER
+    set EMAIL = #{email,jdbcType=VARCHAR},
+      `PASSWORD` = #{password,jdbcType=VARCHAR},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=CHAR},
+      BIRTHDATE = #{birthdate,jdbcType=DATE},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      POINT = #{point,jdbcType=INTEGER},
+      LOCKED = #{locked,jdbcType=BOOLEAN},
+      PW_FAILED_COUNT = #{pwFailedCount,jdbcType=INTEGER},
+      LATEST_LOGIN_DATE = #{latestLoginDate,jdbcType=TIMESTAMP},
+      REG_DATE = #{regDate,jdbcType=TIMESTAMP},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
