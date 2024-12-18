@@ -39,10 +39,16 @@ public class CartService {
         return cartMapper.deleteCart(memberId, productIdList);
     }
 
-    // 장바구니 수량 변경
+    // 중복 장바구니 수량 변경
     public int updateCart(Long memberId, Long productId, Long quantity){
         return this.cartMapper.updateCart(memberId, productId, quantity);
     }
+
+    // 장바구니 수량 변경
+    public int updateCartQuantity(Long memberId, Long productId, Long quantity){
+        return this.cartMapper.updateCartQuantity(memberId, productId, quantity);
+    }
+
 
     // cart_id로 삭제하기
     public int deleteCart(Long cartId){

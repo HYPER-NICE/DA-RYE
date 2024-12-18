@@ -27,7 +27,7 @@ public class CartController {
     // 장바구니 수량 변경
     @PatchMapping
     public String updateCart(Long id, Long productId, @RequestParam Long quantity) {
-        int result = cartService.updateCart(id, productId, quantity);
+        int result = cartService.updateCartQuantity(id, productId, quantity);
         if (result == 1)
             return "성공";
         else
@@ -44,7 +44,7 @@ public class CartController {
 
     // 장바구니 선택 삭제
     @GetMapping
-    public int deleteCart(@PathVariable Long id, @RequestParam List<Long> productIdList) {
-        return cartService.deleteCart(id, productIdList);
+    public int deleteCart(Long memberId, @RequestParam List<Long> productIdList) {
+        return cartService.deleteCart(memberId, productIdList);
     }
 }

@@ -33,8 +33,8 @@ public interface CartMapper {
                    Long quantity);
 
     // 장바구니 중복 찾기
-    @Select("select * from CART " +
-            "where MEMBER_ID = #{memberId} and PRODUCT_ID = #{productId}")
+    @Select("SELECT * FROM CART " +
+            "WHERE MEMBER_ID = #{memberId} AND PRODUCT_ID = #{productId}")
     Cart selectCartDuplicate(Long memberId, Long productId);
 
     // 장바구니 수량 변경

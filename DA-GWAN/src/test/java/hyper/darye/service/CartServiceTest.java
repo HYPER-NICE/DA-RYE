@@ -25,50 +25,46 @@ class CartServiceTest {
     @Test
     @DisplayName("장바구니 담기 테스트")
     void insertCartTest() {
-        int result = cartService.insertCart(1L, 1L, 10L);
-        List<CartSelect> cartSelect = cartMapper.selectCart(1L);
+        int result = cartService.insertCart(7L, 10L, 10L);
+        List<CartSelect> cartSelect = cartMapper.selectCart(7L);
 
-        assertEquals(1, cartSelect.size());
+        assertEquals(2, cartSelect.size());
         assertEquals(1, result);
     }
 
     @Test
     @DisplayName("장바구니 중복 담기 테스트(update)")
     void insertDuplicateTest(){
-        cartService.insertCart(1L, 1L, 10L);
-        cartService.insertCart(1L, 1L, 10L);
-        List<CartSelect> cartSelect = cartMapper.selectCart(1L);
+        cartService.insertCart(7L, 10L, 10L);
+        cartService.insertCart(7L, 10L, 10L);
+        List<CartSelect> cartSelect = cartMapper.selectCart(7L);
 
-        assertEquals(1, cartSelect.size());
-        assertEquals(30, cartSelect.get(0).getQuantity());
+        assertEquals(2, cartSelect.size());
+        assertEquals(20, cartSelect.get(1).getQuantity());
     }
 
     @Test
     @DisplayName("장바구니 조회 테스트")
     void selectCartTest(){
-        int result = cartService.insertCart(2L, 2L, 10L);
-        List<CartSelect> cartSelect = cartService.selectCart(2L);
+        int result = cartService.insertCart(7L, 10L, 10L);
+        List<CartSelect> cartSelect = cartService.selectCart(7L);
+        // then
 
+        assertNotNull(cartSelect); // null이 아닌지 확인
+        assertFalse(cartSelect.isEmpty()); // 비어있지 않은지 확인
+        assertEquals(7L, cartSelect.get(1).getMemberId()); // memberId가 2L인지 확인
 
-    }
-
-    @Test
-    @DisplayName("장바구니 조회 테스트")
-    void deleteCartTest(){
-        List<CartSelect> cartSelect = cartService.selectCart(1L);
-        assertEquals(10000, cartSelect.get(0).getProductPrice());
-        assertEquals("11", cartSelect.get(0).getProductName());
-        assertEquals(10, cartSelect.get(0).getQuantity());
-        assertEquals(1, cartSelect.get(0).getProductId());
-        assertEquals(1, cartSelect.get(0).getMemberId());
-        assertEquals(15, cartSelect.get(0).getCartId());
+        CartSelect firstCart = cartSelect.get(1);
+        assertEquals(10L, firstCart.getProductId()); // productId가 7L인지 확인
+        assertEquals(10L, firstCart.getQuantity()); // quantity가 10L인지 확인
 
     }
 
     @Test
     @DisplayName("장바구니 수량 변경")
     void updateCartTest(){
-        cartService.updateCart(1L, 1L, 100L);
-        assertEquals(100, cartMapper.selectCart(1L).get(0).getQuantity());
+        cartService.insertCart(7L, 10L, 10L);
+        cartService.updateCartQuantity(7L, 10L, 100L);
+        assertEquals(100, cartMapper.selectCart(7L).get(0).getQuantity());
     }
 }
