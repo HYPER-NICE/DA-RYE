@@ -10,6 +10,8 @@ import java.lang.annotation.Target;
 
 /**
  * 비밀번호 일치 여부 검증 어노테이션
+ *
+ * 사용하지 않지만 흔적으로 남겨둡니다.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
