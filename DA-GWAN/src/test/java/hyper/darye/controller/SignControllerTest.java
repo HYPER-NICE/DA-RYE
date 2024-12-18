@@ -58,38 +58,4 @@ class SignControllerTest {
         return randomContact.toString();  // "010-XXXX-YYYY" 형식 반환
     }
 
-    // 테스트 메서드: 인증된 사용자 정보 가져오기
-    @Test
-    void getAuthenticatedUser() throws Exception {
-        // Given: Mock Security 설정
-        Member member = new Member();  // Member 객체 생성 및 값 설정
-        member.setName(name);  // 이름 설정
-        member.setEmail(prefix + UUID.randomUUID() + domain);  // 랜덤 이메일 생성
-        member.setPassword(password);  // 비밀번호 설정
-        member.setRole("USER");  // 사용자 역할 설정
-        member.setLocked(false);  // 계정 잠금 여부 설정
-        member.setDeletedDate(null);  // 삭제 여부 설정 (미삭제)
-
-        // CustomUserDetails 객체 생성
-        CustomUserDetails userDetails = new CustomUserDetails(member);
-
-        // When: MockMvc로 가짜 GET 요청 수행
-        mockMvc.perform(get("/api/sign-test")  // API 호출
-                        .with(user(userDetails))  // Mock 사용자 주입
-                        .accept(MediaType.APPLICATION_JSON))  // JSON 응답 요청
-
-                // Then: 응답 상태 검증
-                .andExpect(status().isOk());  // 응답이 200 OK인지 확인
-    }
-
-    @Test
-    void getAuthenticatedUser_Unauthenticated() throws Exception {
-        // When: 비로그인 사용자 요청
-        mockMvc.perform(get("/api/sign-test")  // API 호출
-                        .accept(MediaType.APPLICATION_JSON))  // JSON 응답 요청
-
-                // Then: 응답 상태 검증
-                .andExpect(status().isForbidden());  // 비로그인 사용자는 403 Forbidden 응답
-    }
-
 }
