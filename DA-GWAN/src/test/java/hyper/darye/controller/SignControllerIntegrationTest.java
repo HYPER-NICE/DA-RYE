@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.StringJoiner;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,32 +32,38 @@ class SignControllerIntegrationTest {
 
     @Autowired
     private MemberMapper memberMapper;
-    
-    private final String domain = "@darye.dev";
 
-    /**
-     * 랜덤 문자열 생성 메서드
-     */
-    private String generateRandomString(String prefix) {
-        return prefix + "_" + UUID.randomUUID();
+    private final String prefix = "test_";
+    private final String domain = "@darye.dev";
+    private final String name = "테스트사용자";
+    private final String password = "Password123!";
+
+    // 랜덤 문자열 생성 메서드
+    private String generateRandomString() {
+        return this.prefix + UUID.randomUUID();
     }
-    
-    private Integer generateRandomInt() {
-        return generateRandomInt();
+
+    // 랜덤 전화번호 생성기
+    private String generateRandomPhoneNumber() {
+        StringJoiner randomContact = new StringJoiner("-");
+        randomContact.add("010")
+                .add(String.format("%04d", (int) (Math.random() * 10000)))
+                .add(String.format("%04d", (int) (Math.random() * 10000)));
+        return randomContact.toString();
     }
 
     @Test
     @DisplayName("회원 가입 성공 - DB 저장 확인")
     void signUpSuccessAndDBCheck() throws Exception {
-        String randomEmail = generateRandomString("user") + domain;
-        String randomName = generateRandomString("홍길동");
-        String randomContact = "010-" + generateRandomInt() + "-" + generateRandomInt();
+        String randomEmail = this.generateRandomString() + domain;
+        String randomName = this.name;
+        String randomContact = generateRandomPhoneNumber();
 
         SignUp signUpRequest = new SignUp();
-        signUpRequest.setEmail(randomEmail);
-        signUpRequest.setPassword("Password123!");
-        signUpRequest.setConfirmPassword("Password123!");
         signUpRequest.setName(randomName);
+        signUpRequest.setEmail(randomEmail);
+        signUpRequest.setPassword(this.password);
+        signUpRequest.setConfirmPassword(this.password);
         signUpRequest.setContact(randomContact);
 
         mockMvc.perform(post("/api/sign-up")
@@ -68,23 +75,23 @@ class SignControllerIntegrationTest {
         Member savedMember = memberMapper.selectByEmail(randomEmail);
 
         assertThat(savedMember).isNotNull();
-        assertThat(savedMember.getEmail()).isEqualTo(randomEmail);
         assertThat(savedMember.getName()).isEqualTo(randomName);
+        assertThat(savedMember.getEmail()).isEqualTo(randomEmail);
         assertThat(savedMember.getMobile()).isEqualTo(randomContact);
     }
 
     @Test
     @DisplayName("관리자 회원 가입 성공 - DB 저장 확인")
     void adminSignUpSuccessAndDBCheck() throws Exception {
-        String randomEmail = generateRandomString("admin") + domain;
-        String randomName = generateRandomString("관리자");
-        String randomContact = "010-" + generateRandomInt() + "-" + generateRandomInt();
+        String randomEmail = generateRandomString() + domain;
+        String randomName = "관리자" + UUID.randomUUID();
+        String randomContact = generateRandomPhoneNumber();
 
         SignUp signUpRequest = new SignUp();
-        signUpRequest.setEmail(randomEmail);
-        signUpRequest.setPassword("Password123!");
-        signUpRequest.setConfirmPassword("Password123!");
         signUpRequest.setName(randomName);
+        signUpRequest.setEmail(randomEmail);
+        signUpRequest.setPassword(password);
+        signUpRequest.setConfirmPassword(password);
         signUpRequest.setContact(randomContact);
         signUpRequest.setRole("ADMIN");
 
@@ -97,22 +104,23 @@ class SignControllerIntegrationTest {
         Member savedMember = memberMapper.selectByEmail(randomEmail);
 
         assertThat(savedMember).isNotNull();
-        assertThat(savedMember.getEmail()).isEqualTo(randomEmail);
         assertThat(savedMember.getName()).isEqualTo(randomName);
+        assertThat(savedMember.getEmail()).isEqualTo(randomEmail);
         assertThat(savedMember.getMobile()).isEqualTo(randomContact);
     }
 
     @Test
-    @DisplayName("회원 가입 실패 - 유효성 검증 실패 확인")
+    @DisplayName("회원 가입 실패 - 비밀번호 불일치 확인")
     void signUpValidationFail() throws Exception {
-        String randomEmail = generateRandomString("fail") + domain;
+        String randomEmail = generateRandomString() + domain;
+        String randomContact = generateRandomPhoneNumber();
 
         SignUp invalidRequest = new SignUp();
-        invalidRequest.setEmail(randomEmail);
-        invalidRequest.setPassword("Password123!");
-        invalidRequest.setConfirmPassword("WrongPassword!");
         invalidRequest.setName("잘못된사용자");
-        invalidRequest.setContact("010-0000-0000");
+        invalidRequest.setEmail(randomEmail);
+        invalidRequest.setPassword(password);
+        invalidRequest.setConfirmPassword("WrongPassword!");
+        invalidRequest.setContact(randomContact);
 
         mockMvc.perform(post("/api/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
