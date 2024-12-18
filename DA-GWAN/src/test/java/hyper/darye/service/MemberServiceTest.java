@@ -42,7 +42,7 @@ class MemberServiceTest {
         signUp.setContact("010-1234-5678");
 
         // when
-        int result = memberService.insert(signUp);
+        int result = memberService.insertSelective(signUp);
 
         // then
         assertThat(result).isEqualTo(1);

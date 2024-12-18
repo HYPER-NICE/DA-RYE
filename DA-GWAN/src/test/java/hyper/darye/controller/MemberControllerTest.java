@@ -41,7 +41,7 @@ class MemberControllerTest {
         signUpRequest.setContact("010-1234-5678");
 
         // Mock 서비스 동작 정의 (반환값 지정)
-        Mockito.when(memberService.insert(signUpRequest)).thenReturn(1);
+        Mockito.when(memberService.insertSelective(signUpRequest)).thenReturn(1);
 
         // 테스트 실행
         mockMvc.perform(post("/api/sign-up")
