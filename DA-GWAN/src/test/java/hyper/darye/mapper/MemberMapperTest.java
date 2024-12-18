@@ -1,5 +1,6 @@
 package hyper.darye.mapper;
 
+import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,16 @@ class MemberMapperTest {
         assertEquals("username", member.getName());
         assertEquals(birthdate, member.getBirthdate());
         assertEquals("010-1234-5678", member.getMobile());
+    }
 
+    @Test
+    void selectMemberByEmailTest() {
+        Date birthdate = new Date(2001 - 1900, 0, 1);
+        CreateMemberRequest member = new CreateMemberRequest(0L, "test@example.com", "password123",
+                "password123", "username", 'M', birthdate, "010-1234-5678");
+        memberMapper.insertMember(member);
+        Member foundMember = memberMapper.selectMemberByEmail(member.getEmail());
+        assertThat(foundMember).isNotNull();
+        assertThat(foundMember.getEmail()).isEqualTo("test@example.com");
     }
 }

@@ -1,11 +1,13 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Service
 public class MemberService {
@@ -22,5 +24,14 @@ public class MemberService {
         member.setBirthdate(birthdate);
         member.setMobile(mobile);
         return memberMapper.insertMember(member);
+    }
+
+    public Member selectMemberByEmail(String email) throws NoSuchElementException {
+        Member result = memberMapper.selectMemberByEmail(email);
+
+        if (result == null)
+            throw new NoSuchElementException("존재하지 않는 이메일입니다.");
+
+        return result;
     }
 }

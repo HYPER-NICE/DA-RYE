@@ -1,5 +1,7 @@
 package hyper.darye.controller;
 
+import hyper.darye.dto.Member;
+import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
@@ -25,6 +29,10 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
+
+    Date birthdate = new Date(2001 - 1900, 0, 1);
+    private CreateMemberRequest testMember = new CreateMemberRequest(0L, "test@example.com",
+            "password123", "password123", "username", 'M', birthdate, "010-1234-5678");
 
     @BeforeEach
     void setUp() {
@@ -51,5 +59,19 @@ class MemberControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("회원 가입 성공"));
+    }
+
+    @Test
+    void insertMemberByEmailTest() throws Exception {
+        Member member = new Member();
+        member.setEmail("test@example.com");
+        member.setPassword("password123");
+        member.setName("username");
+        given(memberService.selectMemberByEmail("test@example.com")).willReturn(member);
+
+        mockMvc.perform(get("/members?email=test@example.com"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", is("test@example.com")))
+                .andExpect(jsonPath("$.name", is("username")));
     }
 }
