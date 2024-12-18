@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.OrderDeliveryMainMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.OrderDeliveryMain">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_MAIN_ID" jdbcType="BIGINT" property="orderMainId" />
+    <result column="DELIVERY_COMPANY_NAME" jdbcType="VARCHAR" property="deliveryCompanyName" />
+    <result column="TRACKING_NUMBER" jdbcType="VARCHAR" property="trackingNumber" />
+    <result column="DELIVERY_REQUEST_NOTE" jdbcType="VARCHAR" property="deliveryRequestNote" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, 
+    CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ORDER_DELIVERY_MAIN
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ORDER_DELIVERY_MAIN
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
+    insert into ORDER_DELIVERY_MAIN (ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, 
+      TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, CREATED_DATE, 
+      LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+      DELETED_DATE)
+    values (#{orderMainId,jdbcType=BIGINT}, #{deliveryCompanyName,jdbcType=VARCHAR}, 
+      #{trackingNumber,jdbcType=VARCHAR}, #{deliveryRequestNote,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
+      #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
+    insert into ORDER_DELIVERY_MAIN
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderMainId != null">
+        ORDER_MAIN_ID,
+      </if>
+      <if test="deliveryCompanyName != null">
+        DELIVERY_COMPANY_NAME,
+      </if>
+      <if test="trackingNumber != null">
+        TRACKING_NUMBER,
+      </if>
+      <if test="deliveryRequestNote != null">
+        DELIVERY_REQUEST_NOTE,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderMainId != null">
+        #{orderMainId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryCompanyName != null">
+        #{deliveryCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingNumber != null">
+        #{trackingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryRequestNote != null">
+        #{deliveryRequestNote,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.OrderDeliveryMain">
+    update ORDER_DELIVERY_MAIN
+    <set>
+      <if test="orderMainId != null">
+        ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
+      </if>
+      <if test="deliveryCompanyName != null">
+        DELIVERY_COMPANY_NAME = #{deliveryCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingNumber != null">
+        TRACKING_NUMBER = #{trackingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryRequestNote != null">
+        DELIVERY_REQUEST_NOTE = #{deliveryRequestNote,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.OrderDeliveryMain">
+    update ORDER_DELIVERY_MAIN
+    set ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
+      DELIVERY_COMPANY_NAME = #{deliveryCompanyName,jdbcType=VARCHAR},
+      TRACKING_NUMBER = #{trackingNumber,jdbcType=VARCHAR},
+      DELIVERY_REQUEST_NOTE = #{deliveryRequestNote,jdbcType=VARCHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

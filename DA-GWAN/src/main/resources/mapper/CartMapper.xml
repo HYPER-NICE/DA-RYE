@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.CartMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.Cart">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="QUANTITY" jdbcType="BIGINT" property="quantity" />
+    <result column="PICKED_DATE" jdbcType="TIMESTAMP" property="pickedDate" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MEMBER_ID, PRODUCT_ID, QUANTITY, PICKED_DATE, CREATED_DATE, LAST_MODIFIED_DATE, 
+    LAST_MODIFIED_MEMBER, DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CART
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from CART
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Cart" useGeneratedKeys="true">
+    insert into CART (MEMBER_ID, PRODUCT_ID, QUANTITY, 
+      PICKED_DATE, CREATED_DATE, LAST_MODIFIED_DATE, 
+      LAST_MODIFIED_MEMBER, DELETED_DATE)
+    values (#{memberId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{quantity,jdbcType=BIGINT}, 
+      #{pickedDate,jdbcType=TIMESTAMP}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Cart" useGeneratedKeys="true">
+    insert into CART
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="quantity != null">
+        QUANTITY,
+      </if>
+      <if test="pickedDate != null">
+        PICKED_DATE,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=BIGINT},
+      </if>
+      <if test="pickedDate != null">
+        #{pickedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.Cart">
+    update CART
+    <set>
+      <if test="memberId != null">
+        MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="quantity != null">
+        QUANTITY = #{quantity,jdbcType=BIGINT},
+      </if>
+      <if test="pickedDate != null">
+        PICKED_DATE = #{pickedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Cart">
+    update CART
+    set MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      PRODUCT_ID = #{productId,jdbcType=BIGINT},
+      QUANTITY = #{quantity,jdbcType=BIGINT},
+      PICKED_DATE = #{pickedDate,jdbcType=TIMESTAMP},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

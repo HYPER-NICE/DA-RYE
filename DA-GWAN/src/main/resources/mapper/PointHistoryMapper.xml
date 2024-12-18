@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.PointHistoryMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.PointHistory">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="POINT_TRANSACTION_TYPE_ID" jdbcType="BIGINT" property="pointTransactionTypeId" />
+    <result column="ORDER_MAIN_ID" jdbcType="BIGINT" property="orderMainId" />
+    <result column="AMOUNT" jdbcType="INTEGER" property="amount" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE, 
+    LAST_MODIFIED_DATE, DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from POINT_HISTORY
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from POINT_HISTORY
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.PointHistory" useGeneratedKeys="true">
+    insert into POINT_HISTORY (MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, 
+      AMOUNT, DESCRIPTION, CREATED_DATE, 
+      LAST_MODIFIED_DATE, DELETED_DATE)
+    values (#{memberId,jdbcType=BIGINT}, #{pointTransactionTypeId,jdbcType=BIGINT}, #{orderMainId,jdbcType=BIGINT}, 
+      #{amount,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.PointHistory" useGeneratedKeys="true">
+    insert into POINT_HISTORY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="pointTransactionTypeId != null">
+        POINT_TRANSACTION_TYPE_ID,
+      </if>
+      <if test="orderMainId != null">
+        ORDER_MAIN_ID,
+      </if>
+      <if test="amount != null">
+        AMOUNT,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="pointTransactionTypeId != null">
+        #{pointTransactionTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="orderMainId != null">
+        #{orderMainId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.PointHistory">
+    update POINT_HISTORY
+    <set>
+      <if test="memberId != null">
+        MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="pointTransactionTypeId != null">
+        POINT_TRANSACTION_TYPE_ID = #{pointTransactionTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="orderMainId != null">
+        ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null">
+        AMOUNT = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.PointHistory">
+    update POINT_HISTORY
+    set MEMBER_ID = #{memberId,jdbcType=BIGINT},
+      POINT_TRANSACTION_TYPE_ID = #{pointTransactionTypeId,jdbcType=BIGINT},
+      ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
+      AMOUNT = #{amount,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

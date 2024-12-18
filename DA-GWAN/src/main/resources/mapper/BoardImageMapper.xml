@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.BoardImageMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.BoardImage">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="BOARD_ID" jdbcType="BIGINT" property="boardId" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="hyper.darye.dto.BoardImage">
+    <result column="IMAGE" jdbcType="BLOB" property="image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BOARD_ID, CREATED_DATE, LAST_MODIFIED_DATE, DELETED_DATE
+  </sql>
+  <sql id="Blob_Column_List">
+    IMAGE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from BOARD_IMAGE
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from BOARD_IMAGE
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.BoardImage" useGeneratedKeys="true">
+    insert into BOARD_IMAGE (BOARD_ID, CREATED_DATE, LAST_MODIFIED_DATE, 
+      DELETED_DATE, IMAGE)
+    values (#{boardId,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{deletedDate,jdbcType=TIMESTAMP}, #{image,jdbcType=BLOB})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.BoardImage" useGeneratedKeys="true">
+    insert into BOARD_IMAGE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="boardId != null">
+        BOARD_ID,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+      <if test="image != null">
+        IMAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="boardId != null">
+        #{boardId,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=BLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.BoardImage">
+    update BOARD_IMAGE
+    <set>
+      <if test="boardId != null">
+        BOARD_ID = #{boardId,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="image != null">
+        IMAGE = #{image,jdbcType=BLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="hyper.darye.dto.BoardImage">
+    update BOARD_IMAGE
+    set BOARD_ID = #{boardId,jdbcType=BIGINT},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      IMAGE = #{image,jdbcType=BLOB}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.BoardImage">
+    update BOARD_IMAGE
+    set BOARD_ID = #{boardId,jdbcType=BIGINT},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
