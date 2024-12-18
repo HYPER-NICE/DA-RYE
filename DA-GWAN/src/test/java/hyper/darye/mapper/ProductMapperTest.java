@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,14 +29,14 @@ class ProductMapperTest {
         product.setShortDescription("test");
         product.setLongDescription("test");
         product.setPrice(100);
-        product.setCategoryId(1);
-        product.setProductStatusCodeId(1);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
         product.setManufacturer("test");
-        product.setExpirationDate(LocalDateTime.now());
+        product.setExpirationDate(new Date());
         product.setIngredients("test");
         product.setPrecautions("test");
         product.setImporter("test");
-        product.setSaleDate(LocalDateTime.now());
+        product.setSaleDate(new Date());
         product.setCapacity(1);
         product.setUnit("test");
         product.setQuantity(2);
