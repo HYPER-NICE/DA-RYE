@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.Product">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
+    <result column="COMMON_CODE_ID" jdbcType="BIGINT" property="commonCodeId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SHORT_DESCRIPTION" jdbcType="VARCHAR" property="shortDescription" />
+    <result column="LONG_DESCRIPTION" jdbcType="VARCHAR" property="longDescription" />
+    <result column="PRICE" jdbcType="INTEGER" property="price" />
+    <result column="MANUFACTURER" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="EXPIRATION_DATE" jdbcType="TIMESTAMP" property="expirationDate" />
+    <result column="INGREDIENTS" jdbcType="VARCHAR" property="ingredients" />
+    <result column="PRECAUTIONS" jdbcType="VARCHAR" property="precautions" />
+    <result column="IMPORTER" jdbcType="VARCHAR" property="importer" />
+    <result column="SALE_DATE" jdbcType="TIMESTAMP" property="saleDate" />
+    <result column="CAPACITY" jdbcType="INTEGER" property="capacity" />
+    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="QUANTITY" jdbcType="INTEGER" property="quantity" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="hyper.darye.dto.ProductWithBLOBs">
+    <result column="THUMBNAIL_IMAGE" jdbcType="BLOB" property="thumbnailImage" />
+    <result column="DESCRIPTION_IMAGE" jdbcType="BLOB" property="descriptionImage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CATEGORY_ID, COMMON_CODE_ID, `NAME`, SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
+    MANUFACTURER, EXPIRATION_DATE, INGREDIENTS, PRECAUTIONS, IMPORTER, SALE_DATE, CAPACITY, 
+    UNIT, QUANTITY, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
+  </sql>
+  <sql id="Blob_Column_List">
+    THUMBNAIL_IMAGE, DESCRIPTION_IMAGE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PRODUCT
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from PRODUCT
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
+    insert into PRODUCT (CATEGORY_ID, COMMON_CODE_ID, `NAME`, 
+      SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
+      MANUFACTURER, EXPIRATION_DATE, INGREDIENTS, 
+      PRECAUTIONS, IMPORTER, SALE_DATE, 
+      CAPACITY, UNIT, QUANTITY, 
+      CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+      DELETED_DATE, THUMBNAIL_IMAGE, DESCRIPTION_IMAGE
+      )
+    values (#{categoryId,jdbcType=BIGINT}, #{commonCodeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{shortDescription,jdbcType=VARCHAR}, #{longDescription,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{manufacturer,jdbcType=VARCHAR}, #{expirationDate,jdbcType=TIMESTAMP}, #{ingredients,jdbcType=VARCHAR}, 
+      #{precautions,jdbcType=VARCHAR}, #{importer,jdbcType=VARCHAR}, #{saleDate,jdbcType=TIMESTAMP}, 
+      #{capacity,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
+      #{deletedDate,jdbcType=TIMESTAMP}, #{thumbnailImage,jdbcType=BLOB}, #{descriptionImage,jdbcType=BLOB}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
+    insert into PRODUCT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        CATEGORY_ID,
+      </if>
+      <if test="commonCodeId != null">
+        COMMON_CODE_ID,
+      </if>
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="shortDescription != null">
+        SHORT_DESCRIPTION,
+      </if>
+      <if test="longDescription != null">
+        LONG_DESCRIPTION,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+      <if test="manufacturer != null">
+        MANUFACTURER,
+      </if>
+      <if test="expirationDate != null">
+        EXPIRATION_DATE,
+      </if>
+      <if test="ingredients != null">
+        INGREDIENTS,
+      </if>
+      <if test="precautions != null">
+        PRECAUTIONS,
+      </if>
+      <if test="importer != null">
+        IMPORTER,
+      </if>
+      <if test="saleDate != null">
+        SALE_DATE,
+      </if>
+      <if test="capacity != null">
+        CAPACITY,
+      </if>
+      <if test="unit != null">
+        UNIT,
+      </if>
+      <if test="quantity != null">
+        QUANTITY,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+      <if test="thumbnailImage != null">
+        THUMBNAIL_IMAGE,
+      </if>
+      <if test="descriptionImage != null">
+        DESCRIPTION_IMAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="commonCodeId != null">
+        #{commonCodeId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortDescription != null">
+        #{shortDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="longDescription != null">
+        #{longDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="expirationDate != null">
+        #{expirationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ingredients != null">
+        #{ingredients,jdbcType=VARCHAR},
+      </if>
+      <if test="precautions != null">
+        #{precautions,jdbcType=VARCHAR},
+      </if>
+      <if test="importer != null">
+        #{importer,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDate != null">
+        #{saleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="capacity != null">
+        #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thumbnailImage != null">
+        #{thumbnailImage,jdbcType=BLOB},
+      </if>
+      <if test="descriptionImage != null">
+        #{descriptionImage,jdbcType=BLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.ProductWithBLOBs">
+    update PRODUCT
+    <set>
+      <if test="categoryId != null">
+        CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="commonCodeId != null">
+        COMMON_CODE_ID = #{commonCodeId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortDescription != null">
+        SHORT_DESCRIPTION = #{shortDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="longDescription != null">
+        LONG_DESCRIPTION = #{longDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        PRICE = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturer != null">
+        MANUFACTURER = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="expirationDate != null">
+        EXPIRATION_DATE = #{expirationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ingredients != null">
+        INGREDIENTS = #{ingredients,jdbcType=VARCHAR},
+      </if>
+      <if test="precautions != null">
+        PRECAUTIONS = #{precautions,jdbcType=VARCHAR},
+      </if>
+      <if test="importer != null">
+        IMPORTER = #{importer,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDate != null">
+        SALE_DATE = #{saleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="capacity != null">
+        CAPACITY = #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        UNIT = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        QUANTITY = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thumbnailImage != null">
+        THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=BLOB},
+      </if>
+      <if test="descriptionImage != null">
+        DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=BLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="hyper.darye.dto.ProductWithBLOBs">
+    update PRODUCT
+    set CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
+      COMMON_CODE_ID = #{commonCodeId,jdbcType=BIGINT},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      SHORT_DESCRIPTION = #{shortDescription,jdbcType=VARCHAR},
+      LONG_DESCRIPTION = #{longDescription,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=INTEGER},
+      MANUFACTURER = #{manufacturer,jdbcType=VARCHAR},
+      EXPIRATION_DATE = #{expirationDate,jdbcType=TIMESTAMP},
+      INGREDIENTS = #{ingredients,jdbcType=VARCHAR},
+      PRECAUTIONS = #{precautions,jdbcType=VARCHAR},
+      IMPORTER = #{importer,jdbcType=VARCHAR},
+      SALE_DATE = #{saleDate,jdbcType=TIMESTAMP},
+      CAPACITY = #{capacity,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      QUANTITY = #{quantity,jdbcType=INTEGER},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=BLOB},
+      DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=BLOB}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Product">
+    update PRODUCT
+    set CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
+      COMMON_CODE_ID = #{commonCodeId,jdbcType=BIGINT},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      SHORT_DESCRIPTION = #{shortDescription,jdbcType=VARCHAR},
+      LONG_DESCRIPTION = #{longDescription,jdbcType=VARCHAR},
+      PRICE = #{price,jdbcType=INTEGER},
+      MANUFACTURER = #{manufacturer,jdbcType=VARCHAR},
+      EXPIRATION_DATE = #{expirationDate,jdbcType=TIMESTAMP},
+      INGREDIENTS = #{ingredients,jdbcType=VARCHAR},
+      PRECAUTIONS = #{precautions,jdbcType=VARCHAR},
+      IMPORTER = #{importer,jdbcType=VARCHAR},
+      SALE_DATE = #{saleDate,jdbcType=TIMESTAMP},
+      CAPACITY = #{capacity,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      QUANTITY = #{quantity,jdbcType=INTEGER},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.OrderPaymentMainMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.OrderPaymentMain">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+    <result column="TOTAL_AMOUNT" jdbcType="INTEGER" property="totalAmount" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ORDER_ID, TOTAL_AMOUNT, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+    DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ORDER_PAYMENT_MAIN
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ORDER_PAYMENT_MAIN
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderPaymentMain" useGeneratedKeys="true">
+    insert into ORDER_PAYMENT_MAIN (ORDER_ID, TOTAL_AMOUNT, CREATED_DATE, 
+      LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+      DELETED_DATE)
+    values (#{orderId,jdbcType=BIGINT}, #{totalAmount,jdbcType=INTEGER}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
+      #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderPaymentMain" useGeneratedKeys="true">
+    insert into ORDER_PAYMENT_MAIN
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="totalAmount != null">
+        TOTAL_AMOUNT,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.OrderPaymentMain">
+    update ORDER_PAYMENT_MAIN
+    <set>
+      <if test="orderId != null">
+        ORDER_ID = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null">
+        TOTAL_AMOUNT = #{totalAmount,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.OrderPaymentMain">
+    update ORDER_PAYMENT_MAIN
+    set ORDER_ID = #{orderId,jdbcType=BIGINT},
+      TOTAL_AMOUNT = #{totalAmount,jdbcType=INTEGER},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

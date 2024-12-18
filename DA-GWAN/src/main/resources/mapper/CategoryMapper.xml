@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hyper.darye.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.dto.Category">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+    <result column="SCREEN_ORDER" jdbcType="BIGINT" property="screenOrder" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+    <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
+    <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, PARENT_ID, SCREEN_ORDER, `NAME`, DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, 
+    LAST_MODIFIED_MEMBER, DELETED_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CATEGORY
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from CATEGORY
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Category" useGeneratedKeys="true">
+    insert into CATEGORY (PARENT_ID, SCREEN_ORDER, `NAME`, 
+      DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, 
+      LAST_MODIFIED_MEMBER, DELETED_DATE)
+    values (#{parentId,jdbcType=BIGINT}, #{screenOrder,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Category" useGeneratedKeys="true">
+    insert into CATEGORY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="screenOrder != null">
+        SCREEN_ORDER,
+      </if>
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE,
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER,
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="screenOrder != null">
+        #{screenOrder,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.Category">
+    update CATEGORY
+    <set>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="screenOrder != null">
+        SCREEN_ORDER = #{screenOrder,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedMember != null">
+        LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      </if>
+      <if test="deletedDate != null">
+        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Category">
+    update CATEGORY
+    set PARENT_ID = #{parentId,jdbcType=BIGINT},
+      SCREEN_ORDER = #{screenOrder,jdbcType=BIGINT},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
+      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
