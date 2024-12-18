@@ -1,5 +1,6 @@
 package hyper.darye.controller;
 
+import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class MemberController {
                 createMemberRequest.getMobile());
 
         return "회원 가입 성공";
+    }
+
+    @GetMapping
+    public Member selectMemberByEmail(@RequestParam String email) {
+        return memberService.selectMemberByEmail(email);
     }
 }
