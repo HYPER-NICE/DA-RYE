@@ -7,7 +7,7 @@ CREATE TABLE MEMBER
     EMAIL                VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
 
     -- 데이터
-    ROLE                 VARCHAR(20)  NOT NULL COMMENT '계정 역할',
+    ROLE                 VARCHAR(20)  NOT NULL DEFAULT 'USER' COMMENT '계정 역할',
     PASSWORD             VARCHAR(255) NOT NULL COMMENT '비밀번호',
     NAME                 VARCHAR(50) NOT NULL COMMENT '회원 이름',
     SEX                  CHAR(1)      NOT NULL COMMENT '성별',
@@ -17,7 +17,7 @@ CREATE TABLE MEMBER
     LOCKED               BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '계정 잠금 여부',
     PW_FAILED_COUNT        INT          NOT NULL DEFAULT 0 COMMENT '비밀번호 실패 횟수',
     LATEST_LOGIN_DATE    DATETIME     NULL COMMENT '마지막 로그인 날짜',
-    REG_DATE             DATETIME     NOT NULL COMMENT '가입 날짜',
+    REG_DATE             DATETIME(6)     NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '가입 날짜',
     CHECK (SEX IN ('M', 'F', 'O')),
 
     -- 시스템 관리 컬럼

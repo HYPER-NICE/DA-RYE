@@ -23,7 +23,7 @@ public class Product implements Serializable {
     /**
      * 공통 코드 ID (외래 키)
      */
-    private Long commonCodeId;
+    private Long productStatusCodeId;
 
     /**
      * 상품 이름
