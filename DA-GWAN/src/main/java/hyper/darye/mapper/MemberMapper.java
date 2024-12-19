@@ -2,10 +2,7 @@ package hyper.darye.mapper;
 
 import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
@@ -22,12 +19,18 @@ public interface MemberMapper {
 
     int softDeleteMemberById(Long id);
 
-    int insert(Member record);
+    void updateMemberByIdSelective(Member member);
+
+    @Update("update MEMBER " +
+            "set PASSWORD = #{newPassword} " +
+            "where PASSWORD = #{oldPassword}")
+    void updatePassword(String oldPassword, String newPassword, String newRePassword);
+
+    @Select("select * from MEMBER " +
+            "where password = #{password}")
+    Member findByPassword(String password);
 
     int insertSelective(Member record);
-
-
-    int updateByPrimaryKeySelective(Member record);
 
     int updateByPrimaryKey(Member record);
 }

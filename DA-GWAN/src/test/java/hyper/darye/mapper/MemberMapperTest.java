@@ -38,7 +38,7 @@ class MemberMapperTest {
 
     @Test
     void selectMemberByEmailTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Date birthdate = new Date(1990 - 1900, 0, 1);;
         CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
@@ -51,7 +51,7 @@ class MemberMapperTest {
 
     @Test
     void selectMemberByIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Date birthdate = new Date(1990 - 1900, 0, 1);;
         CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
@@ -64,7 +64,7 @@ class MemberMapperTest {
 
     @Test
     void softDeleteMemberByIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Date birthdate = new Date(1990 - 1900, 0, 1);;
         CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
@@ -75,5 +75,19 @@ class MemberMapperTest {
 
         Member insertedMember = memberMapper.selectMemberById(paramId);
         assertThat(insertedMember.getDeletedDate()).isNotNull();
+    }
+
+    @Test
+    void updateMemberByIdSelectiveTest() {
+        Date birthdate = new Date(1990 - 1900, 0, 1);;
+        CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        memberMapper.insertMember(member);
+        Long paramId = member.getId();
+
+        Member insertedMember = memberMapper.selectMemberByEmail("john.doe@example.com");
+        memberMapper.updateMemberByIdSelective(insertedMember);
+
     }
 }
