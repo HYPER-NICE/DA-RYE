@@ -46,9 +46,38 @@ class MemberServiceTest {
     }
 
     @Test
-    void selectMemberById() {
+    void selectMemberByValidId() {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        memberService.insertMember("john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
+        Long paramId = insertedMember.getId();
+        Member foundMember = memberService.selectMemberById(paramId);
+
+        assertNotNull(foundMember);
+        assertEquals(paramId, foundMember.getId());
+    }
+
+    @Test
+    void selectMemberByInvalidId() {
         assertThrows(NoSuchElementException.class, () -> {
             memberService.selectMemberById(0L);
         });
+    }
+
+    @Test
+    void softDeleteMemberById() {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        memberService.insertMember("john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
+        Long paramId = insertedMember.getId();
+
+        memberService.softDeleteMemberById(paramId);
+        Member softDeletedMember = memberService.selectMemberById(paramId);
+
+        assertNotNull(softDeletedMember.getDeletedDate());
     }
 }
