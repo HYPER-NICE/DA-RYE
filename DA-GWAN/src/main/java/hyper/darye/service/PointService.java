@@ -3,9 +3,9 @@ package hyper.darye.service;
 import hyper.darye.dto.*;
 import hyper.darye.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
 public class PointService {
     @Autowired
     MemberMapper memberMapper;
@@ -22,37 +22,27 @@ public class PointService {
     @Autowired
     OrderMainMapper omMapper;
 
-    public void addPoints(Long memberId, String description) {
+    /**
+     * 멤버의 사용가능한 포인트를 수정 합니다.
+     * 가감할 포인트 량만 입력하세요.
+     * @param pointTransactionType 포인트가 수정된 이유
+     * @param memberId 포인트가 사용될 사용자
+     * @param orderMainId 포인트가 발생하거나 사용된 주문
+     * @param description 설명
+     * @param amount 포인트 발생이 발생하 주문 금액(현금성 금액만, 포인트 결제값은 제외해주세요)
+     */
+    public void update(PointTransactionType pointTransactionType, Long memberId, Long orderMainId, String description, Integer amount) {
+
+        // 포인트 가감
+        memberMapper.updatePoint(memberId, (int)(amount * 0.01));
+
+        // 트랜잭션 쌓기
         PointTransaction pt = new PointTransaction();
-        List<PointTransactionType> pttList = pttMapper.selectAll();
-        Long pointTransactionTypeId = pttList.get(0).getId();
-        Long orderId = omMapper.selectByMemberId(memberId).getId();
-        Integer point = opmMapper.selectByOrderNo(orderId).getTotalAmount() / 100; // Integer이라서 소수점 안나옴
-
-
-        if(point<=0){
-            throw new IllegalArgumentException("포인트는 0보다 커야 합니다.");
-        }
-
-        try{
-            if(opmMapper.selectByOrderNo(orderId).getOrderId().equals(orderId)) { // orderMain 과 orderPaymemtMain의 orderMain이 같읕때
-                // 멤버 포인트 적립
-                memberMapper.updatePoint(memberId, point);
-
-                // 포인트 트랜잭션 삽입
-                pt.setMemberId(memberId);
-                pt.setPointTransactionTypeId(pointTransactionTypeId);
-                pt.setOrderMainId(opmMapper.selectByOrderNo(orderId).getOrderId());
-                pt.setAmount(point);
-                if (description == null) {
-                    description = pttList.get(0).getDescription();
-                    pt.setDescription(description);
-                }
-                ptMapper.insertPointTransaction(pt);
-            }
-        }
-        catch (Exception e){
-            throw new RuntimeException("포인트 적립 중 문제가 발생했습니다.", e);
-        }
+        pt.setPointTransactionTypeId(pointTransactionType.getId());
+        pt.setMemberId(memberId);
+        pt.setAmount(amount);
+        pt.setDescription(description);
+        pt.setOrderMainId(orderMainId);
+        ptMapper.insertPointTransaction(pt);
     }
 }

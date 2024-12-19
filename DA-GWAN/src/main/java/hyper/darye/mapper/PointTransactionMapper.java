@@ -3,6 +3,7 @@ package hyper.darye.mapper;
 import hyper.darye.dto.PointTransaction;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface PointTransactionMapper {
@@ -21,6 +22,9 @@ public interface PointTransactionMapper {
     @Insert("insert into POINT_TRANSACTION " +
             "(MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION) " +
             "VALUES (" +
-            "#{memberId}, #{PointTranscationTypeId}, #{OrderMainId}, #{Amount}, #{Description})")
+            "#{memberId}, #{pointTransactionTypeId}, #{orderMainId}, #{amount}, #{description})")
     int insertPointTransaction(PointTransaction record);
+
+    @Select("select * from POINT_TRANSACTION where MEMBER_ID = #{memberId}")
+    PointTransaction selectByMemberId(Long memberId);
 }
