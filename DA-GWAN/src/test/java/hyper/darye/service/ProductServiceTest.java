@@ -1,12 +1,12 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Product;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +19,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
+    @DisplayName("상품 등록")
     void insertProduct() {
         // given
         Product product = new Product();
@@ -46,10 +47,33 @@ class ProductServiceTest {
     }
 
     @Test
-    void selectProduct() {
+    @DisplayName("상품 전체 조회")
+    void selectAllProduct() {
+        // given
         Product product = new Product();
+        product.setId(1L);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
+        product.setName("test1");
+        product.setPrice(100);
+        product.setExpirationDate(new Date());
+        product.setSaleDate(new Date());
+        product.setQuantity(2);
+
+        Product product1 = new Product();
+        product1.setId(2L);
+        product1.setCategoryId(1L);
+        product1.setProductStatusCodeId(1L);
+        product1.setName("test2");
+        product1.setPrice(200);
+        product1.setExpirationDate(new Date());
+        product1.setSaleDate(new Date());
+        product1.setQuantity(10);
+
+        productService.insertProduct(product);
+        productService.insertProduct(product1);
 
         List<Product> result = productService.selectAllProduct();
-        assertEquals(10, result.size());
+        assertEquals(2, result.size());
     }
 }

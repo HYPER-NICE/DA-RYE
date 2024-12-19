@@ -1,6 +1,7 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Product;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,6 +23,7 @@ class ProductMapperTest {
 
 
     @Test
+    @DisplayName("상품 등록")
     void insertProductTest() {
 
         // given
@@ -50,41 +52,37 @@ class ProductMapperTest {
     }
 
     @Test
-    void selectProductTest() {
-        // 더미데이터 넣고 돌려야 통과됨
+    @DisplayName("전체 상품 조회")
+    void selectAllProductTest() {
         // given
         Product product = new Product();
-        List<Product> products = productMapper.selectAllProduct();
-        assertEquals(products.size(), 10);
-
-        product.setName("test");
-        product.setShortDescription("test");
-        product.setLongDescription("test");
-        product.setPrice(100);
+        product.setId(1L);
         product.setCategoryId(1L);
         product.setProductStatusCodeId(1L);
-        product.setManufacturer("test");
+        product.setName("test1");
+        product.setPrice(100);
         product.setExpirationDate(new Date());
-        product.setIngredients("test");
-        product.setPrecautions("test");
-        product.setImporter("test");
         product.setSaleDate(new Date());
-        product.setCapacity(1);
-        product.setUnit("test");
         product.setQuantity(2);
 
+        Product product1 = new Product();
+        product1.setId(2L);
+        product1.setCategoryId(1L);
+        product1.setProductStatusCodeId(1L);
+        product1.setName("test2");
+        product1.setPrice(200);
+        product1.setExpirationDate(new Date());
+        product1.setSaleDate(new Date());
+        product1.setQuantity(10);
+
         productMapper.insertProduct(product);
+        productMapper.insertProduct(product1);
 
         // when
         List<Product> p = productMapper.selectAllProduct();
 
         // then
         assertNotNull(p);
-        assertEquals(p.size(), 11);
-        Product pro1 = p.get(10);
-        assertEquals(100, pro1.getPrice());
-        assertEquals("test", pro1.getName());
-
-
+        assertEquals(2, p.size());
     }
 }

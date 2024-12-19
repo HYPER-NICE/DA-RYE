@@ -5,6 +5,7 @@ import hyper.darye.dto.Product;
 import hyper.darye.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +28,11 @@ public class ProductController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<Product> selectAllProduct() {
-        List<Product> product = productService.selectAllProduct();
-        if (product.size() == 10) {
-            return product;
+    public ResponseEntity<List<Product>> selectAllProduct() {
+        List<Product> products = productService.selectAllProduct();
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        return null;
+        return ResponseEntity.ok(products);
     }
 }
