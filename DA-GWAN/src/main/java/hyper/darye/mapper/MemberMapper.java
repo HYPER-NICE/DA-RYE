@@ -1,7 +1,6 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -21,7 +20,7 @@ public interface MemberMapper {
 
     Member selectMemberById(Long id);
 
-    int deleteByPrimaryKey(Long id);
+    int softDeleteMemberById(Long id);
 
     int insert(Member record);
 

@@ -43,4 +43,13 @@ public class MemberService {
 
         return result;
     }
+
+    public int softDeleteMemberById(Long id) throws NoSuchElementException {
+        int result = memberMapper.softDeleteMemberById(id);
+
+        if (result == 0)
+            throw new NoSuchElementException("존재하지 않는 키입니다.");
+
+        return result;
+    }
 }

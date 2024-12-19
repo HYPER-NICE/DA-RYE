@@ -1,7 +1,6 @@
 package hyper.darye.controller;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +57,7 @@ class MemberControllerTest {
     }
 
     @Test
-    void insertMemberByEmailTest() throws Exception {
+    void selectMemberByEmailTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
                 "p123", "John Doe", 'M', birthdate, "010-1234-5678");
@@ -72,7 +71,7 @@ class MemberControllerTest {
     }
 
     @Test
-    void insertMemberByIdTest() throws Exception {
+    void selectMemberByIdTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
@@ -83,5 +82,18 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(0)))
                 .andExpect(jsonPath("$.name", is("John Doe")));
+    }
+
+    @Test
+    void softDeleteMemberByIdTest() throws Exception {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        given(memberService.softDeleteMemberById(0L)).willReturn(1);
+
+        mockMvc.perform(post("/members/0"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
     }
 }
