@@ -1,5 +1,7 @@
 package hyper.darye.controller;
 
+import hyper.darye.dto.Member;
+import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
@@ -35,12 +39,12 @@ class MemberControllerTest {
     @Test
     void insertMemberTest() throws Exception {
         String jsonContent = "{" +
-                "\"email\": \"test@example.com\"," +
-                "\"password\": \"password123\"," +
-                "\"rePassword\": \"password123\"," +
-                "\"name\": \"username\"," +
+                "\"email\": \"john.doe@example.com\"," +
+                "\"password\": \"p123\"," +
+                "\"rePassword\": \"p123\"," +
+                "\"name\": \"John Doe\"," +
                 "\"sex\": \"M\"," +
-                "\"birthdate\": \"2001-01-01\"," +
+                "\"birthdate\": \"1990-01-01\"," +
                 "\"mobile\": \"010-1234-5678\"" +
                 "}";
 
@@ -51,5 +55,33 @@ class MemberControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("회원 가입 성공"));
+    }
+
+    @Test
+    void insertMemberByEmailTest() throws Exception {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
+
+        given(memberService.selectMemberByEmail("john.doe@example.com")).willReturn(testMember);
+
+        mockMvc.perform(get("/members?email=john.doe@example.com"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", is("john.doe@example.com")))
+                .andExpect(jsonPath("$.name", is("John Doe")));
+    }
+
+    @Test
+    void insertMemberByIdTest() throws Exception {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        given(memberService.selectMemberById(0L)).willReturn(testMember);
+
+        mockMvc.perform(get("/members/0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(0)))
+                .andExpect(jsonPath("$.name", is("John Doe")));
     }
 }
