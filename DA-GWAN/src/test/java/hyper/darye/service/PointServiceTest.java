@@ -1,11 +1,9 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.OrderMain;
-import hyper.darye.dto.OrderPaymentMain;
 import hyper.darye.dto.PointTransactionType;
 import hyper.darye.mapper.MemberMapper;
 import hyper.darye.mapper.OrderMainMapper;
-import hyper.darye.mapper.OrderPaymentMainMapper;
 import hyper.darye.mapper.PointTransactionTypeMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

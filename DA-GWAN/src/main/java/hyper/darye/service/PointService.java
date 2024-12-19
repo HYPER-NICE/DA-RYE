@@ -1,6 +1,7 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.*;
+import hyper.darye.dto.PointTransaction;
+import hyper.darye.dto.PointTransactionType;
 import hyper.darye.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
