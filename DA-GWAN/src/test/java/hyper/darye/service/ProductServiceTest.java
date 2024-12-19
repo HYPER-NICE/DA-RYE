@@ -1,6 +1,7 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Product;
+import hyper.darye.dto.ProductWithBLOBs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @Transactional
@@ -74,6 +76,20 @@ class ProductServiceTest {
         productService.insertProduct(product1);
 
         List<Product> result = productService.selectAllProduct();
-        assertEquals(2, result.size());
+        assertEquals(12, result.size());
+    }
+
+    @Test
+    @DisplayName("특정 ID의 상품 조회")
+    void selectProductById() {
+        ProductWithBLOBs pwb = productService.selectByPrimaryKey(28L);
+        assertEquals("우전", pwb.getName());
+    }
+
+    @Test
+    @DisplayName("특정 ID에 등록된 상품이 없는 경우")
+    void selectProductById2() {
+        ProductWithBLOBs pwb = productService.selectByPrimaryKey(999L);
+        assertNull(pwb);
     }
 }

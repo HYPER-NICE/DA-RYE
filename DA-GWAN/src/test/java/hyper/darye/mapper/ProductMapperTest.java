@@ -1,6 +1,7 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Product;
+import hyper.darye.dto.ProductWithBLOBs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,34 @@ class ProductMapperTest {
 
         // then
         assertNotNull(p);
-        assertEquals(2, p.size());
+        assertEquals(12, p.size());
+    }
+
+    @Test
+    @DisplayName("특정 ID의 상품을 조회")
+    void selectByPrimaryKey() {
+        // given
+        Long id = 27L;
+
+        // when
+        ProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
+
+        // then
+        assertNotNull(product);
+        assertEquals("세작", product.getName());
+        assertEquals("신선하고 향긋한 어린 잎으로 만든 녹차", product.getShortDescription());
+    }
+
+    @Test
+    @DisplayName("특정 ID에 등록된 상품이 없는 경우")
+    void selectByPrimaryKey_WhenProductDoesNotExist() {
+        // Given
+        Long id = 999L;
+
+        // When
+        ProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
+
+        // Then
+        assertNull(product);
     }
 }

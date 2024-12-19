@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,8 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
@@ -70,23 +68,90 @@ class ProductControllerTest {
     void selectAllProduct() throws Exception {
         // given
         Product product = new Product();
-        product.setId(45L);
+        product.setId(11L);
         product.setCategoryId(1L);
         product.setProductStatusCodeId(1L);
         product.setName("test");
         product.setPrice(100);
         product.setExpirationDate(new Date());
         product.setSaleDate(new Date());
-        product.setQuantity(2);
+        product.setQuantity(20);
+
+        Product product1 = new Product();
+        product1.setId(22L);
+        product1.setCategoryId(2L);
+        product1.setProductStatusCodeId(1L);
+        product1.setName("test2");
+        product1.setPrice(500);
+        product1.setExpirationDate(new Date());
+        product1.setSaleDate(new Date());
+        product1.setQuantity(100);
+
+        Product product2 = new Product();
+        product2.setId(33L);
+        product2.setCategoryId(3L);
+        product2.setProductStatusCodeId(1L);
+        product2.setName("test3");
+        product2.setPrice(5000);
+        product2.setExpirationDate(new Date());
+        product2.setSaleDate(new Date());
+        product2.setQuantity(500);
 
         // Mock: 서비스 계층의 동작을 정의
-        List<Product> products = List.of(product);
+        List<Product> products = List.of(product, product1, product2);
         when(productService.selectAllProduct()).thenReturn(products);
 
         // When & Then: MockMvc를 사용해 테스트
         mockMvc.perform(get("/products")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) // 상태 코드 200 확인
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", is(45)));
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    @DisplayName("특정 ID의 상품 조회")
+    void selectProductById() throws Exception {
+        // given
+        Product product = new Product();
+        product.setId(11L);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
+        product.setName("test");
+        product.setPrice(100);
+        product.setExpirationDate(new Date());
+        product.setSaleDate(new Date());
+        product.setQuantity(20);
+
+        Product product1 = new Product();
+        product1.setId(22L);
+        product1.setCategoryId(2L);
+        product1.setProductStatusCodeId(1L);
+        product1.setName("test2");
+        product1.setPrice(500);
+        product1.setExpirationDate(new Date());
+        product1.setSaleDate(new Date());
+        product1.setQuantity(100);
+
+        Product product2 = new Product();
+        product2.setId(33L);
+        product2.setCategoryId(3L);
+        product2.setProductStatusCodeId(1L);
+        product2.setName("test3");
+        product2.setPrice(5000);
+        product2.setExpirationDate(new Date());
+        product2.setSaleDate(new Date());
+        product2.setQuantity(500);
+
+        // Mock: 서비스 계층의 동작을 정의
+        List<Product> products = List.of(product, product1, product2);
+        when(productService.selectAllProduct()).thenReturn(products);
+
+        // When & Then: MockMvc를 사용해 테스트
+        mockMvc.perform(get("/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) // 상태 코드 200 확인
+                .andExpect(jsonPath("$[0].id", is(11)))
+                .andExpect(jsonPath("$[2].id", is(33)));
+
     }
 }

@@ -2,8 +2,8 @@ package hyper.darye.controller;
 
 
 import hyper.darye.dto.Product;
+import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -29,10 +32,19 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<Product>> selectAllProduct() {
-        List<Product> products = productService.selectAllProduct();
-        if (products.isEmpty()) {
+        List<Product> product = productService.selectAllProduct();
+        if (product.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductWithBLOBs> getProduct(@PathVariable Long id) {
+        ProductWithBLOBs product = productService.selectByPrimaryKey(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(product);
     }
 }
