@@ -25,7 +25,6 @@ public class PointService {
     @Autowired
     private PointTransactionTypeMapper pointTransactionTypeMapper;
 
-
     public void cancelUsePoint(PointTransactionType pointTransactionType, Long memberId, Long orderMainId, String description){
         Integer cancelPoint = ptMapper.selectByMemberIdAndOrderId(memberId, orderMainId).getAmount() * -1;
 

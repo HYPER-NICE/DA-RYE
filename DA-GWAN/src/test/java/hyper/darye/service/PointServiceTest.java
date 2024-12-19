@@ -35,7 +35,6 @@ public class PointServiceTest {
     @Autowired
     private PointTransactionMapper ptMapper;
 
-
     @Test
     @DisplayName("포인트 사용 취소, 반환 테스트")
     void cancelUsePointTest(){
