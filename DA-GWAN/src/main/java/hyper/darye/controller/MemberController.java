@@ -39,4 +39,9 @@ public class MemberController {
     public Member selectMemberByEmail(@RequestParam String email) {
         return memberService.selectMemberByEmail(email);
     }
+
+    @GetMapping("/{id}")
+    public Member selectMemberById(@PathVariable Long id) {
+        return memberService.selectMemberById(id);
+    }
 }

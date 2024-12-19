@@ -34,4 +34,13 @@ public class MemberService {
 
         return result;
     }
+
+    public Member selectMemberById(Long id) throws NoSuchElementException {
+        Member result = memberMapper.selectMemberById(id);
+
+        if (result == null)
+            throw new NoSuchElementException("존재하지 않는 키입니다.");
+
+        return result;
+    }
 }

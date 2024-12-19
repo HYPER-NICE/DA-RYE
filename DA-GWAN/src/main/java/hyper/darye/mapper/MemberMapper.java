@@ -19,13 +19,14 @@ public interface MemberMapper {
             "WHERE email = #{email}")
     Member selectMemberByEmail(String email);
 
+    Member selectMemberById(Long id);
+
     int deleteByPrimaryKey(Long id);
 
     int insert(Member record);
 
     int insertSelective(Member record);
 
-    Member selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Member record);
 

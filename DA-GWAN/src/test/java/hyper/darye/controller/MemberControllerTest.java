@@ -30,10 +30,6 @@ class MemberControllerTest {
     @MockBean
     private MemberService memberService;
 
-    Date birthdate = new Date(2001 - 1900, 0, 1);
-    private CreateMemberRequest testMember = new CreateMemberRequest(0L, "test@example.com",
-            "password123", "password123", "username", 'M', birthdate, "010-1234-5678");
-
     @BeforeEach
     void setUp() {
         doReturn(1).when(memberService).insertMember(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
@@ -43,12 +39,12 @@ class MemberControllerTest {
     @Test
     void insertMemberTest() throws Exception {
         String jsonContent = "{" +
-                "\"email\": \"test@example.com\"," +
-                "\"password\": \"password123\"," +
-                "\"rePassword\": \"password123\"," +
-                "\"name\": \"username\"," +
+                "\"email\": \"john.doe@example.com\"," +
+                "\"password\": \"p123\"," +
+                "\"rePassword\": \"p123\"," +
+                "\"name\": \"John Doe\"," +
                 "\"sex\": \"M\"," +
-                "\"birthdate\": \"2001-01-01\"," +
+                "\"birthdate\": \"1990-01-01\"," +
                 "\"mobile\": \"010-1234-5678\"" +
                 "}";
 
@@ -63,15 +59,29 @@ class MemberControllerTest {
 
     @Test
     void insertMemberByEmailTest() throws Exception {
-        Member member = new Member();
-        member.setEmail("test@example.com");
-        member.setPassword("password123");
-        member.setName("username");
-        given(memberService.selectMemberByEmail("test@example.com")).willReturn(member);
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
 
-        mockMvc.perform(get("/members?email=test@example.com"))
+        given(memberService.selectMemberByEmail("john.doe@example.com")).willReturn(testMember);
+
+        mockMvc.perform(get("/members?email=john.doe@example.com"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email", is("test@example.com")))
-                .andExpect(jsonPath("$.name", is("username")));
+                .andExpect(jsonPath("$.email", is("john.doe@example.com")))
+                .andExpect(jsonPath("$.name", is("John Doe")));
+    }
+
+    @Test
+    void insertMemberByIdTest() throws Exception {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        given(memberService.selectMemberById(0L)).willReturn(testMember);
+
+        mockMvc.perform(get("/members/0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(0)))
+                .andExpect(jsonPath("$.name", is("John Doe")));
     }
 }

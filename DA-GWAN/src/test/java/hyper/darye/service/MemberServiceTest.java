@@ -20,27 +20,35 @@ class MemberServiceTest {
 
     @Test
     void insertMember() {
-        Date birthdate = new Date(2001 - 1900, 0, 1);
-        int result = memberService.insertMember("test@example.com", "password123", "password123", "username", 'M', birthdate, "010-1234-5678");
-
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        int result = memberService.insertMember("john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
         assertEquals(1, result);
     }
 
     @Test
     void selectMemberByValidEmail() {
-        Date birthdate = new Date(2001 - 1900, 0, 1);
-        memberService.insertMember("test@example.com", "password123", "password123", "username", 'M', birthdate, "010-1234-5678");
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        memberService.insertMember("john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
-        Member foundMember = memberService.selectMemberByEmail("test@example.com");
+        Member foundMember = memberService.selectMemberByEmail("john.doe@example.com");
 
         assertNotNull(foundMember);
-        assertEquals("test@example.com", foundMember.getEmail());
+        assertEquals("john.doe@example.com", foundMember.getEmail());
     }
 
     @Test
     void selectMemberByInvalidEmail() {
         assertThrows(NoSuchElementException.class, () -> {
             memberService.selectMemberByEmail("null@example.com");
+        });
+    }
+
+    @Test
+    void selectMemberById() {
+        assertThrows(NoSuchElementException.class, () -> {
+            memberService.selectMemberById(0L);
         });
     }
 }
