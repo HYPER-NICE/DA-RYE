@@ -27,7 +27,7 @@ public interface MemberMapper {
 
     int insertSelective(Member record);
 
-    // 검색이 안됨 삭제 필요
+    // 검색이 안되고 겹침 삭제 필요
 //    Member selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Member record);
