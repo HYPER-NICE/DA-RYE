@@ -3,8 +3,6 @@ package hyper.darye.controller;
 import hyper.darye.dto.Member;
 import hyper.darye.dto.controller.request.CreateMemberRequest;
 import hyper.darye.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

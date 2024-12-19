@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,7 +20,7 @@ class MemberServiceTest {
 
     @Test
     void insertMemberTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
+        Date birthdate = new Date(1990 - 1900, 0, 1);
         int result = memberService.insertMember("john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
         assertEquals(1, result);
@@ -29,7 +28,7 @@ class MemberServiceTest {
 
     @Test
     void selectMemberByValidEmailTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
+        Date birthdate = new Date(1990 - 1900, 0, 1);
         memberService.insertMember("john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
@@ -48,7 +47,7 @@ class MemberServiceTest {
 
     @Test
     void selectMemberByValidIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
+        Date birthdate = new Date(1990 - 1900, 0, 1);
         memberService.insertMember("john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
@@ -69,7 +68,7 @@ class MemberServiceTest {
 
     @Test
     void softDeleteMemberByIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
+        Date birthdate = new Date(1990 - 1900, 0, 1);
         memberService.insertMember("john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 

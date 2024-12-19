@@ -21,15 +21,6 @@ public interface MemberMapper {
 
     void updateMemberByIdSelective(Member member);
 
-    @Update("update MEMBER " +
-            "set PASSWORD = #{newPassword} " +
-            "where PASSWORD = #{oldPassword}")
-    void updatePassword(String oldPassword, String newPassword, String newRePassword);
-
-    @Select("select * from MEMBER " +
-            "where password = #{password}")
-    Member findByPassword(String password);
-
     int insertSelective(Member record);
 
     int updateByPrimaryKey(Member record);
