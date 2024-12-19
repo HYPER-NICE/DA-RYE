@@ -4,10 +4,12 @@ import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
 import hyper.darye.service.MemberService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,25 +29,39 @@ public class SignController {
     }
 
     /**
-     * 로그인 엔드포인트
+     * 사인인 엔드포인트
      */
     @PreAuthorize("isAnonymous()") // 인증되지 않은 사용자만 접근 가능
-    @PostMapping("/sign-in") // POST 방식으로 로그인
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void login(@RequestBody SignIn signInRequest) {
+    @PostMapping("/sign-in") // POST 방식으로 사인인
+    public ResponseEntity<?> login(@RequestBody SignIn signInRequest) {
         String email = signInRequest.getEmail();
         String password = signInRequest.getPassword();
 
-        // 인증 시도
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
-        );
+        try {
+            // 인증 시도
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
 
-        // SecurityContext 업데이트
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // SecurityContext 업데이트
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 로그인 성공 후 마지막 업데이트 시간 기록
-        memberService.latestLoginDate(email);
+            // 사인인 성공 후 작업
+            memberService.latestLoginDate(email);
+            return ResponseEntity.noContent().build();
+
+        } catch (BadCredentialsException e) {
+            // 자격 증명 오류: 헤더에 메시지 추가
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Description", "사인인 실패: 자격 증명 오류");
+            return new ResponseEntity<>(headers, HttpStatus.UNAUTHORIZED);
+
+        } catch (Exception e) {
+            // 기타 서버 오류
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Description", "서버 오류 발생");
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
