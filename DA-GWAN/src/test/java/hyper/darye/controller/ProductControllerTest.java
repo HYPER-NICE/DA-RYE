@@ -1,6 +1,7 @@
 package hyper.darye.controller;
 
 import hyper.darye.dto.Product;
+import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -105,14 +106,16 @@ class ProductControllerTest {
         mockMvc.perform(get("/products")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) // 상태 코드 200 확인
-                .andExpect(jsonPath("$.length()").value(3));
+                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("$[0].id", is(11)))
+                .andExpect(jsonPath("$[2].id", is(33)));
     }
 
     @Test
     @DisplayName("특정 ID의 상품 조회")
     void selectProductById() throws Exception {
         // given
-        Product product = new Product();
+        ProductWithBLOBs product = new ProductWithBLOBs();
         product.setId(11L);
         product.setCategoryId(1L);
         product.setProductStatusCodeId(1L);
@@ -122,7 +125,7 @@ class ProductControllerTest {
         product.setSaleDate(new Date());
         product.setQuantity(20);
 
-        Product product1 = new Product();
+        ProductWithBLOBs product1 = new ProductWithBLOBs();
         product1.setId(22L);
         product1.setCategoryId(2L);
         product1.setProductStatusCodeId(1L);
@@ -132,7 +135,7 @@ class ProductControllerTest {
         product1.setSaleDate(new Date());
         product1.setQuantity(100);
 
-        Product product2 = new Product();
+        ProductWithBLOBs product2 = new ProductWithBLOBs();
         product2.setId(33L);
         product2.setCategoryId(3L);
         product2.setProductStatusCodeId(1L);
@@ -144,14 +147,16 @@ class ProductControllerTest {
 
         // Mock: 서비스 계층의 동작을 정의
         List<Product> products = List.of(product, product1, product2);
-        when(productService.selectAllProduct()).thenReturn(products);
+        when(productService.selectByPrimaryKey(33L))
+                .thenReturn((ProductWithBLOBs) products.stream().filter(p -> p.getId().equals(33L)).findFirst().orElse(null));
 
         // When & Then: MockMvc를 사용해 테스트
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/products/{id}", 33L)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()) // 상태 코드 200 확인
-                .andExpect(jsonPath("$[0].id", is(11)))
-                .andExpect(jsonPath("$[2].id", is(33)));
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(33L)) // 반환된 상품의 ID 확인
+                .andExpect(jsonPath("$.name").value("test3")) // 반환된 상품의 이름 확인
+                .andExpect(jsonPath("$.price").value(5000)) // 반환된 상품의 가격 확인
+                .andExpect(jsonPath("$.quantity").value(500)); // 반환된 상품의 수량 확인
     }
 }
