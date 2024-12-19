@@ -34,7 +34,7 @@ public class PointServiceTest {
 
     @Test
     @DisplayName("포인트가 정상적으로 적립되는 경우")
-    void testUpdateSuccess() {
+    void UpdateTest() {
         // given
         // addPoint 변수 세팅
         Long memberId = 3L;
@@ -49,14 +49,40 @@ public class PointServiceTest {
         orderMain.setOrderDate(new Date());
         omMapper.insert(orderMain);
 
-        int recentPoint = memberMapper.selectByPrimaryKey(memberId).getPoint();
+        int recentPoint = memberMapper.selectMemberById(memberId).getPoint();
 
         // when
         pointService.update(pointTransactionType, memberId, orderMain.getId(), description, amount);
 
         // then
         Integer point = (int)(amount * 0.01);
-        Integer selectedPoint = memberMapper.selectByPrimaryKey(memberId).getPoint();
+        Integer selectedPoint = memberMapper.selectMemberById(memberId).getPoint();
         assertEquals(point + recentPoint, selectedPoint);
+    }
+
+    @Test
+    @DisplayName("포인트 사용 테스트")
+    void UsePointTest(){
+        // given
+        // addPoint 변수 세팅
+        Long memberId = 4L;
+        String description = "Test Point Description";
+        Integer usePoint = 10;
+        Integer recentPoint = memberMapper.selectMemberById(memberId).getPoint();
+
+        PointTransactionType pointTransactionType = new PointTransactionType();
+        pointTransactionType = pttMapper.selectByPrimaryKey(1L);
+
+        OrderMain orderMain = new OrderMain();
+        orderMain.setMemberId(memberId);
+        orderMain.setOrderDate(new Date());
+        omMapper.insert(orderMain);
+
+        // when
+        pointService.usePoint(pointTransactionType, memberId, orderMain.getId(), description, usePoint);
+
+        Integer selectedPoint = memberMapper.selectMemberById(memberId).getPoint();
+
+        assertEquals(recentPoint - usePoint, selectedPoint);
     }
 }

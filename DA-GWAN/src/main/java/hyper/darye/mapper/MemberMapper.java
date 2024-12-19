@@ -27,7 +27,8 @@ public interface MemberMapper {
 
     int insertSelective(Member record);
 
-    Member selectByPrimaryKey(Long id);
+    // 검색이 안됨 삭제 필요
+//    Member selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Member record);
 
@@ -35,4 +36,7 @@ public interface MemberMapper {
 
     @Update("UPDATE MEMBER SET point = point + #{point} WHERE id = #{id}")
     int updatePoint(Long id, int point);
+
+    @Update("UPDATE MEMBER SET point = point - #{point} WHERE id = #{id}")
+    int usePoint(Long id, int point);
 }

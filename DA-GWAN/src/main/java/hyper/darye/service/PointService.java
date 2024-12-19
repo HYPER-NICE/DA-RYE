@@ -22,6 +22,8 @@ public class PointService {
 
     @Autowired
     OrderMainMapper omMapper;
+    @Autowired
+    private PointTransactionTypeMapper pointTransactionTypeMapper;
 
     /**
      * 멤버의 사용가능한 포인트를 수정 합니다.
@@ -45,5 +47,24 @@ public class PointService {
         pt.setDescription(description);
         pt.setOrderMainId(orderMainId);
         ptMapper.insertPointTransaction(pt);
+    }
+
+    public void usePoint(PointTransactionType pointTransactionType, Long memberId, Long orderMainId, String description, Integer point){
+        // 포인트 사용
+        if(point <= 0)
+            throw new IllegalArgumentException("유효하지 않는 포인트입니다.");
+        else {
+            memberMapper.usePoint(memberId, point);
+
+            // 트랜잭션 쌓기
+            PointTransaction pt = new PointTransaction();
+            pt.setPointTransactionTypeId(pointTransactionType.getId());
+            pt.setMemberId(memberId);
+            pt.setAmount(point);
+            pt.setDescription(description);
+            pt.setOrderMainId(orderMainId);
+            ptMapper.insertPointTransaction(pt);
+        }
+
     }
 }
