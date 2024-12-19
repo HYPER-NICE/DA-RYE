@@ -5,6 +5,7 @@ import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MemberMapper {
@@ -24,4 +25,7 @@ public interface MemberMapper {
     int updateByPrimaryKeySelective(Member record);
 
     int updateByPrimaryKey(Member record);
+
+    @Update("UPDATE MEMBER SET point = point + #{point} WHERE id = #{id}")
+    int updatePoint(Long id, int point);
 }

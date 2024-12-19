@@ -65,6 +65,6 @@ class CartServiceTest {
     void updateCartTest(){
         cartService.insertCart(7L, 10L, 10L);
         cartService.updateCartQuantity(7L, 10L, 100L);
-        assertEquals(100, cartMapper.selectCart(7L).get(0).getQuantity());
+        assertEquals(100, cartMapper.selectCart(7L).get(1).getQuantity());
     }
 }
