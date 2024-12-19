@@ -52,4 +52,14 @@ public class MemberService {
 
         return result;
     }
+
+    public void updateMemberByIdSelective(Member member) {
+        Member foundmember = memberMapper.selectMemberById(member.getId());
+        foundmember.setEmail(member.getEmail());
+        foundmember.setName(member.getName());
+        foundmember.setSex(member.getSex());
+        foundmember.setBirthdate(member.getBirthdate());
+        foundmember.setMobile(member.getMobile());
+        foundmember.setLastModifiedMember(member.getId());
+    }
 }
