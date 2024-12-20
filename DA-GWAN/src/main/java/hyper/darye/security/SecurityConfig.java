@@ -31,12 +31,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    public UsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
-        UsernamePasswordAuthenticationFilter filter = new UsernamePasswordAuthenticationFilter(authenticationManager);
-        filter.setFilterProcessesUrl("/api/sign-in");
-        return filter;
-    }
-
     // AuthenticationManager Bean 등록
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
