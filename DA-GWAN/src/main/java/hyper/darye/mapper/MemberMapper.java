@@ -6,18 +6,11 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
-    @Insert("INSERT INTO MEMBER (email, password, name, sex, birthdate, mobile) " +
-            "VALUES (#{email}, #{password}, #{name}, #{sex}, #{birthdate}, #{mobile})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insertMember(CreateMemberRequest member);
-
     @Select("SELECT * FROM MEMBER WHERE email = #{email}")
     Member selectByEmail(String email);
 
     @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
     int updateLatestLoginDate(String email);
-
-    Member selectMemberById(Long id);
 
     int softDeleteMemberById(Long id);
 

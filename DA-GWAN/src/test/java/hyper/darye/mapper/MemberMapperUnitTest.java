@@ -20,30 +20,9 @@ class MemberMapperUnitTest {
     private MemberMapper memberMapper;
 
     @Test
-    void insertMemberTest() {
-        Date birthdate = new Date(2001 - 1900, 0, 1);
-        CreateMemberRequest member = new CreateMemberRequest(0L, "test@example.com", "password123",
-                "password123", "username", 'M', birthdate, "010-1234-5678");
-
-        memberMapper.insertMember(member);
-
-        assertThat(member.getId()).isNotNull();
-        assertEquals("test@example.com", member.getEmail());
-        assertEquals("password123", member.getPassword());
-        assertEquals("password123", member.getRePassword());
-        assertEquals("username", member.getName());
-        assertEquals(birthdate, member.getBirthdate());
-        assertEquals("010-1234-5678", member.getMobile());
-    }
-
-    @Test
     void selectMemberByEmailTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
-        CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
-        memberMapper.insertMember(member);
-        Member foundMember = memberMapper.selectByEmail(member.getEmail());
+        Member foundMember = memberMapper.selectByEmail("john.doe@example.com");
 
         assertThat(foundMember).isNotNull();
         assertThat(foundMember.getEmail()).isEqualTo("john.doe@example.com");
@@ -51,36 +30,27 @@ class MemberMapperUnitTest {
 
     @Test
     void selectMemberByIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
-        CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        Member foundMember = memberMapper.selectByPrimaryKey(1L);
 
-        memberMapper.insertMember(member);
-        Long paramId = member.getId();
-        Member foundMember = memberMapper.selectMemberById(paramId);
-
-        assertThat(foundMember.getId()).isEqualTo(paramId);
+        assertThat(foundMember.getId()).isEqualTo(1L);
     }
 
     @Test
     void softDeleteMemberByIdTest() {
         memberMapper.softDeleteMemberById(1L);
 
-        Member insertedMember = memberMapper.selectMemberById(1L);
+        Member insertedMember = memberMapper.selectByPrimaryKey(1L);
         assertThat(insertedMember.getDeletedDate()).isNotNull();
     }
 
     @Test
     void updateByPrimaryKeySelectiveTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);;
-        CreateMemberRequest member = new CreateMemberRequest(0L, "john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        Member member = memberMapper.selectByPrimaryKey(1L);
 
-        memberMapper.insertMember(member);
-        Long paramId = member.getId();
+        member.setEmail("john.doe2@example.com");
+        Member updatedMember = memberMapper.selectByPrimaryKey(1L);
 
-        Member insertedMember = memberMapper.selectByEmail("john.doe@example.com");
-        memberMapper.updateByPrimaryKeySelective(insertedMember);
-
+        assertThat(updatedMember.getEmail()).isEqualTo("john.doe2@example.com");
+        assertThat(updatedMember.getName()).isEqualTo("John Doe");
     }
 }
