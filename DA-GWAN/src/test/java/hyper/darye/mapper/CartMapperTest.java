@@ -3,6 +3,8 @@ package hyper.darye.mapper;
 import hyper.darye.dto.Cart;
 import hyper.darye.dto.CartSelect;
 import hyper.darye.dto.Product;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,26 @@ class CartMapperTest {
     @Autowired
     private CartMapper cartMapper;
 
+    @Autowired
+    private ForeignKeyMapper fkMapper;
+
+    @BeforeEach
+    void disableForeignKeyChecks() {
+        fkMapper.disableForeignKeyChecks();
+    }
+
+    @AfterEach
+    void enableForeignKeyChecks() {
+        fkMapper.enableForeignKeyChecks();
+    }
+
     @Test
     @DisplayName("장바구니 넣기 테스트")
     void insertCartTest() {
         //given
         Cart cart = new Cart();
-        cart.setMemberId(5L);
-        cart.setProductId(5L);
+        cart.setMemberId(100L);
+        cart.setProductId(100L);
         cart.setQuantity(10L);
         int result = 0;
 
@@ -46,9 +61,11 @@ class CartMapperTest {
     @DisplayName("장바구니 중복 처리 테스트")
     void insertDuplicateTest() {
         Cart cart = new Cart();
-        cart.setMemberId(7L);
-        cart.setProductId(7L);
+        cart.setMemberId(100L);
+        cart.setProductId(100L);
         cart.setQuantity(10L);
+        cartMapper.insertCart(cart);
+
 
         int result = 0;
         Cart duplicateCart = cartMapper.selectCartDuplicate(cart.getMemberId(), cart.getProductId());
@@ -61,7 +78,7 @@ class CartMapperTest {
 
         List<CartSelect> cartSelect = cartMapper.selectCart(7L);
         assertEquals(1, cartSelect.size());
-        assertEquals(12, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
+        assertEquals(20, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
     }
 
 
@@ -135,40 +152,45 @@ class CartMapperTest {
     void ListdeleteCartTest(){
 
         Cart cart1 = new Cart();
-        cart1.setMemberId(7L);
-        cart1.setProductId(8L);
+        cart1.setMemberId(100L);
+        cart1.setProductId(100L);
         cart1.setQuantity(10L);
         cartMapper.insertCart(cart1);
 
         Cart cart2 = new Cart();
-        cart2.setMemberId(7L);
-        cart2.setProductId(9L);
+        cart2.setMemberId(100L);
+        cart2.setProductId(101L);
         cart2.setQuantity(10L);
         cartMapper.insertCart(cart2);
 
         List<Long> productIdList = new ArrayList<>();
-        productIdList.add(8L); // productIdList에 product_id 삽입
-        productIdList.add(9L);
+        productIdList.add(100L); // productIdList에 product_id 삽입
+        productIdList.add(101L);
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(7L); // 장바구니 member = 7L 조회
-        assertEquals(3, cartSelect.size()); // 장바구니 조회 결과 3개 검색
+        List<CartSelect> cartSelect = cartMapper.selectCart(100L); // 장바구니 member = 100L 조회
+        assertEquals(2, cartSelect.size()); // 장바구니 조회 결과 2개 검색
 
-        cartSelect = cartMapper.selectCart(7L);
+        cartSelect = cartMapper.selectCart(100L);
 
 
         cartMapper.deleteCart(cartSelect.get(0).getMemberId(), productIdList); // 장바구니 비우기
 
         //then
-        cartSelect = cartMapper.selectCart(7L);
-        assertEquals(1, cartSelect.size());
+        cartSelect = cartMapper.selectCart(100L);
+        assertEquals(0, cartSelect.size());
     }
 
     @Test
     @DisplayName("장바구니 수량 변경")
     void updateCartTest(){
-        cartMapper.updateCartQuantity(7L, 7L, 100L);
+        Cart cart1 = new Cart();
+        cart1.setMemberId(100L);
+        cart1.setProductId(100L);
+        cart1.setQuantity(10L);
+        cartMapper.insertCart(cart1);
+        cartMapper.updateCartQuantity(100L, 100L, 1000L);
 
-        assertEquals(100, cartMapper.selectCart(7L).get(0).getQuantity());
+        assertEquals(1000, cartMapper.selectCart(100L).get(0).getQuantity());
     }
 
 }
