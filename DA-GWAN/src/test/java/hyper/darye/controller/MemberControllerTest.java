@@ -43,7 +43,7 @@ class MemberControllerTest {
     void selectMemberByEmailTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
-                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
+                "John Doe", 'M', birthdate, "010-1234-5678");
 
         given(memberService.selectMemberByEmail("john.doe@example.com")).willReturn(testMember);
 
@@ -59,7 +59,7 @@ class MemberControllerTest {
     void selectMemberByIdTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
-                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
+                "John Doe", 'M', birthdate, "010-1234-5678");
 
         given(memberService.selectMemberById(0L)).willReturn(testMember);
 
@@ -75,7 +75,7 @@ class MemberControllerTest {
     void softDeleteMemberByIdTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
-                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
+                "John Doe", 'M', birthdate, "010-1234-5678");
 
         mockMvc.perform(delete("/api/members/")
                         .with(csrf())
@@ -89,7 +89,7 @@ class MemberControllerTest {
     void updateMemberByIdSelectiveTest() throws Exception {
         Date birthdate = new Date(1990 - 1900, 0, 1);
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
-                "p123", "John Doe", 'M', birthdate, "010-1234-5678");
+                "John Doe", 'M', birthdate, "010-1234-5678");
 
         String jsonRequest = objectMapper.writeValueAsString(testMember);
 

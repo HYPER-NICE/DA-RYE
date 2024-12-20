@@ -6,22 +6,41 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class MemberMapperUnitTest {
 
     @Autowired
     private MemberMapper memberMapper;
 
     @Test
-    void selectMemberByEmailTest() {
+    void insertSelectiveTest() {
+        Member member = new Member();
+        member.setEmail("jane.doe@example.com");
+        member.setPassword("p123");
+        member.setName("Jane Doe");
+        member.setMobile("010-1234-5679");
 
+        int result = memberMapper.insertSelective(member);
+
+        assertEquals(1, result);
+
+        Member insertedMember = memberMapper.selectByEmail("jane.doe@example.com");
+        assertNotNull(insertedMember);
+        assertEquals("jane.doe@example.com", insertedMember.getEmail());
+    }
+
+    @Test
+    void selectMemberByEmailTest() {
         Member foundMember = memberMapper.selectByEmail("john.doe@example.com");
 
         assertThat(foundMember).isNotNull();

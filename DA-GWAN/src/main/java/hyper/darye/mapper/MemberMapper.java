@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
+    int insertSelective(Member record);
+
     @Select("SELECT * FROM MEMBER WHERE email = #{email}")
     Member selectByEmail(String email);
 
@@ -13,8 +15,6 @@ public interface MemberMapper {
     int updateLatestLoginDate(String email);
 
     int softDeleteMemberById(Long id);
-
-    int insertSelective(Member record);
 
     Member selectByPrimaryKey(Long id);
 

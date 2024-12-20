@@ -99,7 +99,7 @@ public class Member implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Member(long id, String email, String password, String rePassword, String name, Character sex, Date birthdate, String mobile) {
+    public Member(long id, String email, String password, String name, Character sex, Date birthdate, String mobile) {
         this.id = id;
         this.email = email;
         this.password = password;
