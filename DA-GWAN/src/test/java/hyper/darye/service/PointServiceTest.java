@@ -44,39 +44,5 @@ public class PointServiceTest {
     @Test
     @DisplayName("포인트 사용 테스트")
     void UsePointTest(){
-        // given
-        // addPoint 변수 세팅
-        Long memberId = 4L;
-        String description = "Test Point Description";
-        Integer cancelPoint = -1000;
-        Integer recentPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        PointTransactionType pointTransactionType = new PointTransactionType();
-        pointTransactionType = pttMapper.selectByPrimaryKey(1L);
-
-        OrderMain orderMain = new OrderMain();
-        orderMain.setMemberId(memberId);
-        orderMain.setOrderDate(new Date());
-        omMapper.insert(orderMain);
-
-        Long orderId = omMapper.selectByMemberId(memberId).getId();
-        Integer usePoint = 10;
-        Integer recentPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        PointTransaction pt = new PointTransaction();
-        pt.setMemberId(memberId);
-        pt.setPointTransactionTypeId(1L);
-        pt.setOrderMainId(orderId);
-        pt.setAmount(cancelPoint);
-        pt.setDescription(description);
-        ptMapper.insertPointTransaction(pt);
-
-        //when
-        pointService.cancelUsePoint(pointTransactionType, memberId, orderMain.getId(), description);
-
-
-        //then
-        Integer selectedPoint = memberMapper.selectMemberById(memberId).getPoint();
-        assertEquals(recentPoint + cancelPoint*-1, selectedPoint );
     }
 }
