@@ -27,4 +27,7 @@ public interface PointTransactionMapper {
 
     @Select("select * from POINT_TRANSACTION where MEMBER_ID = #{memberId}")
     PointTransaction selectByMemberId(Long memberId);
+
+    @Select("select * from POINT_TRANSACTION where MEMBER_ID = #{memberId} and ORDER_MAIN_ID = #{orderId}")
+    PointTransaction selectByMemberIdAndOrderId(Long memberId, Long orderId);
 }
