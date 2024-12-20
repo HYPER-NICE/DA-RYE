@@ -26,6 +26,11 @@ public class Stock implements Serializable {
     private Long stockInoutQuantity;
 
     /**
+     * 입출고 사유(입고는 +, 출고는 -)
+     */
+    private String stockChangeNote;
+
+    /**
      * 입출고 날짜
      */
     private Date stockInoutDate;
