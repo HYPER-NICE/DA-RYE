@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/dummy/boardCode.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/dummy/boardTable.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/dummy/code.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/DA-GWAN/src/main/resources/dummy/table.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
