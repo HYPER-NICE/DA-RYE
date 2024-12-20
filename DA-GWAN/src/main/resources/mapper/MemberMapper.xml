@@ -24,7 +24,7 @@
     LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
     DELETED_DATE
   </sql>
-  <update id="softDeleteMemberById" parameterType="java.lang.Long">
+  <update id="softDeleteByPrimaryKey" parameterType="java.lang.Long">
     update MEMBER
     set DELETED_DATE = CURRENT_TIMESTAMP
     where ID = #{id, jdbcType=BIGINT}

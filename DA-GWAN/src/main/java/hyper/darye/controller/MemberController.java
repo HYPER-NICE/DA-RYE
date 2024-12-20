@@ -17,7 +17,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()") // 인증된 사용자만 접근 가능
     @GetMapping("/members")
     public Member selectMemberByEmail(@RequestParam String email) {
-        return memberService.selectMemberByEmail(email);
+        return memberService.selectByEmail(email);
     }
 
     @PreAuthorize("#id == principal.id or hasRole('USER')")
@@ -29,7 +29,7 @@ public class MemberController {
     @PreAuthorize("#id == principal.id or hasRole('USER')")
     @DeleteMapping("/members/{id}")
     public int softDeleteMemberById(@PathVariable Long id) {
-        return memberService.softDeleteMemberById(id);
+        return memberService.softDeleteByPrimaryKey(id);
     }
 
     /**

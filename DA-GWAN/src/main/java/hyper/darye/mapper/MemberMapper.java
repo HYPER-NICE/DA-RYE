@@ -1,7 +1,6 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -14,7 +13,7 @@ public interface MemberMapper {
     @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
     int updateLatestLoginDate(String email);
 
-    int softDeleteMemberById(Long id);
+    int softDeleteByPrimaryKey(Long id);
 
     Member selectByPrimaryKey(Long id);
 

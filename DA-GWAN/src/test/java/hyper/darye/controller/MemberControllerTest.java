@@ -4,15 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Member;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,7 +42,7 @@ class MemberControllerTest {
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
                 "John Doe", 'M', birthdate, "010-1234-5678");
 
-        given(memberService.selectMemberByEmail("john.doe@example.com")).willReturn(testMember);
+        given(memberService.selectByEmail("john.doe@example.com")).willReturn(testMember);
 
         mockMvc.perform(get("/api/members?email=john.doe@example.com")
                         .with(csrf())

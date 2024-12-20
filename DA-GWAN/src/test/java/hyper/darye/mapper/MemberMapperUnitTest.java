@@ -1,14 +1,11 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,8 +52,8 @@ class MemberMapperUnitTest {
     }
 
     @Test
-    void softDeleteMemberByIdTest() {
-        memberMapper.softDeleteMemberById(1L);
+    void softDeleteByPrimaryKeyTest() {
+        memberMapper.softDeleteByPrimaryKey(1L);
 
         Member insertedMember = memberMapper.selectByPrimaryKey(1L);
         assertThat(insertedMember.getDeletedDate()).isNotNull();

@@ -3,7 +3,6 @@ package hyper.darye.service;
 import hyper.darye.dto.Member;
 import hyper.darye.dto.SignUp;
 import hyper.darye.mapper.MemberMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Member selectMemberByEmail(String email) throws NoSuchElementException {
+    public Member selectByEmail(String email) throws NoSuchElementException {
         Member result = memberMapper.selectByEmail(email);
 
         if (result == null)
@@ -39,8 +38,8 @@ public class MemberService {
         return result;
     }
 
-    public int softDeleteMemberById(Long id) throws NoSuchElementException {
-        int result = memberMapper.softDeleteMemberById(id);
+    public int softDeleteByPrimaryKey(Long id) throws NoSuchElementException {
+        int result = memberMapper.softDeleteByPrimaryKey(id);
 
         if (result == 0)
             throw new NoSuchElementException("존재하지 않는 키입니다.");

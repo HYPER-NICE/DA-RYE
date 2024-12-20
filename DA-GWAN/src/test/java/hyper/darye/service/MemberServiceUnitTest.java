@@ -86,7 +86,7 @@ class MemberServiceUnitTest {
         when(memberMapper.selectByEmail("john.doe@example.com")).thenReturn(mockMember);
 
         // 서비스 메서드 호출
-        Member foundMember = memberService.selectMemberByEmail("john.doe@example.com");
+        Member foundMember = memberService.selectByEmail("john.doe@example.com");
 
         // 반환된 Member 객체 검증
         assertNotNull(foundMember);
@@ -105,7 +105,7 @@ class MemberServiceUnitTest {
 
         // 서비스 메서드 호출 시 예외 발생 여부 검증
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            memberService.selectMemberByEmail("null@example.com");
+            memberService.selectByEmail("null@example.com");
         });
 
         // 예외 메시지 검증
@@ -150,35 +150,35 @@ class MemberServiceUnitTest {
     }
 
     @Test
-    void softDeleteMemberByIdTest() {
+    void softDeleteByPrimaryKeyTest() {
         // 매퍼의 softDeleteMemberById 메서드가 호출되었을 때 1을 반환하도록 설정
-        when(memberMapper.softDeleteMemberById(1L)).thenReturn(1);
+        when(memberMapper.softDeleteByPrimaryKey(1L)).thenReturn(1);
 
         // 서비스 메서드 호출
-        int result = memberService.softDeleteMemberById(1L);
+        int result = memberService.softDeleteByPrimaryKey(1L);
 
         // 반환값 검증
         assertEquals(1, result);
 
         // 매퍼의 softDeleteMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).softDeleteMemberById(1L);
+        verify(memberMapper, times(1)).softDeleteByPrimaryKey(1L);
     }
 
     @Test
     void softDeleteMemberByInvalidIdTest() {
         // 매퍼의 softDeleteMemberById 메서드가 호출되었을 때 0을 반환하도록 설정
-        when(memberMapper.softDeleteMemberById(0L)).thenReturn(0);
+        when(memberMapper.softDeleteByPrimaryKey(0L)).thenReturn(0);
 
         // 서비스 메서드 호출 시 예외 발생 여부 검증
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            memberService.softDeleteMemberById(0L);
+            memberService.softDeleteByPrimaryKey(0L);
         });
 
         // 예외 메시지 검증
         assertEquals("존재하지 않는 키입니다.", exception.getMessage());
 
         // 매퍼의 softDeleteMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).softDeleteMemberById(0L);
+        verify(memberMapper, times(1)).softDeleteByPrimaryKey(0L);
     }
 
     @Test
