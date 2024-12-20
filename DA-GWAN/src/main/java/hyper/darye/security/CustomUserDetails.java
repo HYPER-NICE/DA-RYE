@@ -13,6 +13,7 @@ import java.util.Collections;
  */
 public class CustomUserDetails implements UserDetails {
 
+    private final Long id;
     private final String email;           // 로그인 ID
     private final String password;        // 암호화된 비밀번호
     private final String role;            // 권한
@@ -23,11 +24,16 @@ public class CustomUserDetails implements UserDetails {
      * 생성자: Member 엔티티 기반으로 초기화
      */
     public CustomUserDetails(Member member) {
+        this.id = member.getId();
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.role = member.getRole();
         this.isLocked = Boolean.TRUE.equals(member.getLocked());
         this.isDeleted = member.getDeletedDate() != null;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     /**
