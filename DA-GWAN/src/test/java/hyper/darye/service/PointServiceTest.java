@@ -38,6 +38,12 @@ public class PointServiceTest {
     @Test
     @DisplayName("포인트 사용 취소, 반환 테스트")
     void cancelUsePointTest(){
+      
+    }
+
+    @Test
+    @DisplayName("포인트 사용 테스트")
+    void UsePointTest(){
         // given
         // addPoint 변수 세팅
         Long memberId = 4L;
@@ -54,6 +60,8 @@ public class PointServiceTest {
         omMapper.insert(orderMain);
 
         Long orderId = omMapper.selectByMemberId(memberId).getId();
+        Integer usePoint = 10;
+        Integer recentPoint = memberMapper.selectMemberById(memberId).getPoint();
 
         PointTransaction pt = new PointTransaction();
         pt.setMemberId(memberId);

@@ -30,22 +30,21 @@
     from MEMBER
     where ID = #{id,jdbcType=BIGINT}
   </select>
+  <update id="softDeleteMemberById" parameterType="java.lang.Long">
+    update MEMBER
+    set DELETED_DATE = CURRENT_TIMESTAMP
+    where ID = #{id, jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from MEMBER
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from MEMBER
-    where ID = #{id,jdbcType=BIGINT}
+    where ID = #{id, jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Member" useGeneratedKeys="true">
-    insert into MEMBER (EMAIL, `PASSWORD`, `NAME`, 
-      SEX, BIRTHDATE, MOBILE, POINT, 
-      LOCKED, PW_FAILED_COUNT, LATEST_LOGIN_DATE, 
-      REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, 
-      LAST_MODIFIED_MEMBER, DELETED_DATE)
-    values (#{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=CHAR}, #{birthdate,jdbcType=DATE}, #{mobile,jdbcType=VARCHAR}, #{point,jdbcType=INTEGER}, 
-      #{locked,jdbcType=BOOLEAN}, #{pwFailedCount,jdbcType=INTEGER}, #{latestLoginDate,jdbcType=TIMESTAMP}, 
-      #{regDate,jdbcType=TIMESTAMP}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Member" useGeneratedKeys="true">
     insert into MEMBER
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -147,10 +146,7 @@
     update MEMBER
     <set>
       <if test="email != null">
-        EMAIL = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        `PASSWORD` = #{password,jdbcType=VARCHAR},
+        `EMAIL` = #{email,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         `NAME` = #{name,jdbcType=VARCHAR},
@@ -164,53 +160,24 @@
       <if test="mobile != null">
         MOBILE = #{mobile,jdbcType=VARCHAR},
       </if>
-      <if test="point != null">
-        POINT = #{point,jdbcType=INTEGER},
-      </if>
-      <if test="locked != null">
-        LOCKED = #{locked,jdbcType=BOOLEAN},
-      </if>
-      <if test="pwFailedCount != null">
-        PW_FAILED_COUNT = #{pwFailedCount,jdbcType=INTEGER},
-      </if>
-      <if test="latestLoginDate != null">
-        LATEST_LOGIN_DATE = #{latestLoginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="regDate != null">
-        REG_DATE = #{regDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createdDate != null">
-        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
-      </if>
       <if test="lastModifiedDate != null">
-        LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
+        LAST_MODIFIED_DATE = CURRENT_TIMESTAMP,
       </if>
       <if test="lastModifiedMember != null">
         LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
-      </if>
-      <if test="deletedDate != null">
-        DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Member">
     update MEMBER
-    set EMAIL = #{email,jdbcType=VARCHAR},
-      `PASSWORD` = #{password,jdbcType=VARCHAR},
+    set EMAIL = #{email. jdbcType=VARCHAR},
       `NAME` = #{name,jdbcType=VARCHAR},
       SEX = #{sex,jdbcType=CHAR},
       BIRTHDATE = #{birthdate,jdbcType=DATE},
       MOBILE = #{mobile,jdbcType=VARCHAR},
-      POINT = #{point,jdbcType=INTEGER},
-      LOCKED = #{locked,jdbcType=BOOLEAN},
-      PW_FAILED_COUNT = #{pwFailedCount,jdbcType=INTEGER},
-      LATEST_LOGIN_DATE = #{latestLoginDate,jdbcType=TIMESTAMP},
-      REG_DATE = #{regDate,jdbcType=TIMESTAMP},
-      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
       LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
-      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
-      DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
+      LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

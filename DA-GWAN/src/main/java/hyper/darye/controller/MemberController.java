@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @RestController
 @RequestMapping("/members")
 public class MemberController {
@@ -43,5 +41,16 @@ public class MemberController {
     @GetMapping("/{id}")
     public Member selectMemberById(@PathVariable Long id) {
         return memberService.selectMemberById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public int softDeleteMemberById(@PathVariable Long id) {
+        return memberService.softDeleteMemberById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Member updateMemberByIdSelective(@RequestBody Member member) {
+        memberService.updateMemberByIdSelective(member);
+        return member;
     }
 }
