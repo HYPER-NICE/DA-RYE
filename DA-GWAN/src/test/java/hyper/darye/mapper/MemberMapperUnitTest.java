@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MemberMapperTest {
+class MemberMapperUnitTest {
 
     @Autowired
     private MemberMapper memberMapper;
