@@ -142,7 +142,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateMemberByIdSelective" parameterType="hyper.darye.dto.Member">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.Member">
     update MEMBER
     <set>
       <if test="email != null">

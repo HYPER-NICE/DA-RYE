@@ -19,11 +19,7 @@ public interface MemberMapper {
 
     Member selectMemberById(Long id);
 
-    Member selectByPrimaryKey(Long id);
-
     int softDeleteMemberById(Long id);
-
-    void updateMemberByIdSelective(Member member);
 
     int insertSelective(Member record);
 

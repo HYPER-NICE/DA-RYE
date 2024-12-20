@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Member;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +98,7 @@ class MemberControllerTest {
 
         mockMvc.perform(post("/api/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signUpRequest)))
+                        .content(objectMapper.writeValueAsString(testMember)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.confirmPassword").value("비밀번호가 일치하지 않습니다."));
     }
