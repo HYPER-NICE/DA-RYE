@@ -57,17 +57,18 @@ public class MemberService {
 
     public int insert(SignUp signUp) {
         Member member = new Member();
+        
+        // 유니크 키
         member.setEmail(signUp.getEmail());
 
-        // 비밀번호 암호화 처리
-        member.setPassword(passwordEncoder.encode(signUp.getPassword()));
 
+        // 데이터
+        // 보안 데이터, 비밀번호 암호화 처리
+        member.setPassword(passwordEncoder.encode(signUp.getPassword()));
+        // 일반 데이터
         member.setName(signUp.getName());
         member.setMobile(signUp.getContact());
         member.setRole(signUp.getRole());
-
-        // 비밀번호 암호화 처리
-        member.setPassword(passwordEncoder.encode(signUp.getPassword()));
 
         return memberMapper.insertSelective(member);
     }
