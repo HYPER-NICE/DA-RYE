@@ -20,22 +20,22 @@ public class MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * 회원 가입 로직 (개별 필드)
-     */
-    public int insertMember(String email, String password, String rePassword, String name, Character sex, Date birthdate, String mobile) {
-        CreateMemberRequest member = new CreateMemberRequest();
-        member.setEmail(email);
-
-        // 비밀번호 암호화 처리
-        member.setPassword(passwordEncoder.encode(password));
-
-        member.setName(name);
-        member.setSex(sex);
-        member.setBirthdate(birthdate);
-        member.setMobile(mobile);
-        return memberMapper.insertMember(member);
-    }
+//    /**
+//     * 회원 가입 로직 (개별 필드)
+//     */
+//    public int insertMember(String email, String password, String rePassword, String name, Character sex, Date birthdate, String mobile) {
+//        CreateMemberRequest member = new CreateMemberRequest();
+//        member.setEmail(email);
+//
+//        // 비밀번호 암호화 처리
+//        member.setPassword(passwordEncoder.encode(password));
+//
+//        member.setName(name);
+//        member.setSex(sex);
+//        member.setBirthdate(birthdate);
+//        member.setMobile(mobile);
+//        return memberMapper.insertMember(member);
+//    }
 
     public Member selectMemberByEmail(String email) throws NoSuchElementException {
         Member result = memberMapper.selectByEmail(email);

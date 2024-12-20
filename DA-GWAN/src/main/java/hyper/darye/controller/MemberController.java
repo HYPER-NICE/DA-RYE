@@ -14,25 +14,6 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @PostMapping("/members")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String insertMember(@RequestBody CreateMemberRequest createMemberRequest) {
-        if (!createMemberRequest.getPassword().equals(createMemberRequest.getRePassword())) {
-            throw new IllegalArgumentException("비밀번호를 확인해주세요.");
-        }
-
-        memberService.insertMember(
-                createMemberRequest.getEmail(),
-                createMemberRequest.getPassword(),
-                createMemberRequest.getRePassword(),
-                createMemberRequest.getName(),
-                createMemberRequest.getSex(),
-                createMemberRequest.getBirthdate(),
-                createMemberRequest.getMobile());
-
-        return "회원 가입 성공";
-    }
-
     @GetMapping("/members")
     public Member selectMemberByEmail(@RequestParam String email) {
         return memberService.selectMemberByEmail(email);
