@@ -43,7 +43,7 @@ class MemberMapperTest {
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
         memberMapper.insertMember(member);
-        Member foundMember = memberMapper.selectMemberByEmail(member.getEmail());
+        Member foundMember = memberMapper.selectByEmail(member.getEmail());
 
         assertThat(foundMember).isNotNull();
         assertThat(foundMember.getEmail()).isEqualTo("john.doe@example.com");

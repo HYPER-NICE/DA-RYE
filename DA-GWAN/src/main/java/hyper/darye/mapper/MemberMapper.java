@@ -20,9 +20,9 @@ public interface MemberMapper {
     @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
     int updateLatestLoginDate(String email);
 
-    int deleteByPrimaryKey(Long id);
-
     Member selectMemberById(Long id);
+
+    Member selectByPrimaryKey(Long id);
 
     int softDeleteMemberById(Long id);
 
@@ -30,7 +30,7 @@ public interface MemberMapper {
 
     int insertSelective(Member record);
 
-    Member selectByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Member record);
 

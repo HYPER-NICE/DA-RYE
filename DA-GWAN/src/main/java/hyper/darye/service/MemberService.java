@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Service
 public class MemberService {
@@ -37,7 +38,7 @@ public class MemberService {
     }
 
     public Member selectMemberByEmail(String email) throws NoSuchElementException {
-        Member result = memberMapper.selectMemberByEmail(email);
+        Member result = memberMapper.selectByEmail(email);
 
         if (result == null)
             throw new NoSuchElementException("존재하지 않는 이메일입니다.");

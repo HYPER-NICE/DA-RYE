@@ -85,7 +85,7 @@ public class SignController {
         }
 
         // 정상 회원 가입 처리
-        memberService.insertSelective(signUpRequest);
+        memberService.insert(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

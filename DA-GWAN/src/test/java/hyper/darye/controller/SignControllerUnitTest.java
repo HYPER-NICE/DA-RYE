@@ -80,7 +80,7 @@ class SignControllerUnitTest {
             SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
 
             // Mocking
-            when(memberService.insertSelective(ArgumentMatchers.any(SignUp.class))).thenReturn(1);
+            when(memberService.insert(ArgumentMatchers.any(SignUp.class))).thenReturn(1);
 
             // When & Then
             mockMvc.perform(post("/api/sign-up")
