@@ -2,33 +2,33 @@
 -- PRODUCT_STATUS
 -- ========================================================
 
-INSERT INTO PRODUCT_STATUS (
-    NAME, DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
-) VALUES
-      ('판매 대기', '판매 예정중이라 대기가 걸려있는 상태', NOW(), NOW(), NULL, NULL),
-      ('판매 중', '현재 판매 중인 상태', NOW(), NOW(), NULL, NULL),
-      ('재고없음', '입고된 상품이 다 팔려 재고가 떨어진 상태', NOW(), NOW(), NULL, NULL),
-      ('판매 중지', '여러 이유로 판매가 중지된 상태', NOW(), NOW(), NULL, NULL);
+INSERT INTO PRODUCT_STATUS (NAME, DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
+VALUES ('판매 대기', '판매 예정중이라 대기가 걸려있는 상태', NOW(), NOW(), NULL, NULL),
+       ('판매 중', '현재 판매 중인 상태', NOW(), NOW(), NULL, NULL),
+       ('재고없음', '입고된 상품이 다 팔려 재고가 떨어진 상태', NOW(), NOW(), NULL, NULL),
+       ('판매 중지', '여러 이유로 판매가 중지된 상태', NOW(), NOW(), NULL, NULL);
 
 
 -- ========================================================
 -- PRODUCT_STATUS
 -- ========================================================
 -- 외래 키 체크 비활성화
-SET FOREIGN_KEY_CHECKS = 0;
+SET
+FOREIGN_KEY_CHECKS = 0;
 
 -- 테이블 비우기
 TRUNCATE TABLE POINT_TRANSACTION_TYPE;
 
 -- 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
+SET
+FOREIGN_KEY_CHECKS = 1;
 -- ========================================================
 -- PRODUCT_STATUS
 -- ========================================================
 
-INSERT INTO POINT_TRANSACTION_TYPE (
-    CODE_TYPE, CODE_VALUE, NAME, DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, DELETED_DATE
-) VALUES
+INSERT INTO POINT_TRANSACTION_TYPE (CODE_TYPE, CODE_VALUE, NAME, DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE,
+                                    DELETED_DATE)
+VALUES
 -- 포인트 거래 유형: 적립
 ('POINT_TRANSACTION_TYPE', 'save', '포인트 적립', '고객이 적립한 포인트 거래 코드', NOW(), NOW(), NULL),
 
@@ -37,3 +37,45 @@ INSERT INTO POINT_TRANSACTION_TYPE (
 
 -- 포인트 거래 유형: 소멸
 ('POINT_TRANSACTION_TYPE', 'cancel', '포인트 소멸', '미로그인 1년 경과로 소멸된 포인트 거래 코드', NOW(), NOW(), NULL);
+
+-- ========================================================
+-- PRODUCT_STATUS
+-- ========================================================
+INSERT INTO ORDER_STATUS_CODE (NAME, DESCRIPTION)
+VALUES ('주문 대기', '재고 상황을 파악하고 주문을 다음단계로 넘길 수 있습니다. 현 시스템에서는 재고가 없으면 주문이 불가능하기 때문에 사용하지 않음'),
+       ('주문 접수', '고객의 주문이 접수된 상태'),
+       ('주문 완료', '고객의 주문이 완료된 상태'),
+       ('주문 취소 접수', '고객이 주문을 취소하고 접수된 상태'),
+       ('주문 취소 중', '고객이 주문을 취소하고 중인 상태'),
+       ('주문 취소 완료', '고객이 주문을 취소하고 완료된 상태');
+
+-- ========================================================
+-- DELIVERY_STATUS_CODE
+-- ========================================================
+INSERT INTO DELIVERY_STATUS_CODE (NAME, DESCRIPTION)
+VALUES ('배송 준비', '상품을 배송 준비 중인 상태'),
+       ('배송 중', '상품이 배송 중인 상태'),
+       ('배송 완료', '상품이 고객에게 전달 완료된 상태'),
+       ('배송 회수 준비', '고객이 반품을 요청하여 회수 준비 중인 상태'),
+       ('배송 회수 중', '상품이 고객으로부터 회수 중인 상태'),
+       ('배송 회수 완료', '상품이 고객으로부터 회수 완료된 상태');
+
+-- ========================================================
+-- PAYMENT_METHOD_CODE
+-- ========================================================
+INSERT INTO PAYMENT_METHOD_CODE (NAME, DESCRIPTION)
+VALUES ('신용카드', '신용카드를 이용한 결제'),
+       ( '포인트', '포인트를 이용한 결제'),
+       ('무통장 입금', '무통장 입금을 통한 결제'),
+       ('HYPER PAY', '하이퍼페이를 이용한 결제');
+
+-- ========================================================
+-- PAYMENT_STATUS_CODE
+-- ========================================================
+INSERT INTO PAYMENT_STATUS_CODE (NAME, DESCRIPTION)
+VALUES ('결제 대기', '결제가 대기 중인 상태'),
+       ('결제 완료', '결제가 정상적으로 완료된 상태'),
+       ('결제 취소', '결제가 취소된 상태'),
+       ('환불 대기', '환불이 대기 중인 상태'),
+       ('환불 거부', '환불이 거부된 상태'),
+       ('환불 완료', '환불이 완료된 상태');
