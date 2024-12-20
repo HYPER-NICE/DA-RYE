@@ -35,7 +35,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상품 등록")
-    void insertProduct() throws Exception {
+    void insertProductTest() throws Exception {
         // given
         given(productService.insertProduct(any(Product.class))).willReturn(1);
 
@@ -66,7 +66,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상품 전체 조회")
-    void selectAllProduct() throws Exception {
+    void selectAllProductTest() throws Exception {
         // given
         Product product = new Product();
         product.setId(11L);
@@ -113,7 +113,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("특정 ID의 상품 조회")
-    void selectProductById() throws Exception {
+    void selectByPrimaryIdTest() throws Exception {
         // given
         ProductWithBLOBs product = new ProductWithBLOBs();
         product.setId(11L);
@@ -151,7 +151,7 @@ class ProductControllerTest {
                 .thenReturn((ProductWithBLOBs) products.stream().filter(p -> p.getId().equals(33L)).findFirst().orElse(null));
 
         // When & Then: MockMvc를 사용해 테스트
-        mockMvc.perform(get("/products/{id}", 33L)
+        mockMvc.perform(get("/products/33")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(33L)) // 반환된 상품의 ID 확인

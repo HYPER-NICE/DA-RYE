@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductWithBLOBs> getProduct(@PathVariable Long id) {
+    public ResponseEntity<ProductWithBLOBs> selectByPrimaryKey(@PathVariable Long id) {
         ProductWithBLOBs product = productService.selectByPrimaryKey(id);
         if (product == null) {
             return ResponseEntity.notFound().build();

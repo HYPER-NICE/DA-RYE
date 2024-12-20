@@ -22,7 +22,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 등록")
-    void insertProduct() {
+    void insertProductTest() {
         // given
         Product product = new Product();
         product.setName("test");
@@ -50,7 +50,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 전체 조회")
-    void selectAllProduct() {
+    void selectAllProductTest() {
         // given
         Product product = new Product();
         product.setId(1L);
@@ -81,14 +81,14 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("특정 ID의 상품 조회")
-    void selectProductById() {
+    void selectByPrimaryKeyTest() {
         ProductWithBLOBs pwb = productService.selectByPrimaryKey(28L);
         assertEquals("우전", pwb.getName());
     }
 
     @Test
     @DisplayName("특정 ID에 등록된 상품이 없는 경우")
-    void selectProductById2() {
+    void selectByPrimaryKey2Test() {
         ProductWithBLOBs pwb = productService.selectByPrimaryKey(999L);
         assertNull(pwb);
     }

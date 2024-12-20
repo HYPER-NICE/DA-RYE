@@ -89,7 +89,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("특정 ID의 상품을 조회")
-    void selectByPrimaryKey() {
+    void selectByPrimaryKeyTest() {
         // given
         Long id = 27L;
 
@@ -104,7 +104,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("특정 ID에 등록된 상품이 없는 경우")
-    void selectByPrimaryKey_WhenProductDoesNotExist() {
+    void selectByPrimaryKey_WhenProductDoesNotExistTest() {
         // Given
         Long id = 999L;
 
