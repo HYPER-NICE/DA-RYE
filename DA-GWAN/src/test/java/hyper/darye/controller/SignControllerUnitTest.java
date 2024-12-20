@@ -208,7 +208,7 @@ class SignControllerUnitTest {
 
         @Test
         @DisplayName("사인아웃 성공 - 인증된 사용자")
-        @WithMockUser(username = "authenticatedUser", roles = {"USER"})
+        @WithMockUser(username = "authenticatedUser")
         void signOutSuccess() throws Exception {
             // When & Then
             mockMvc.perform(post("/api/sign-out")
