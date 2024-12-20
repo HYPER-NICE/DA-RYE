@@ -12,11 +12,14 @@ import java.util.NoSuchElementException;
 @Service
 public class MemberService {
 
-    @Autowired
-    private MemberMapper memberMapper;
+    private final MemberMapper memberMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
+        this.memberMapper = memberMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Member selectMemberByEmail(String email) throws NoSuchElementException {
         Member result = memberMapper.selectByEmail(email);
