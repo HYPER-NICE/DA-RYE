@@ -6,22 +6,26 @@ import hyper.darye.dto.controller.request.SignIn;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
+@ExtendWith(SpringExtension.class)
 class SignControllerIntegrationTest {
 
     @Autowired
@@ -47,6 +51,14 @@ class SignControllerIntegrationTest {
         return signIn;
     }
 
+    private void performPostRequest(String url, Object requestBody, ResultMatcher expectedStatus) throws Exception {
+        mockMvc.perform(post(url)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(expectedStatus);
+    }
+
     @Nested
     @DisplayName("사인업 (Sign Up) 통합 테스트")
     class SignUpTests {
@@ -56,12 +68,7 @@ class SignControllerIntegrationTest {
         @WithAnonymousUser
         void signUpSuccess() throws Exception {
             SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
-
-            mockMvc.perform(post("/api/sign-up")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signUpRequest)))
-                    .andExpect(status().isCreated());
+            performPostRequest("/api/sign-up", signUpRequest, status().isCreated());
         }
 
         @Test
@@ -69,12 +76,7 @@ class SignControllerIntegrationTest {
         @WithAnonymousUser
         void signUpFailMissingRequiredField() throws Exception {
             SignUp signUpRequest = createSignUpDto(null, "test@example.com", "Password123!", "Password123!", null);
-
-            mockMvc.perform(post("/api/sign-up")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signUpRequest)))
-                    .andExpect(status().isBadRequest());
+            performPostRequest("/api/sign-up", signUpRequest, status().isBadRequest());
         }
 
         @Test
@@ -82,12 +84,7 @@ class SignControllerIntegrationTest {
         @WithAnonymousUser
         void signUpFailPasswordMismatch() throws Exception {
             SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "WrongPassword!", "010-1234-5678");
-
-            mockMvc.perform(post("/api/sign-up")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signUpRequest)))
-                    .andExpect(status().isBadRequest());
+            performPostRequest("/api/sign-up", signUpRequest, status().isBadRequest());
         }
     }
 
@@ -99,19 +96,13 @@ class SignControllerIntegrationTest {
         @DisplayName("사인인 성공 - 유효한 사용자")
         @WithAnonymousUser
         void signInSuccess() throws Exception {
+            // 회원가입 먼저 수행
             SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
-            mockMvc.perform(post("/api/sign-up")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signUpRequest)))
-                    .andExpect(status().isCreated());
+            performPostRequest("/api/sign-up", signUpRequest, status().isCreated());
 
+            // 사인인 수행
             SignIn signInRequest = createSignInDto("test@example.com", "Password123!");
-            mockMvc.perform(post("/api/sign-in")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signInRequest)))
-                    .andExpect(status().isNoContent());
+            performPostRequest("/api/sign-in", signInRequest, status().isNoContent());
         }
 
         @Test
@@ -119,11 +110,7 @@ class SignControllerIntegrationTest {
         @WithAnonymousUser
         void signInFailInvalidCredentials() throws Exception {
             SignIn signInRequest = createSignInDto("invalid@example.com", "WrongPassword!");
-            mockMvc.perform(post("/api/sign-in")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(signInRequest)))
-                    .andExpect(status().isUnauthorized());
+            performPostRequest("/api/sign-in", signInRequest, status().isUnauthorized());
         }
     }
 
