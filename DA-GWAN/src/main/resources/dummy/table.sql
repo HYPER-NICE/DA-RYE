@@ -21,23 +21,23 @@ INSERT INTO MEMBER (
     LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
 VALUES
 -- 첫 번째 사용자
-('john.doe@example.com', 'member','p123', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0,
+('john.doe@example.com', 'USER','p123', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0,
  NULL, NOW(), NOW(), NOW(), NULL, NULL),
 
 -- 두 번째 사용자
-('jane.smith@example.com', 'member', 'p456', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0,
+('jane.smith@example.com', 'USER', 'p456', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0,
  NULL, NOW(), NOW(), NOW(), NULL, NULL),
 
 -- 세 번째 사용자
-('alex.kim@example.com', 'member', 'p789', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2,
+('alex.kim@example.com', 'USER', 'p789', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2,
  '2024-06-01 08:00:00', NOW(), NOW(), NOW(), NULL, NULL),
 
 -- 네 번째 사용자
-('lisa.park@example.com', 'member', 'p000', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1,
+('lisa.park@example.com', 'USER', 'p000', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1,
  '2024-06-02 10:00:00', NOW(), NOW(), NOW(), NULL, NULL),
 
 -- 다섯 번째 사용자
-('mike.lee@example.com', 'admin','p999', 'Mike Lee', 'M', '1992-07-20', '010-5678-9012', 0, FALSE, 3,
+('root@darye.dev', 'ADMIN','1234', 'root', 'M', '1992-07-20', '010-5678-9012', 0, FALSE, 3,
  '2024-06-02 15:00:00', NOW(), NOW(), NOW(), NULL, NULL);
 
 

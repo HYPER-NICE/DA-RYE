@@ -1,13 +1,16 @@
 package hyper.darye.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * MEMBER
  */
 @Data
+@NoArgsConstructor
 public class Member implements Serializable {
     /**
      * 회원 ID (기본 키)
@@ -18,6 +21,11 @@ public class Member implements Serializable {
      * 회원 이메일
      */
     private String email;
+
+    /**
+     * 계정 역할
+     */
+    private String role;
 
     /**
      * 비밀번호
@@ -32,7 +40,7 @@ public class Member implements Serializable {
     /**
      * 성별
      */
-    private String sex;
+    private Character sex;
 
     /**
      * 생년월일
@@ -90,4 +98,14 @@ public class Member implements Serializable {
     private Date deletedDate;
 
     private static final long serialVersionUID = 1L;
+
+    public Member(long id, String email, String password, String rePassword, String name, Character sex, Date birthdate, String mobile) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.sex = sex;
+        this.birthdate = birthdate;
+        this.mobile = mobile;
+    }
 }
