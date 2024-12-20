@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -26,15 +27,6 @@ class CartMapperTest {
     @Autowired
     private ForeignKeyMapper fkMapper;
 
-    @BeforeEach
-    void disableForeignKeyChecks() {
-        fkMapper.disableForeignKeyChecks();
-    }
-
-    @AfterEach
-    void enableForeignKeyChecks() {
-        fkMapper.enableForeignKeyChecks();
-    }
 
     @Test
     @DisplayName("장바구니 넣기 테스트")
@@ -55,14 +47,15 @@ class CartMapperTest {
 
         //then
         assertEquals(1, result);
+        cartMapper.selectCart(100L);
     }
 
     @Test
     @DisplayName("장바구니 중복 처리 테스트")
     void insertDuplicateTest() {
         Cart cart = new Cart();
-        cart.setMemberId(100L);
-        cart.setProductId(100L);
+        cart.setMemberId(1L);
+        cart.setProductId(5L);
         cart.setQuantity(10L);
         cartMapper.insertCart(cart);
 
@@ -76,7 +69,7 @@ class CartMapperTest {
             result = cartMapper.insertCart(cart);
         }
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(7L);
+        List<CartSelect> cartSelect = cartMapper.selectCart(100L);
         assertEquals(1, cartSelect.size());
         assertEquals(20, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
     }
