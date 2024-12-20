@@ -116,7 +116,7 @@ class MemberServiceTest {
         assertEquals("jane.smith@example.com", updatedMember.getEmail());
         assertEquals("Jane Smith", updatedMember.getName());
         assertEquals('F', updatedMember.getSex());
-        assertEquals("p123", updatedMember.getPassword());
+//        assertEquals("p123", updatedMember.getPassword());    // 비밀번호 암호화로 비교 불가
 //        assertEquals(birthdate, updatedMember.getBirthdate());
     }
 }
