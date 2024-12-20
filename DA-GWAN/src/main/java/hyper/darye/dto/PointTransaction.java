@@ -8,7 +8,7 @@ import lombok.Data;
  * POINT_HISTORY
  */
 @Data
-public class PointHistory implements Serializable {
+public class PointTransaction implements Serializable {
     /**
      * 포인트 발생 ID
      */

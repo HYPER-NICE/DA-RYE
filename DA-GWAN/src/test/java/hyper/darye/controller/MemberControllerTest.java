@@ -1,6 +1,8 @@
 package hyper.darye.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Member;
+import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,15 +19,18 @@ import java.util.Date;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MemberController.class)
+@WebMvcTest(SignController.class)
+@Import(SecurityConfig.class)
 class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private MemberService memberService;
@@ -90,10 +96,27 @@ class MemberControllerTest {
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
                 "p123","John Doe", 'M', birthdate, "010-1234-5678");
 
-        given(memberService.softDeleteMemberById(0L)).willReturn(1);
+        mockMvc.perform(post("/api/sign-up")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testMember)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.confirmPassword").value("비밀번호가 일치하지 않습니다."));
+    }
 
-        mockMvc.perform(post("/members/0"))
+    @Test
+    void updateMemberByIdSelectiveTest() throws Exception {
+        Date birthdate = new Date(1990 - 1900, 0, 1);
+        Member testMember = new Member(0L, "john.doe@example.com", "p123",
+                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+
+        String jsonRequest = objectMapper.writeValueAsString(testMember);
+
+        mockMvc.perform(put("/members/0")
+                        .contentType("application/json")
+                        .content(jsonRequest))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1"));
+                .andExpect(jsonPath("$.email").value("john.doe@example.com"))
+                .andExpect(jsonPath("$.name").value("John Doe"))
+                .andExpect(jsonPath("$.sex").value("M"));
     }
 }

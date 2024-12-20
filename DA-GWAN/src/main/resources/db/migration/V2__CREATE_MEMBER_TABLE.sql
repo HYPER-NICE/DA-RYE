@@ -1,7 +1,7 @@
 CREATE TABLE MEMBER
 (
     -- 기본키
-    ID                   BIGINT       AUTO_INCREMENT PRIMARY KEY COMMENT '회원 ID (기본 키)',
+    ID                   BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '회원 ID (기본 키)',
 
     -- 대체키
     EMAIL                VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
@@ -9,15 +9,15 @@ CREATE TABLE MEMBER
     -- 데이터
     ROLE                 VARCHAR(20)  NOT NULL DEFAULT 'USER' COMMENT '계정 역할',
     PASSWORD             VARCHAR(255) NOT NULL COMMENT '비밀번호',
-    NAME                 VARCHAR(50) NOT NULL COMMENT '회원 이름',
-    SEX                  CHAR(1)      NOT NULL COMMENT '성별',
-    BIRTHDATE            DATE         NOT NULL COMMENT '생년월일',
-    MOBILE               VARCHAR(13) NOT NULL COMMENT '휴대폰 번호',
+    NAME                 VARCHAR(50)  NOT NULL COMMENT '회원 이름',
+    SEX                  CHAR(1)      NULL COMMENT '성별',
+    BIRTHDATE            DATE         NULL COMMENT '생년월일',
+    MOBILE               VARCHAR(13)  NOT NULL COMMENT '휴대폰 번호',
     POINT                INT          NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
     LOCKED               BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '계정 잠금 여부',
-    PW_FAILED_COUNT        INT          NOT NULL DEFAULT 0 COMMENT '비밀번호 실패 횟수',
+    PW_FAILED_COUNT      INT          NOT NULL DEFAULT 0 COMMENT '비밀번호 실패 횟수',
     LATEST_LOGIN_DATE    DATETIME     NULL COMMENT '마지막 로그인 날짜',
-    REG_DATE             DATETIME(6)     NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '가입 날짜',
+    REG_DATE             DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '가입 날짜',
     CHECK (SEX IN ('M', 'F', 'O')),
 
     -- 시스템 관리 컬럼

@@ -2,6 +2,9 @@ package hyper.darye.mapper;
 
 import hyper.darye.dto.PointTransactionType;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface PointTransactionTypeMapper {
@@ -16,4 +19,7 @@ public interface PointTransactionTypeMapper {
     int updateByPrimaryKeySelective(PointTransactionType record);
 
     int updateByPrimaryKey(PointTransactionType record);
+
+    @Select("select * from POINT_TRANSACTION_TYPE")
+    List<PointTransactionType> selectAll();
 }

@@ -3,6 +3,7 @@ package hyper.darye.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +27,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProductController.class)
+@WebMvcTest(SignController.class)
+@Import(SecurityConfig.class)
 class ProductControllerTest {
 
     @Autowired
