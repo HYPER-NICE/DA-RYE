@@ -1,12 +1,12 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Member;
+import hyper.darye.dto.SignUp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,17 +20,18 @@ class MemberServiceTest {
 
     @Test
     void insertMemberTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        int result = memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+
+        int result = memberService.insert(signUp);
         assertEquals(1, result);
     }
 
     @Test
     void selectMemberByValidEmailTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+        memberService.insert(signUp);
 
         Member foundMember = memberService.selectMemberByEmail("john.doe@example.com");
 
@@ -47,9 +48,9 @@ class MemberServiceTest {
 
     @Test
     void selectMemberByValidIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+        memberService.insert(signUp);
 
         Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
         Long paramId = insertedMember.getId();
@@ -68,9 +69,9 @@ class MemberServiceTest {
 
     @Test
     void softDeleteMemberByIdTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+        memberService.insert(signUp);
 
         Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
         Long paramId = insertedMember.getId();
@@ -83,27 +84,26 @@ class MemberServiceTest {
 
     @Test
     void updateMemberByIdSelectiveWithOneFieldTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+        memberService.insert(signUp);
 
         Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
         insertedMember.setEmail("john.doe2@example.com");
 
         memberService.updateMemberByIdSelective(insertedMember);
-        Member updatedMember = memberService.selectMemberById(insertedMember.getId());
+        Member softDeletedMember = memberService.selectMemberById(insertedMember.getId());
 
-        assertEquals("john.doe2@example.com", updatedMember.getEmail());
-        assertEquals("John Doe", updatedMember.getName());
-        assertEquals('M', updatedMember.getSex());
+        assertEquals("john.doe2@example.com", softDeletedMember.getEmail());
+        assertEquals("John Doe", softDeletedMember.getName());
 //        assertEquals(birthdate, updatedMember.getBirthdate());  // Date 타입 때문에 충돌. 나중에 LocalDate로 일괄 변경?
     }
 
     @Test
     void updateMemberByIdSelectiveWithMultipleFieldsTest() {
-        Date birthdate = new Date(1990 - 1900, 0, 1);
-        memberService.insertMember("john.doe@example.com", "p123",
-                "p123","John Doe", 'M', birthdate, "010-1234-5678");
+        SignUp signUp = new SignUp("John Doe", "john.doe@example.com",
+                "P@ssword123", "P@ssword123", "010-1234-5678", "USER");
+        memberService.insert(signUp);
 
         Member insertedMember = memberService.selectMemberByEmail("john.doe@example.com");
         insertedMember.setEmail("jane.smith@example.com");
@@ -116,7 +116,7 @@ class MemberServiceTest {
         assertEquals("jane.smith@example.com", updatedMember.getEmail());
         assertEquals("Jane Smith", updatedMember.getName());
         assertEquals('F', updatedMember.getSex());
-        assertEquals("p123", updatedMember.getPassword());
+//        assertEquals("p123", updatedMember.getPassword());    // 비밀번호 암호화로 비교 불가
 //        assertEquals(birthdate, updatedMember.getBirthdate());
     }
 }

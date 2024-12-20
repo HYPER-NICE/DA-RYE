@@ -76,6 +76,7 @@ CREATE TABLE BOARD_IMAGE
     -- 시스템 관리 컬럼
     CREATED_DATE         DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '레코드 생성 날짜 및 시간',
     LAST_MODIFIED_DATE   DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '마지막 수정된 날짜 및 시간',
+    LAST_MODIFIED_MEMBER BIGINT       NULL COMMENT '레코드를 마지막으로 수정한 회원 ID',
     DELETED_DATE         DATETIME(6) DEFAULT NULL COMMENT '레코드가 삭제된 날짜 (논리 삭제)'
 )
     COMMENT = '게시글 이미지 테이블로, 게시글에 등록된 이미지를 관리하기 위한 테이블입니다.';

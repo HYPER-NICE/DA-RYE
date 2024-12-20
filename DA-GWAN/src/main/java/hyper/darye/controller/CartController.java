@@ -15,8 +15,8 @@ public class CartController {
     private CartService cartService;
 
     // 장바구니 넣기
-    @PostMapping
-    public String addCart(Long id, Long productId, Long quantity) {
+    @PostMapping("/{id}/cart")
+    public String addCart(@PathVariable Long id, Long productId, Long quantity) {
         int result = cartService.insertCart(id, productId, quantity);
         if (result == 1)
             return "성공";
@@ -25,8 +25,8 @@ public class CartController {
     }
 
     // 장바구니 수량 변경
-    @PatchMapping
-    public String updateCart(Long id, Long productId, @RequestParam Long quantity) {
+    @PatchMapping("/{id}/cart/{productId}")
+    public String updateCart(@PathVariable Long id, Long productId, @RequestParam Long quantity) {
         int result = cartService.updateCartQuantity(id, productId, quantity);
         if (result == 1)
             return "성공";
@@ -43,7 +43,7 @@ public class CartController {
 
 
     // 장바구니 선택 삭제
-    @GetMapping
+    @DeleteMapping("/{id}/cart")
     public int deleteCart(Long memberId, @RequestParam List<Long> productIdList) {
         return cartService.deleteCart(memberId, productIdList);
     }
