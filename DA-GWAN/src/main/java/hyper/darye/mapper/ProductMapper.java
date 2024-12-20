@@ -17,6 +17,8 @@ public interface ProductMapper {
 
     ProductWithBLOBs selectByPrimaryKey(Long id);
 
+    int updateByPrimaryKey(Product record);
+
     int deleteByPrimaryKey(Long id);
 
     int insert(ProductWithBLOBs record);
@@ -27,5 +29,4 @@ public interface ProductMapper {
 
     int updateByPrimaryKeyWithBLOBs(ProductWithBLOBs record);
 
-    int updateByPrimaryKey(Product record);
 }

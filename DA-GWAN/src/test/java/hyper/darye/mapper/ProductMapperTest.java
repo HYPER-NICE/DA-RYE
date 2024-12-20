@@ -91,7 +91,7 @@ class ProductMapperTest {
     @DisplayName("특정 ID의 상품을 조회")
     void selectByPrimaryKeyTest() {
         // given
-        Long id = 27L;
+        Long id = 11L;
 
         // when
         ProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
@@ -113,5 +113,23 @@ class ProductMapperTest {
 
         // Then
         assertNull(product);
+    }
+
+    @Test
+    @DisplayName("상품 정보 업데이트")
+    void updateByPrimaryKeyTest() {
+        Long id = 11L;
+        ProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
+        assertNotNull(product);
+
+        product.setName("가짜세작");
+        product.setPrice(10000);
+
+        int result = productMapper.updateByPrimaryKey(product);
+
+        assertEquals(1, result);
+        ProductWithBLOBs updateProduct = productMapper.selectByPrimaryKey(id);
+        assertEquals("가짜세작", updateProduct.getName());
+        assertEquals(10000, updateProduct.getPrice());
     }
 }

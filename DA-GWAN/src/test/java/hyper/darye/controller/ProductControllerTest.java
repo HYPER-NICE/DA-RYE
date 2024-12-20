@@ -1,10 +1,12 @@
 package hyper.darye.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,8 +22,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductController.class)
@@ -159,4 +160,71 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(5000)) // 반환된 상품의 가격 확인
                 .andExpect(jsonPath("$.quantity").value(500)); // 반환된 상품의 수량 확인
     }
+
+    @Test
+    @DisplayName("상품 정보 업데이트 성공")
+    void updateProductSuccess() throws Exception {
+        // Given
+        Long productId = 123L;
+        Product request = new Product();
+        request.setId(productId);
+        request.setName("Updated Product");
+        request.setPrice(1200);
+        request.setCategoryId(4L);
+        request.setManufacturer("Updated Manufacturer");
+
+        // Mocking Service
+        Mockito.when(productService.updateByPrimaryKey(Mockito.any(Product.class))).thenReturn(1);
+
+        // When & Then
+        mockMvc.perform(put("/products/{id}", productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("상품이 업데이트 되었습니다."));
+    }
+
+    @Test
+    @DisplayName("상품 정보 업데이트 실패 - ID 불일치")
+    void updateProductIdMismatch() throws Exception {
+        // Given
+        Long pathId = 123L;
+        Product request = new Product();
+        request.setId(456L); // 다른 ID 설정
+        request.setName("Updated Product");
+        request.setPrice(1200);
+        request.setCategoryId(4L);
+        request.setManufacturer("Updated Manufacturer");
+
+        // When & Then
+        mockMvc.perform(put("/products/{id}", pathId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("요청한 ID와 일치하는 상품이 없습니다."));
+    }
+
+    @Test
+    @DisplayName("상품 정보 업데이트 실패 - 상품 미존재")
+    void updateProductNotFound() throws Exception {
+        // Given
+        Long productId = 123L;
+        Product request = new Product();
+        request.setId(productId);
+        request.setName("Updated Product");
+        request.setPrice(1200);
+        request.setCategoryId(4L);
+        request.setManufacturer("Updated Manufacturer");
+
+        // Mocking Service
+        Mockito.when(productService.updateByPrimaryKey(Mockito.any(Product.class))).thenReturn(0);
+
+        // When & Then
+        mockMvc.perform(put("/products/{id}", productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("상품을 찾지 못하였습니다."));
+    }
+
 }

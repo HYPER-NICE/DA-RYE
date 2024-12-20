@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -82,7 +81,7 @@ class ProductServiceTest {
     @Test
     @DisplayName("특정 ID의 상품 조회")
     void selectByPrimaryKeyTest() {
-        ProductWithBLOBs pwb = productService.selectByPrimaryKey(28L);
+        ProductWithBLOBs pwb = productService.selectByPrimaryKey(12L);
         assertEquals("우전", pwb.getName());
     }
 
@@ -91,5 +90,22 @@ class ProductServiceTest {
     void selectByPrimaryKey2Test() {
         ProductWithBLOBs pwb = productService.selectByPrimaryKey(999L);
         assertNull(pwb);
+    }
+
+    @Test
+    @DisplayName("상품 정보 업데이트")
+    void updateByPrimaryKeyTest() {
+        ProductWithBLOBs pwb = productService.selectByPrimaryKey(13L);
+        assertNotNull(pwb);
+
+        pwb.setName("강남 순수 녹차");
+        pwb.setPrice(80000);
+
+        int result = productService.updateByPrimaryKey(pwb);
+        assertEquals(1, result);
+
+        ProductWithBLOBs pwb2 = productService.selectByPrimaryKey(13L);
+        assertEquals("강남 순수 녹차", pwb2.getName());
+        assertEquals(80000, pwb2.getPrice());
     }
 }

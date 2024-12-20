@@ -28,4 +28,8 @@ public class ProductService {
     public ProductWithBLOBs selectByPrimaryKey(Long id) {
         return this.productMapper.selectByPrimaryKey(id);
     }
+
+    public int updateByPrimaryKey(Product product) {
+        return this.productMapper.updateByPrimaryKey(product);
+    }
 }
