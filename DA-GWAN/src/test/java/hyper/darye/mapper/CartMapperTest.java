@@ -82,20 +82,20 @@ class CartMapperTest {
         cartMapper.insertCart(cart2);
 
         // when
-        List<CartSelect> cartList = cartMapper.selectCart(7L); // member_id가 3인 데이터 조회
+        List<CartSelect> cartList = cartMapper.selectCart(7L); // member_id가 7인 데이터 조회
 
         // then
-        assertEquals(3, cartList.size()); // 두 개의 데이터가 존재해야 함
+        assertEquals(3, cartList.size()); // 세 개의 데이터가 존재해야 함
 
         // 첫 번째 데이터 검증
-        CartSelect firstCart = cartList.get(1);
+        CartSelect firstCart = cartList.get(2);
         assertEquals(9L, firstCart.getProductId());
         assertEquals(7L, firstCart.getMemberId());
         assertEquals(2L, firstCart.getQuantity());
         System.out.println("첫 번째 데이터: " + firstCart);
 
         // 두 번째 데이터 검증
-        CartSelect secondCart = cartList.get(2);
+        CartSelect secondCart = cartList.get(1);
         assertEquals(8L, secondCart.getProductId());
         assertEquals(7L, secondCart.getMemberId());
         assertEquals(3L, secondCart.getQuantity());
