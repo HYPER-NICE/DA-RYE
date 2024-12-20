@@ -10,8 +10,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- 2. 테이블 비우기
 TRUNCATE TABLE MEMBER;
 
--- 3. 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
+
 
 -- ==================================================
 -- V2 MEMBER
@@ -47,11 +46,7 @@ VALUES
 -- 1. 외래 키 체크 비활성화
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 2. 테이블 비우기
-TRUNCATE TABLE CATEGORY;
 
--- 3. 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
 -- ==================================================
 -- V3 Product - CATEGORY
 -- ==================================================
@@ -104,11 +99,7 @@ select * from CATEGORY;
 -- 1. 외래 키 체크 비활성화
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 2. 테이블 비우기
-TRUNCATE TABLE PRODUCT;
 
--- 3. 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
 -- ========================================================
 -- V3 Product - Product
 -- ========================================================
@@ -173,49 +164,45 @@ INSERT INTO PRODUCT (
 -- 1. 외래 키 체크 비활성화
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 2. 테이블 비우기
-TRUNCATE TABLE STOCK;
 
--- 3. 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
 -- ========================================================
 -- V3 Product - STOCK (product 먼저 넣어야함)
 -- ========================================================
 -- 입고(+) 상황: 재고 추가
-INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
+INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_CHANGE_NOTE, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
 VALUES
-    (1, 50, '2024-06-01 10:00:00', 50, NOW(), NOW(), NULL, NULL), -- 제품 1: 초기 입고
-    (2, 100, '2024-06-01 12:00:00', 100, NOW(), NOW(), NULL, NULL), -- 제품 2: 대량 입고
-    (3, 30, '2024-06-02 09:00:00', 30, NOW(), NOW(), NULL, NULL); -- 제품 3: 회원 ID 1이 생성한 입고 데이터
+    (1, 50, 'IN','2024-06-01 10:00:00', 50, NOW(), NULL, NULL, NULL), -- 제품 1: 입고
+    (2, 100, 'IN', '2024-06-01 12:00:00', 100, NOW(), NULL, NULL, NULL), -- 제품 2: 입고
+    (3, 30, 'IN', '2024-06-02 09:00:00', 30, NOW(), NULL, NULL, NULL), -- 제품 3: 입고
+    (4, 5, 'IN', '2024-06-01 12:00:00', 5, NOW(), NULL, NULL, NULL), -- 제품 4: 입고
+    (2, 2, 'IN-CANCEL', '2024-06-02 09:00:00', 102, NOW(), NULL, NULL, NULL); -- 제품 2: 취소제품 입고
 
 -- 출고(-) 상황: 재고 감소
-INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
+INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_CHANGE_NOTE, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
 VALUES
-    (1, -10, '2024-06-02 14:00:00', 40, NOW(), NOW(), NULL, NULL), -- 제품 1: 10개 출고
-    (2, -20, '2024-06-03 11:00:00', 80, NOW(), NOW(), NULL, NULL), -- 제품 2: 20개 출고
-    (3, -10, '2024-06-03 15:00:00', 20, NOW(), NOW(), NULL, NULL); -- 제품 3: 10개 출고
+    (1, -10, 'OUT-RETURN', '2024-06-02 14:00:00', 40, NOW(), NULL, NULL, NULL), -- 제품 1: 10개 반환
+    (2, -2, 'OUT-ORDER', '2024-06-03 11:00:00', 100, NOW(), NULL, NULL, NULL), -- 제품 2: 2개 주문
+    (3, -1, 'OUT-ORDER', '2024-06-03 15:00:00', 29, NOW(), NULL, NULL, NULL), -- 제품 3: 1개 주문
+    (4, -1, 'OUT-ORDER', '2024-06-01 12:00:00', 4, NOW(), NULL, NULL, NULL), -- 제품 4: 1개 주문
+    (4, -2, 'OUT-DAMAGE', '2024-06-01 12:00:00', 2, NOW(), NULL, NULL, NULL), -- 제품 4: 2개 파손
+    (4, -1, 'OUT-RETURN', '2024-06-01 12:00:00', 1, NOW(), NULL, NULL, NULL), -- 제품 4: 1개 반환
+    (4, -1, 'OUT-ORDER', '2024-06-01 12:00:00', 0, NOW(), NULL, NULL, NULL); -- 제품 4: 1개 주문, 재고 0 도달
 
 -- 재고 유지 상황: 입출고 없이 재고 상태 유지
-INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
+INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_CHANGE_NOTE, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
 VALUES
-    (1, 0, '2024-06-04 10:00:00', 40, NOW(), NOW(), NULL, NULL), -- 제품 1: 재고 유지
-    (2, 0, '2024-06-04 10:00:00', 80, NOW(), NOW(), NULL, NULL); -- 제품 2: 재고 유지
+    (1, 0, 'CHECK','2024-06-04 10:00:00', 40, NOW(), NULL, NULL, NULL), -- 제품 1: 재고 유지
+    (2, 0, 'CHECK','2024-06-04 10:00:00', 100, NOW(), NULL, NULL, NULL); -- 제품 2: 재고 유지
 
--- 재고 0 도달: 출고로 재고 소진
-INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
+-- 나머지 6개 상품에 대한 초기 재고
+INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_CHANGE_NOTE, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
 VALUES
-    (3, -20, '2024-06-05 10:00:00', 0, NOW(), NOW(), NULL, NULL); -- 제품 3: 재고 0 도달
-
--- 나머지 7개 상품에 대한 초기 재고
-INSERT INTO STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE)
-VALUES
-    (4, 20, '2024-06-01 10:00:00', 20, NOW(), NOW(), NULL, NULL),
-    (5, 20, '2024-06-01 12:00:00', 20, NOW(), NOW(), NULL, NULL),
-    (6, 30, '2024-06-01 12:00:00', 30, NOW(), NOW(), NULL, NULL),
-    (7, 10, '2024-06-01 12:00:00', 10, NOW(), NOW(), NULL, NULL),
-    (8, 20, '2024-06-01 12:00:00', 20, NOW(), NOW(), NULL, NULL),
-    (9, 40, '2024-06-01 12:00:00', 40, NOW(), NOW(), NULL, NULL),
-    (10, 10, '2024-06-01 12:00:00', 10, NOW(), NOW(), NULL, NULL);
+    (5, 20, 'IN', '2024-06-01 12:00:00', 20, NOW(), NULL, NULL, NULL),
+    (6, 30, 'IN','2024-06-01 12:00:00', 30, NOW(), NULL, NULL, NULL),
+    (7, 10, 'IN','2024-06-01 12:00:00', 10, NOW(), NULL, NULL, NULL),
+    (8, 20, 'IN','2024-06-01 12:00:00', 20, NOW(), NULL, NULL, NULL),
+    (9, 40, 'IN','2024-06-01 12:00:00', 40, NOW(), NULL, NULL, NULL),
+    (10, 10, 'IN','2024-06-01 12:00:00', 10, NOW(), NULL, NULL, NULL);
 
 
 -- ==================================================
@@ -226,11 +213,7 @@ VALUES
 -- 1. 외래 키 체크 비활성화
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 2. 테이블 비우기
-TRUNCATE TABLE CART;
 
--- 3. 외래 키 체크 활성화
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- ==================================================
 -- V3 Product - CART
@@ -239,22 +222,22 @@ INSERT INTO CART (
     MEMBER_ID, PRODUCT_ID, QUANTITY, PICKED_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
 ) VALUES
 -- 회원 ID 1번, 상품 ID 2번: 장바구니 담기
-(1, 2, 2, '2024-07-01 10:00:00', '2024-07-01 10:00:00', NOW(), NULL, NULL),
+(3, 3, 2, '2024-07-01 10:00:00', '2024-07-01 10:00:00', NOW(), NULL, NULL),
 
 -- 회원 ID 1번, 상품 ID 9번: 장바구니 담기
-(1, 2, 1, '2024-07-01 11:00:00', '2024-07-01 11:00:00', NOW(), NULL, NULL),
+(6, 11, 1, '2024-07-01 11:00:00', '2024-07-01 11:00:00', NOW(), NULL, NULL),
 
 -- 회원 ID 2번, 상품 ID 9번: 장바구니 담기
-(2, 9, 3, '2024-07-12 09:30:00', '2024-07-12 09:30:00', NOW(), NULL, NULL),
+(6, 9, 3, '2024-07-12 09:30:00', '2024-07-12 09:30:00', NOW(), NULL, NULL),
 
 -- 회원 ID 3번, 상품 ID 3번: 장바구니 담기
-(3, 3, 1, '2024-07-23 14:15:00', '2024-07-23 14:15:00', NOW(), NULL, NULL),
+(3, 10, 1, '2024-07-23 14:15:00', '2024-07-23 14:15:00', NOW(), NULL, NULL),
 
 -- 회원 ID 4번, 상품 ID 2번: 장바구니 담기 및 논리 삭제된 상태
 (4, 2, 2, '2024-08-09 16:45:00', '2024-08-09 16:45:00', NOW(), NULL, '2024-08-11 17:40:00'),
 
 -- 회원 ID 2번, 상품 ID 1번: 장바구니 담기
-(2, 9, 3, '2024-08-20 11:30:00', '2024-08-20 11:30:00', NOW(), NULL, NULL),
+(4, 9, 3, '2024-08-20 11:30:00', '2024-08-20 11:30:00', NOW(), NULL, NULL),
 
 -- 회원 ID 5번, 상품 ID 4번: 장바구니 담기
 (5, 1, 1, '2024-08-27 15:35:00', '2024-08-27 15:35:00', NOW(), NULL, NULL),
@@ -268,3 +251,5 @@ INSERT INTO CART (
 -- 회원 ID 7번, 상품 ID 7번: 장바구니 담기
 (7, 7, 2, '2024-08-30 22:35:00', '2024-08-30 22:35:00', NOW(), NULL, NULL);
 
+-- 3. 외래 키 체크 활성화
+SET FOREIGN_KEY_CHECKS = 1;
