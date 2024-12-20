@@ -2,8 +2,11 @@ package hyper.darye.service;
 
 
 import hyper.darye.dto.Product;
+import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -18,4 +21,11 @@ public class ProductService {
         return this.productMapper.insertProduct(product);
     }
 
+    public List<Product> selectAllProduct() {
+        return this.productMapper.selectAllProduct();
+    }
+
+    public ProductWithBLOBs selectByPrimaryKey(Long id) {
+        return this.productMapper.selectByPrimaryKey(id);
+    }
 }
