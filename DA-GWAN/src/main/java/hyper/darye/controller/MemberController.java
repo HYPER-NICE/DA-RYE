@@ -23,7 +23,7 @@ public class MemberController {
     @PreAuthorize("#id == principal.id or hasRole('USER')")
     @GetMapping("/members/{id}")
     public Member selectMemberById(@PathVariable Long id) {
-        return memberService.selectMemberById(id);
+        return memberService.selectByPrimaryKey(id);
     }
 
     @PreAuthorize("#id == principal.id or hasRole('USER')")
@@ -48,7 +48,7 @@ public class MemberController {
         member.setMobile(updateRequest.getMobile());
         member.setLastModifiedMember(id); // 예시 설정
 
-        memberService.updateMemberByIdSelective(member);
-        return memberService.selectMemberById(id);
+        memberService.updateByPrimaryKeySelective(member);
+        return memberService.selectByPrimaryKey(id);
     }
 }

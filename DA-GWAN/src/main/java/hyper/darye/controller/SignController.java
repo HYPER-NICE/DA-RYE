@@ -2,6 +2,7 @@ package hyper.darye.controller;
 
 import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
+import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,23 +35,24 @@ public class SignController {
      */
     @PreAuthorize("isAnonymous()") // 인증되지 않은 사용자만 접근 가능
     @PostMapping("/sign-in") // POST 방식으로 사인인
-    public ResponseEntity<?> login(@RequestBody SignIn signInRequest) {
+    public ResponseEntity<?> signIn(@RequestBody SignIn signInRequest) {
         String email = signInRequest.getEmail();
         String password = signInRequest.getPassword();
 
         try {
             // 인증 시도
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password)
-            );
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
             // SecurityContext 업데이트
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // 사인인 성공 후 작업
-            memberService.latestLoginDate(email);
-            return ResponseEntity.noContent().build();
+            // 인증된 사용자 정보 추출
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            Long userId = userDetails.getId();
 
+            // 사인인 성공 후 작업
+            memberService.updateLatestSignInDate(userId);
+            return ResponseEntity.noContent().build();
         } catch (BadCredentialsException e) {
             // 자격 증명 오류: 헤더에 메시지 추가
             HttpHeaders headers = new HttpHeaders();
@@ -85,7 +88,7 @@ public class SignController {
         }
 
         // 정상 회원 가입 처리
-        memberService.insert(signUpRequest);
+        memberService.insertSelective(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

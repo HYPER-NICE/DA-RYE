@@ -11,7 +11,7 @@ INSERT INTO MEMBER (
       ('john.doe@example.com', 'USER', 'p123', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0, NULL, NOW()),
       ('jane.smith@example.com', 'USER', 'p456', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0, NULL, NOW()),
       ('alex.kim@example.com', 'USER', 'p789', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2, '2024-06-01 08:00:00', NOW()),
-      ('lisa.park@example.com', 'USER', 'p000', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1, '2024-06-02 10:00:00', NOW()),
+      ('lisa.park@example.com', 'USER', 'p000', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1, '2024-06-02 10:00:00', NOW());
 
 -- ==================================================
 -- CATEGORY

@@ -58,7 +58,7 @@ class MemberControllerTest {
         Member testMember = new Member(0L, "john.doe@example.com", "p123",
                 "John Doe", 'M', birthdate, "010-1234-5678");
 
-        given(memberService.selectMemberById(0L)).willReturn(testMember);
+        given(memberService.selectByPrimaryKey(0L)).willReturn(testMember);
 
         mockMvc.perform(get("/api/members/0")
                         .with(csrf())

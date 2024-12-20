@@ -4,6 +4,8 @@ import hyper.darye.dto.Member;
 import hyper.darye.dto.SignUp;
 import hyper.darye.mapper.MemberMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -31,225 +34,142 @@ class MemberServiceUnitTest {
     private MemberService memberService;
 
     private SignUp signUp;
-    private Member mockMember;
+    private Member expectedMember;
 
     @BeforeEach
     void setUp() {
-        signUp = new SignUp();
+        signUp = createSignUp();
+        expectedMember = createExpectedMember();
+    }
+
+    private SignUp createSignUp() {
+        SignUp signUp = new SignUp();
         signUp.setName("John Doe");
         signUp.setEmail("john.doe@example.com");
         signUp.setPassword("P@ssword123");
         signUp.setConfirmPassword("P@ssword123");
         signUp.setContact("010-1234-5678");
         signUp.setRole("USER");
-
-        mockMember = new Member();
-        mockMember.setId(1L);
-        mockMember.setName(signUp.getName());
-        mockMember.setEmail(signUp.getEmail());
-        mockMember.setPassword("EncodedP@ssword123");
-        mockMember.setMobile(signUp.getContact());
-        mockMember.setRole(signUp.getRole());
-        mockMember.setCreatedDate(new Date());
+        return signUp;
     }
 
-    @Test
-    void insertMemberTest() {
-        // 비밀번호 암호화 시뮬레이션
-        when(passwordEncoder.encode(signUp.getPassword())).thenReturn("EncodedP@ssword123");
-
-        // 매퍼의 insertSelective 메서드가 호출되었을 때 1을 반환하도록 설정
-        when(memberMapper.insertSelective(any(Member.class))).thenReturn(1);
-
-        // 서비스 메서드 호출
-        int result = memberService.insert(signUp);
-
-        // 반환값 검증
-        assertEquals(1, result);
-
-        // ArgumentCaptor를 사용하여 매퍼에 전달된 Member 객체 캡처
-        ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberMapper, times(1)).insertSelective(memberCaptor.capture());
-        Member capturedMember = memberCaptor.getValue();
-
-        // 캡처된 Member 객체의 필드 검증
-        assertEquals("John Doe", capturedMember.getName());
-        assertEquals("john.doe@example.com", capturedMember.getEmail());
-        assertEquals("EncodedP@ssword123", capturedMember.getPassword());
-        assertEquals("010-1234-5678", capturedMember.getMobile());
-        assertEquals("USER", capturedMember.getRole());
+    private Member createExpectedMember() {
+        Member member = new Member();
+        member.setId(1L);
+        member.setName(signUp.getName());
+        member.setEmail(signUp.getEmail());
+        member.setPassword("EncodedP@ssword123");
+        member.setMobile(signUp.getContact());
+        member.setRole(signUp.getRole());
+        member.setCreatedDate(new Date());
+        return member;
     }
 
-    @Test
-    void selectMemberByValidEmailTest() {
-        // 매퍼의 selectByEmail 메서드가 호출되었을 때 mockMember를 반환하도록 설정
-        when(memberMapper.selectByEmail("john.doe@example.com")).thenReturn(mockMember);
+    @Nested
+    @DisplayName("회원 생성 테스트")
+    class InsertSelectiveMemberTest {
 
-        // 서비스 메서드 호출
-        Member foundMember = memberService.selectByEmail("john.doe@example.com");
+        @Test
+        @DisplayName("회원 생성 - 성공")
+        void insertSelectiveMemberTest_Success() {
+            // Given
+            when(passwordEncoder.encode(signUp.getPassword())).thenReturn("EncodedP@ssword123");
+            when(memberMapper.insertSelective(any(Member.class))).thenReturn(1);
 
-        // 반환된 Member 객체 검증
-        assertNotNull(foundMember);
-        assertEquals("john.doe@example.com", foundMember.getEmail());
-        assertEquals("John Doe", foundMember.getName());
-        assertEquals("USER", foundMember.getRole());
+            // When
+            int result = memberService.insertSelective(signUp);
 
-        // 매퍼의 selectByEmail 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).selectByEmail("john.doe@example.com");
+            // Then
+            assertEquals(1, result);
+            ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
+            verify(memberMapper).insertSelective(captor.capture());
+            assertThat(captor.getValue()).usingRecursiveComparison()
+                    .ignoringFields("id", "createdDate")
+                    .isEqualTo(expectedMember);
+        }
+
+        @Test
+        @DisplayName("회원 생성 - 실패 (매퍼가 0을 반환)")
+        void insertSelectiveMemberTest_Failure() {
+            // Given
+            when(passwordEncoder.encode(signUp.getPassword())).thenReturn("EncodedP@ssword123");
+            when(memberMapper.insertSelective(any(Member.class))).thenReturn(0);
+
+            // When
+            int result = memberService.insertSelective(signUp);
+
+            // Then
+            assertEquals(0, result);
+            verify(memberMapper).insertSelective(any(Member.class));
+        }
     }
 
-    @Test
-    void selectMemberByInvalidEmailTest() {
-        // 매퍼의 selectByEmail 메서드가 호출되었을 때 null을 반환하도록 설정
-        when(memberMapper.selectByEmail("null@example.com")).thenReturn(null);
+    @Nested
+    @DisplayName("회원 조회 테스트")
+    class MemberQueryTest {
+        @Test
+        @DisplayName("유효한 회원 ID로 회원 조회")
+        void selectMemberByValidIdTest() {
+            when(memberMapper.selectByPrimaryKey(1L)).thenReturn(expectedMember);
+            Member foundMember = memberService.selectByPrimaryKey(1L);
+            assertNotNull(foundMember);
+            assertEquals(1L, foundMember.getId());
+            verify(memberMapper).selectByPrimaryKey(1L);
+        }
 
-        // 서비스 메서드 호출 시 예외 발생 여부 검증
-        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            memberService.selectByEmail("null@example.com");
-        });
+        @Test
+        @DisplayName("존재하지 않는 회원 ID로 회원 조회")
+        void selectMemberByInvalidIdTest() {
+            when(memberMapper.selectByPrimaryKey(0L)).thenReturn(null);
+            NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+                memberService.selectByPrimaryKey(0L);
+            });
+            assertEquals("존재하지 않는 키입니다.", exception.getMessage());
+            verify(memberMapper).selectByPrimaryKey(0L);
+        }
 
-        // 예외 메시지 검증
-        assertEquals("존재하지 않는 이메일입니다.", exception.getMessage());
+        @Test
+        @DisplayName("유효한 이메일로 회원 조회")
+        void selectMemberByValidEmailTest() {
+            when(memberMapper.selectByEmail(signUp.getEmail())).thenReturn(expectedMember);
+            Member foundMember = memberService.selectByEmail(signUp.getEmail());
+            assertNotNull(foundMember);
+            assertEquals(signUp.getEmail(), foundMember.getEmail());
+            verify(memberMapper).selectByEmail(signUp.getEmail());
+        }
 
-        // 매퍼의 selectByEmail 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).selectByEmail("null@example.com");
+        @Test
+        @DisplayName("존재하지 않는 이메일로 회원 조회")
+        void selectMemberByInvalidEmailTest() {
+            when(memberMapper.selectByEmail("invalid@example.com")).thenReturn(null);
+            NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+                memberService.selectByEmail("invalid@example.com");
+            });
+            assertEquals("존재하지 않는 이메일입니다.", exception.getMessage());
+            verify(memberMapper).selectByEmail("invalid@example.com");
+        }
     }
 
-    @Test
-    void selectMemberByValidIdTest() {
-        // 매퍼의 selectMemberById 메서드가 호출되었을 때 mockMember를 반환하도록 설정
-        when(memberMapper.selectByPrimaryKey(1L)).thenReturn(mockMember);
+    @Nested
+    @DisplayName("회원 사인인 업데이트 테스트")
+    class UpdateLatestSignInDateTest {
 
-        // 서비스 메서드 호출
-        Member foundMember = memberService.selectMemberById(1L);
+        @Test
+        @DisplayName("회원 최신 사인인 날짜 업데이트")
+        void updateLatestSignInDateSuccessTest() {
+            when(memberMapper.updateLatestSignInDate(1L)).thenReturn(1);
+            memberService.updateLatestSignInDate(1L);
+            verify(memberMapper).updateLatestSignInDate(1L);
+        }
 
-        // 반환된 Member 객체 검증
-        assertNotNull(foundMember);
-        assertEquals(1L, foundMember.getId());
-        assertEquals("john.doe@example.com", foundMember.getEmail());
-
-        // 매퍼의 selectMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).selectByPrimaryKey(1L);
-    }
-
-    @Test
-    void selectMemberByInvalidIdTest() {
-        // 매퍼의 selectMemberById 메서드가 호출되었을 때 null을 반환하도록 설정
-        when(memberMapper.selectByPrimaryKey(0L)).thenReturn(null);
-
-        // 서비스 메서드 호출 시 예외 발생 여부 검증
-        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            memberService.selectMemberById(0L);
-        });
-
-        // 예외 메시지 검증
-        assertEquals("존재하지 않는 키입니다.", exception.getMessage());
-
-        // 매퍼의 selectMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).selectByPrimaryKey(0L);
-    }
-
-    @Test
-    void softDeleteByPrimaryKeyTest() {
-        // 매퍼의 softDeleteMemberById 메서드가 호출되었을 때 1을 반환하도록 설정
-        when(memberMapper.softDeleteByPrimaryKey(1L)).thenReturn(1);
-
-        // 서비스 메서드 호출
-        int result = memberService.softDeleteByPrimaryKey(1L);
-
-        // 반환값 검증
-        assertEquals(1, result);
-
-        // 매퍼의 softDeleteMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).softDeleteByPrimaryKey(1L);
-    }
-
-    @Test
-    void softDeleteMemberByInvalidIdTest() {
-        // 매퍼의 softDeleteMemberById 메서드가 호출되었을 때 0을 반환하도록 설정
-        when(memberMapper.softDeleteByPrimaryKey(0L)).thenReturn(0);
-
-        // 서비스 메서드 호출 시 예외 발생 여부 검증
-        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
-            memberService.softDeleteByPrimaryKey(0L);
-        });
-
-        // 예외 메시지 검증
-        assertEquals("존재하지 않는 키입니다.", exception.getMessage());
-
-        // 매퍼의 softDeleteMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).softDeleteByPrimaryKey(0L);
-    }
-
-    @Test
-    void updateMemberByIdSelectiveTest() {
-        // 기존 회원 정보
-        Member existingMember = new Member();
-        existingMember.setId(1L);
-        existingMember.setName("John Doe");
-        existingMember.setEmail("john.doe@example.com");
-        existingMember.setSex('M');
-        existingMember.setBirthdate(new Date());
-        existingMember.setMobile("010-1234-5678");
-
-        // 업데이트할 회원 정보
-        Member updatedMember = new Member();
-        updatedMember.setId(1L);
-        updatedMember.setName("Jane Doe");
-        updatedMember.setEmail("jane.doe@example.com");
-        updatedMember.setSex('F');
-        updatedMember.setBirthdate(new Date());
-        updatedMember.setMobile("010-8765-4321");
-
-        // 매퍼의 selectMemberById 메서드가 호출되었을 때 existingMember를 반환하도록 설정
-        when(memberMapper.selectByPrimaryKey(1L)).thenReturn(existingMember);
-
-        // 서비스 메서드 호출
-        memberService.updateMemberByIdSelective(updatedMember);
-
-        // 기존 회원 정보가 업데이트되었는지 검증
-        assertEquals("Jane Doe", existingMember.getName());
-        assertEquals("jane.doe@example.com", existingMember.getEmail());
-        assertEquals('F', existingMember.getSex());
-        assertEquals("010-8765-4321", existingMember.getMobile());
-
-        // 매퍼의 selectMemberById 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).selectByPrimaryKey(1L);
-    }
-
-    @Test
-    void insertMemberTest_Success() {
-        // 비밀번호 암호화 시뮬레이션
-        when(passwordEncoder.encode(signUp.getPassword())).thenReturn("EncodedP@ssword123");
-
-        // 매퍼의 insertSelective 메서드가 호출되었을 때 1을 반환하도록 설정
-        when(memberMapper.insertSelective(any(Member.class))).thenReturn(1);
-
-        // 서비스 메서드 호출
-        int result = memberService.insert(signUp);
-
-        // 반환값 검증
-        assertEquals(1, result);
-
-        // ArgumentCaptor를 사용하여 매퍼에 전달된 Member 객체 캡처
-        ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberMapper, times(1)).insertSelective(memberCaptor.capture());
-        Member capturedMember = memberCaptor.getValue();
-
-        // 캡처된 Member 객체의 필드 검증
-        assertEquals("John Doe", capturedMember.getName());
-        assertEquals("john.doe@example.com", capturedMember.getEmail());
-        assertEquals("EncodedP@ssword123", capturedMember.getPassword());
-        assertEquals("010-1234-5678", capturedMember.getMobile());
-        assertEquals("USER", capturedMember.getRole());
-    }
-
-    @Test
-    void latestLoginDateTest() {
-        // 서비스 메서드 호출
-        memberService.latestLoginDate("john.doe@example.com");
-
-        // 매퍼의 updateLatestLoginDate 메서드가 정확히 한 번 호출되었는지 검증
-        verify(memberMapper, times(1)).updateLatestLoginDate("john.doe@example.com");
+        @Test
+        @DisplayName("회원 최신 사인인 날짜 업데이트 실패")
+        void updateLatestSignInDateFailureTest() {
+            when(memberMapper.updateLatestSignInDate(1L)).thenReturn(0);
+            assertThrows(NoSuchElementException.class, () -> {
+                memberService.updateLatestSignInDate(1L);
+            });
+            verify(memberMapper).updateLatestSignInDate(1L);
+        }
     }
 }

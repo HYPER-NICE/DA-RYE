@@ -14,9 +14,9 @@ import java.util.Collections;
 public class CustomUserDetails implements UserDetails {
 
     private final Long id;
-    private final String email;           // 로그인 ID
+    private final String username;           // 사인인 식별자, 사실 이메일을 여기 넣는다. 이유는 시큐리티가 그러한 필드를 만들었는데 그걸 따라야한다...
     private final String password;        // 암호화된 비밀번호
-    private final String role;            // 권한
+    private final Collection<? extends GrantedAuthority> role;  // 권한
     private final boolean isLocked;       // 계정 잠금 여부
     private final boolean isDeleted;      // 삭제 여부
 
@@ -25,11 +25,13 @@ public class CustomUserDetails implements UserDetails {
      */
     public CustomUserDetails(Member member) {
         this.id = member.getId();
-        this.email = member.getEmail();
+        this.username = member.getEmail();
         this.password = member.getPassword();
-        this.role = member.getRole();
-        this.isLocked = Boolean.TRUE.equals(member.getLocked());
+        this.isLocked = member.getLocked();
         this.isDeleted = member.getDeletedDate() != null;
+
+        // 권한 설정
+        this.role = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
     }
 
     public Long getId() {
@@ -41,7 +43,7 @@ public class CustomUserDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+        return role;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;  // 로그인 식별자 반환
+        return username;  // 사인인 식별자 반환
     }
 
     @Override

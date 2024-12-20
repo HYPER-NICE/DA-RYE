@@ -1,8 +1,10 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hyper.darye.dto.Member;
 import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
+import hyper.darye.security.CustomUserDetails;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
@@ -19,12 +21,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import java.util.Collections;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -80,7 +86,7 @@ class SignControllerUnitTest {
             SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
 
             // Mocking
-            when(memberService.insert(ArgumentMatchers.any(SignUp.class))).thenReturn(1);
+            when(memberService.insertSelective(any(SignUp.class))).thenReturn(1);
 
             // When & Then
             mockMvc.perform(post("/api/sign-up")
@@ -152,19 +158,36 @@ class SignControllerUnitTest {
             SignIn signInRequest = createSignInDto("test@example.com", "Password123!");
 
             // Mocking AuthenticationManager
-            Authentication authentication = Mockito.mock(Authentication.class);
-            when(authenticationManager.authenticate(ArgumentMatchers.any(UsernamePasswordAuthenticationToken.class)))
+            Member member = new Member();
+            member.setId(1L);
+            member.setEmail("킹@태.희");
+            member.setPassword("비밀번호");
+            member.setRole("USER");
+            member.setLocked(false);
+            member.setDeletedDate(null);
+            CustomUserDetails userDetails = new CustomUserDetails(member);
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+
+            when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                     .thenReturn(authentication);
 
             // Mocking MemberService
-            doNothing().when(memberService).latestLoginDate("test@example.com");
+            doNothing().when(memberService).updateLatestSignInDate(anyLong());
 
             // When & Then
-            mockMvc.perform(post("/api/sign-in")
-                            .with(csrf())
+            mockMvc.perform(post("/auth/sign-in") // 엔드포인트 경로를 컨트롤러에 맞게 수정
+                            .with(csrf()) // CSRF 보호를 위한 설정
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signInRequest)))
                     .andExpect(status().isNoContent());
+
+            // Verify that updateLatestSignInDate was called with correct id
+            verify(memberService, times(1)).updateLatestSignInDate(1L);
         }
 
         @Test
@@ -175,7 +198,7 @@ class SignControllerUnitTest {
             SignIn signInRequest = createSignInDto("invalid@example.com", "WrongPassword!");
 
             // Mocking AuthenticationManager to throw an exception
-            when(authenticationManager.authenticate(ArgumentMatchers.any(UsernamePasswordAuthenticationToken.class)))
+            when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                     .thenThrow(new BadCredentialsException("Invalid credentials"));
 
             // When & Then
