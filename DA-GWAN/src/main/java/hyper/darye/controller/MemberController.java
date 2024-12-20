@@ -8,13 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api")
 public class MemberController {
 
     @Autowired
     private MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/members")
     @ResponseStatus(HttpStatus.CREATED)
     public String insertMember(@RequestBody CreateMemberRequest createMemberRequest) {
         if (!createMemberRequest.getPassword().equals(createMemberRequest.getRePassword())) {
@@ -33,22 +33,22 @@ public class MemberController {
         return "회원 가입 성공";
     }
 
-    @GetMapping
+    @GetMapping("/members")
     public Member selectMemberByEmail(@RequestParam String email) {
         return memberService.selectMemberByEmail(email);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/members/{id}")
     public Member selectMemberById(@PathVariable Long id) {
         return memberService.selectMemberById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/members/{id}")
     public int softDeleteMemberById(@PathVariable Long id) {
         return memberService.softDeleteMemberById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/members/{id}")
     public Member updateMemberByIdSelective(@RequestBody Member member) {
         memberService.updateMemberByIdSelective(member);
         return member;
