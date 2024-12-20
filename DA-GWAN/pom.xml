@@ -47,6 +47,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- 코어 디펜던시: 스프링 부트의 기본 설정을 제공하는 스타터 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
         <!-- ===================================================================== -->
         <!-- Database & Migration Dependencies                                     -->
         <!-- 데이터베이스 연결 및 마이그레이션 관련 의존성                           -->
@@ -85,6 +92,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Spring Validation: Bean Validation 지원 (JSR-303, JSR-380) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- ===================================================================== -->
         <!-- Test Dependencies                                                      -->
         <!-- 테스트용 의존성: 단위 테스트, 통합 테스트, MyBatis 테스트 지원 -->
@@ -96,11 +109,26 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- 스프링 시큐리티 테스트 의존성: 스프링 시큐리티 테스트 지원 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- MyBatis 테스트용 스타터: MyBatis 테스트 편의 기능 제공 (직접 버전 관리 필요) -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
             <version>3.0.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring REST Docs MockMVC: REST API 문서화 테스트 지원 -->
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <version>3.0.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -120,6 +148,39 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <!-- Asciidoctor Maven 플러그인 추가 -->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 스니펫 경로 설정 (테스트 수행 후 생성됨) -->
+                            <sourceDirectory>${project.basedir}/src/docs/asciidoc</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-docs</outputDirectory>
+                            <attributes>
+                                <!-- 문서 속성 설정 가능 -->
+                                <snippets>${project.build.directory}/generated-snippets</snippets>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <!-- Asciidoctor PDF 변환을 원하면 추가 가능 -->
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>3.0.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

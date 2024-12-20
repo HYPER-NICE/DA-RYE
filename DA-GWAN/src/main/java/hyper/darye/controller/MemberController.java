@@ -44,4 +44,9 @@ public class MemberController {
     public Member selectMemberById(@PathVariable Long id) {
         return memberService.selectMemberById(id);
     }
+
+    @PostMapping("/{id}")
+    public int softDeleteMemberById(@PathVariable Long id) {
+        return memberService.softDeleteMemberById(id);
+    }
 }

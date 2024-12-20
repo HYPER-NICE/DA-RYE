@@ -30,9 +30,20 @@
     from MEMBER
     where ID = #{id,jdbcType=BIGINT}
   </select>
+  <update id="softDeleteMemberById" parameterType="java.lang.Long">
+    update MEMBER
+    set DELETED_DATE = CURRENT_TIMESTAMP
+    where ID = #{id, jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from MEMBER
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from MEMBER
-    where ID = #{id,jdbcType=BIGINT}
+    where ID = #{id, jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.Member" useGeneratedKeys="true">
     insert into MEMBER (EMAIL, `PASSWORD`, `NAME`, 

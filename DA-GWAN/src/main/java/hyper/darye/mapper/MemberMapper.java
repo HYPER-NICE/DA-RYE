@@ -5,8 +5,7 @@ import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface MemberMapper {
@@ -15,20 +14,25 @@ public interface MemberMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertMember(CreateMemberRequest member);
 
-    @Select("SELECT * FROM MEMBER " +
-            "WHERE email = #{email}")
-    Member selectMemberByEmail(String email);
+    @Select("SELECT * FROM MEMBER WHERE email = #{email}")
+    Member selectByEmail(String email);
+
+    @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
+    int updateLatestLoginDate(String email);
 
     Member selectMemberById(Long id);
 
-    int deleteByPrimaryKey(Long id);
+    Member selectByPrimaryKey(Long id);
+
+    int softDeleteMemberById(Long id);
 
     int insert(Member record);
 
     int insertSelective(Member record);
 
-    // 검색이 안됨 삭제 필요
-//    Member selectByPrimaryKey(Long id);
+    Member selectByPrimaryKey(Long id);
+  
+    int deleteByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Member record);
 
