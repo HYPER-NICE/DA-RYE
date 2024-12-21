@@ -1,27 +1,21 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.controller.request.CreateMemberRequest;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 @Mapper
+@Repository
 public interface MemberMapper {
-    @Insert("INSERT INTO MEMBER (email, password, name, sex, birthdate, mobile) " +
-            "VALUES (#{email}, #{password}, #{name}, #{sex}, #{birthdate}, #{mobile})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insertMember(CreateMemberRequest member);
+    int insertSelective(Member record);
 
     @Select("SELECT * FROM MEMBER WHERE email = #{email}")
     Member selectByEmail(String email);
 
-    @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = NOW() WHERE EMAIL = #{email}")
-    int updateLatestLoginDate(String email);
+    @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = CURRENT_TIMESTAMP WHERE ID = #{id}")
+    int updateLatestSignInDate(Long id);
 
-    Member selectMemberById(Long id);
-
-    int softDeleteMemberById(Long id);
-
-    int insertSelective(Member record);
+    int softDeleteByPrimaryKey(Long id);
 
     Member selectByPrimaryKey(Long id);
 

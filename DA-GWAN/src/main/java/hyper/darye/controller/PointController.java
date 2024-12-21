@@ -16,7 +16,7 @@ public class PointController {
 
     @GetMapping("/{id}/point")
     public Member getPoint(@PathVariable Long id) {
-        return memberService.selectMemberById(id);
+        return memberService.selectByPrimaryKey(id);
     }
 
 }
