@@ -50,7 +50,7 @@ public class Member implements Serializable {
     /**
      * 휴대폰 번호
      */
-    private String mobile;
+    private String contact;
 
     /**
      * 현재 보유 포인트
@@ -99,13 +99,13 @@ public class Member implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Member(long id, String email, String password, String name, Character sex, Date birthdate, String mobile) {
+    public Member(long id, String email, String password, String name, Character sex, Date birthdate, String contact) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.sex = sex;
         this.birthdate = birthdate;
-        this.mobile = mobile;
+        this.contact = contact;
     }
 }

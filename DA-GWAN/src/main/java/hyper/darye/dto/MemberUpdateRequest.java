@@ -8,9 +8,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class MemberUpdateRequest {
-    private String email;
+    //  지금은 이메일 변경 불가능
+//    private String email;
     private String name;
     private Character sex;
     private Date birthdate;
-    private String mobile;
+    private String contact;
 }

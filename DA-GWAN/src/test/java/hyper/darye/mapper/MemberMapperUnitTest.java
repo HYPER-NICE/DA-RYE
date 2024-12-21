@@ -25,7 +25,7 @@ class MemberMapperUnitTest {
         member.setEmail("jane.doe@example.com");
         member.setPassword("p123");
         member.setName("Jane Doe");
-        member.setMobile("010-1234-5679");
+        member.setContact("010-1234-5679");
 
         int result = memberMapper.insertSelective(member);
 

@@ -8,7 +8,7 @@
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="SEX" jdbcType="CHAR" property="sex" />
     <result column="BIRTHDATE" jdbcType="DATE" property="birthdate" />
-    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
     <result column="POINT" jdbcType="INTEGER" property="point" />
     <result column="LOCKED" jdbcType="BOOLEAN" property="locked" />
     <result column="PW_FAILED_COUNT" jdbcType="INTEGER" property="pwFailedCount" />
@@ -20,7 +20,7 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, EMAIL, `PASSWORD`, `NAME`, SEX, BIRTHDATE, MOBILE, POINT, LOCKED, PW_FAILED_COUNT, 
+    ID, EMAIL, `PASSWORD`, `NAME`, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT, 
     LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
     DELETED_DATE
   </sql>
@@ -57,8 +57,8 @@
       <if test="birthdate != null">
         BIRTHDATE,
       </if>
-      <if test="mobile != null">
-        MOBILE,
+      <if test="contact != null">
+        CONTACT,
       </if>
       <if test="point != null">
         POINT,
@@ -104,8 +104,8 @@
       <if test="birthdate != null">
         #{birthdate,jdbcType=DATE},
       </if>
-      <if test="mobile != null">
-        #{mobile,jdbcType=VARCHAR},
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
       </if>
       <if test="point != null">
         #{point,jdbcType=INTEGER},
@@ -151,8 +151,8 @@
       <if test="birthdate != null">
         BIRTHDATE = #{birthdate,jdbcType=DATE},
       </if>
-      <if test="mobile != null">
-        MOBILE = #{mobile,jdbcType=VARCHAR},
+      <if test="contact != null">
+        CONTACT = #{contact,jdbcType=VARCHAR},
       </if>
       <if test="lastModifiedDate != null">
         LAST_MODIFIED_DATE = CURRENT_TIMESTAMP,
@@ -169,7 +169,7 @@
       `NAME` = #{name,jdbcType=VARCHAR},
       SEX = #{sex,jdbcType=CHAR},
       BIRTHDATE = #{birthdate,jdbcType=DATE},
-      MOBILE = #{mobile,jdbcType=VARCHAR},
+      CONTACT = #{contact,jdbcType=VARCHAR},
       LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
       LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT}
     where ID = #{id,jdbcType=BIGINT}

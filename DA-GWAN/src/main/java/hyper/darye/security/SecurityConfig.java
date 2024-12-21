@@ -29,16 +29,13 @@ public class SecurityConfig {
                         // 인증 없이 접근 가능
                         .requestMatchers(HttpMethod.POST, "/api/sign-in").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/sign-up").permitAll()
+
                         // `/api/members`에 대한 POST 요청은 인증 없이 접근 허용
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
-                        // `/api/members/**`에 대한 GET 요청은 인증된 사용자만 접근 허용
-                        .requestMatchers(HttpMethod.GET, "/api/members/**").authenticated()
-                        // `/api/members/**`에 대한 PATCH 요청은 ADMIN 권한 사용자만 접근 허용
-                        .requestMatchers(HttpMethod.PATCH, "/api/members/**").hasRole("ADMIN")
-                        // `/api/members/**`에 대한 PUT 요청은 ADMIN 권한 사용자 또는 자신만 접근 허용
-                        .requestMatchers(HttpMethod.PUT, "/api/members/**").hasRole("ADMIN") // 추가 설정 필요
-                        // `/api/members/**`에 대한 DELETE 요청은 ADMIN 권한 사용자만 접근 허용
-                        .requestMatchers(HttpMethod.DELETE, "/api/members/**").hasRole("ADMIN")
+                        // `/api/members/**`에 대한 나머지 모든 요청은 인증 필요
+                        .requestMatchers("/api/members", "/api/members/**").authenticated()
+
+
                         // 나머지 모든 요청은 인증 필요
                         .anyRequest().authenticated()
                 )

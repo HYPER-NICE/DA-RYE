@@ -4,7 +4,7 @@
 -- 없음
 -- ==================================================
 INSERT INTO MEMBER (
-    EMAIL, ROLE, PASSWORD, NAME, SEX, BIRTHDATE, MOBILE, POINT, LOCKED, PW_FAILED_COUNT,
+    EMAIL, ROLE, PASSWORD, NAME, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT,
     LATEST_LOGIN_DATE, REG_DATE
 ) VALUES
       ('root@darye.dev', 'ADMIN', 'root', 'Root', 'M', '1990-01-01', '010-1234-5678', 0, FALSE, 0, NULL, NOW()),
