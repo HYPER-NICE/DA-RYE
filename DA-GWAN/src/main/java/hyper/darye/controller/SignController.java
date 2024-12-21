@@ -33,7 +33,7 @@ public class SignController {
      */
     @PreAuthorize("isAnonymous()") // 인증되지 않은 사용자만 접근 가능
     @PostMapping("/sign-in") // POST 방식으로 사인인
-    public ResponseEntity<?> signIn(@RequestBody SignIn signInRequest) {
+    public ResponseEntity<?> login(@RequestBody SignIn signInRequest) {
         String email = signInRequest.getEmail();
         String password = signInRequest.getPassword();
 
