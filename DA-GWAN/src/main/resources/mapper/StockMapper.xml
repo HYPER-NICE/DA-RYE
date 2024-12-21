@@ -43,6 +43,9 @@
       <if test="stockInoutQuantity != null">
         STOCK_INOUT_QUANTITY,
       </if>
+      <if test="stockChangeNote != null">
+        STOCK_CHANGE_NOTE,
+      </if>
       <if test="stockInoutDate != null">
         STOCK_INOUT_DATE,
       </if>
@@ -68,6 +71,9 @@
       </if>
       <if test="stockInoutQuantity != null">
         #{stockInoutQuantity,jdbcType=BIGINT},
+      </if>
+      <if test="stockChangeNote != null">
+        #{stockChangeNote,jdbcType=BIGINT},
       </if>
       <if test="stockInoutDate != null">
         #{stockInoutDate,jdbcType=TIMESTAMP},
