@@ -34,6 +34,12 @@ public class MemberController {
         return memberService.selectByEmail(email);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/members/me")
+    public Member selectMemberByPrincipal(@AuthenticationPrincipal CustomUserDetails principal) {
+        return memberService.selectByPrimaryKey(principal.getId());
+    }
+
     @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @PutMapping("/members/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
