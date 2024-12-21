@@ -20,8 +20,8 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, EMAIL, `PASSWORD`, `NAME`, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT, 
-    LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+    ID, EMAIL, `ROLE`, `PASSWORD`, `NAME`, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT,
+    LATEST_SIGN_IN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER,
     DELETED_DATE
   </sql>
   <update id="softDeleteByPrimaryKey" parameterType="java.lang.Long">
