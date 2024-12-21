@@ -17,7 +17,7 @@ public class CreateMemberRequest {
     private Character sex;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
-    private String mobile;
+    private String contact;
 
     public void setSex(Character sex) {
         if (sex != 'M' && sex!= 'F' && sex!= 'O')
