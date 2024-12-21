@@ -1,9 +1,9 @@
 package hyper.darye.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import hyper.darye.validation.FieldCompare.FieldComparison;
+import hyper.darye.validation.FieldCompare.CompareResult;
+import hyper.darye.validation.FieldCompare.CompareTarget;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldComparison(message = "패스워드와 확인 패스워드가 일치하지 않습니다.")
 public class SignUp {
 
     /** 필수 정보 **/
@@ -41,12 +42,13 @@ public class SignUp {
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = "비밀번호는 대소문자, 숫자, 특수문자를 포함해야 합니다."
     )
+    @CompareTarget
     private String password;
 
     /**
      * 비밀번호 확인 (필수)
      */
-    @NotBlank(message = "암호를 재입력 하세요.")
+    @CompareResult
     private String confirmPassword;
 
     /**
