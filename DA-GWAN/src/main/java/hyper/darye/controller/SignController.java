@@ -1,28 +1,27 @@
 package hyper.darye.controller;
 
+import hyper.darye.dto.Member;
 import hyper.darye.dto.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Tag(name = "사인 컨트롤러", description = "인증 관련 컨트롤러 입니다")
 @RestController
 @RequestMapping("/api")
 public class SignController {
@@ -40,51 +39,30 @@ public class SignController {
      */
     @PreAuthorize("isAnonymous()") // 인증되지 않은 사용자만 접근 가능
     @PostMapping("/sign-in")
-    public ResponseEntity<?> signIn(@RequestBody SignIn signInRequest, HttpServletRequest request) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void signIn(@RequestBody SignIn signInRequest, HttpServletRequest request) {
         String email = signInRequest.getEmail();
         String password = signInRequest.getPassword();
 
-        try {
-            // 인증 시도
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password)
-            );
+        // 인증 시도
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        );
 
-            // SecurityContext 업데이트
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        // SecurityContext 업데이트
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            HttpSession session = request.getSession(true);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                    SecurityContextHolder.getContext());
+        // 세션에 SecurityContext 저장
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
 
-            // 인증된 사용자 정보 추출
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            Long userId = userDetails.getId();
+        // 인증된 사용자 정보 추출
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId();
 
-            // 사인인 성공 후 작업
-            memberService.updateLatestSignInDate(userId);
-
-            // 응답 데이터 생성
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("userId", userId);
-            responseBody.put("email", userDetails.getUsername());
-
-            return ResponseEntity.ok(responseBody);
-
-        } catch (BadCredentialsException e) {
-            // 자격 증명 오류
-            Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Bad credentials");
-            errorBody.put("message", "사인인 실패: 자격 증명 오류");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
-
-        } catch (Exception e) {
-            // 기타 서버 오류
-            Map<String, String> errorBody = new HashMap<>();
-            errorBody.put("error", "Internal Server Error");
-            errorBody.put("message", "서버 오류 발생");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
-        }
+        // 사인인 성공 후 작업
+        memberService.updateLatestSignInDate(userId);
     }
 
     /**
@@ -117,5 +95,17 @@ public class SignController {
         cookie.setHttpOnly(true); // HTTP 전송만 허용
         cookie.setMaxAge(0); // 쿠키 만료 시간 설정 (즉시 삭제)
         response.addCookie(cookie);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/check/admin")
+    public Member checkAdmin(@AuthenticationPrincipal CustomUserDetails principal) {
+        return memberService.selectByPrimaryKey(principal.getId());
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/check/user")
+    public Member checkUser(@AuthenticationPrincipal CustomUserDetails principal) {
+        return memberService.selectByPrimaryKey(principal.getId());
     }
 }
