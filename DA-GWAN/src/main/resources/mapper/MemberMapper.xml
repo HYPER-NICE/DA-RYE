@@ -12,7 +12,7 @@
     <result column="POINT" jdbcType="INTEGER" property="point" />
     <result column="LOCKED" jdbcType="BOOLEAN" property="locked" />
     <result column="PW_FAILED_COUNT" jdbcType="INTEGER" property="pwFailedCount" />
-    <result column="LATEST_LOGIN_DATE" jdbcType="TIMESTAMP" property="latestLoginDate" />
+    <result column="LATEST_SIGN_IN_DATE" jdbcType="TIMESTAMP" property="latestLoginDate" />
     <result column="REG_DATE" jdbcType="TIMESTAMP" property="regDate" />
     <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
@@ -70,7 +70,7 @@
         PW_FAILED_COUNT,
       </if>
       <if test="latestLoginDate != null">
-        LATEST_LOGIN_DATE,
+        LATEST_SIGN_IN_DATE,
       </if>
       <if test="regDate != null">
         REG_DATE,
