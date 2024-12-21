@@ -7,6 +7,7 @@ import hyper.darye.dto.controller.request.SignIn;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
+import hyper.darye.validation.FieldCompare.FieldComparisonValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,11 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(SignController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, FieldComparisonValidator.class})
 class SignControllerUnitTest {
 
     @Autowired
@@ -110,8 +112,8 @@ class SignControllerUnitTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signUpRequest)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$[?(@.field=='name')]").exists())
-                    .andExpect(jsonPath("$[?(@.field=='contact')]").exists());
+                    .andExpect(jsonPath("$.name").exists())
+                    .andExpect(jsonPath("$.contact").exists());
         }
 
         @Test
@@ -127,7 +129,7 @@ class SignControllerUnitTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signUpRequest)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$[?(@.field=='confirmPassword')]").exists());
+                    .andExpect(jsonPath("$.confirmPassword").exists());
         }
 
         @Test
