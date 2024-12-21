@@ -7,11 +7,11 @@ INSERT INTO MEMBER (
     EMAIL, ROLE, PASSWORD, NAME, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT,
     LATEST_LOGIN_DATE, REG_DATE
 ) VALUES
-      ('root@darye.dev', 'ADMIN', 'root', 'Root', 'M', '1990-01-01', '010-1234-5678', 0, FALSE, 0, NULL, NOW()),
-      ('john.doe@example.com', 'USER', 'p123', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0, NULL, NOW()),
-      ('jane.smith@example.com', 'USER', 'p456', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0, NULL, NOW()),
-      ('alex.kim@example.com', 'USER', 'p789', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2, '2024-06-01 08:00:00', NOW()),
-      ('lisa.park@example.com', 'USER', 'p000', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1, '2024-06-02 10:00:00', NOW());
+      ('root@darye.dev', 'ADMIN', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Root', 'M', '1990-01-01', '010-1234-5678', 0, FALSE, 0, NULL, NOW()),
+      ('john.doe@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0, NULL, NOW()),
+      ('jane.smith@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0, NULL, NOW()),
+      ('alex.kim@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2, '2024-06-01 08:00:00', NOW()),
+      ('lisa.park@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Lisa Park', 'F', '2000-12-25', '010-4567-8901', 300, FALSE, 1, '2024-06-02 10:00:00', NOW());
 
 -- ==================================================
 -- CATEGORY
