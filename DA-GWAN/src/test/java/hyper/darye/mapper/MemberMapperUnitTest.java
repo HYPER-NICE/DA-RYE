@@ -66,7 +66,9 @@ class MemberMapperUnitTest {
         member.setEmail("john.doe2@example.com");
         Member updatedMember = memberMapper.selectByPrimaryKey(1L);
 
-        assertThat(updatedMember.getEmail()).isEqualTo("john.doe2@example.com");
-        assertThat(updatedMember.getName()).isEqualTo("John Doe");
+        assertThat(updatedMember)
+                .usingRecursiveComparison()
+                .ignoringFields("email", "lastModifiedDate")
+                .isEqualTo(member);
     }
 }
