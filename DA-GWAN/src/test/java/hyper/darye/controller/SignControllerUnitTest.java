@@ -157,7 +157,7 @@ class SignControllerUnitTest {
         @WithAnonymousUser
         void signInSuccess() throws Exception {
             // Given
-            SignIn signInRequest = createSignInDto("test@example.com", "Password123!");
+            SignIn signInRequest = createSignInDto("킹@태.희", "비밀번호");
 
             // Mocking AuthenticationManager
             Member member = new Member();
@@ -182,7 +182,7 @@ class SignControllerUnitTest {
             doNothing().when(memberService).updateLatestSignInDate(anyLong());
 
             // When & Then
-            mockMvc.perform(post("/auth/sign-in") // 엔드포인트 경로를 컨트롤러에 맞게 수정
+            mockMvc.perform(post("/api/sign-in") // 엔드포인트 경로를 컨트롤러에 맞게 수정
                             .with(csrf()) // CSRF 보호를 위한 설정
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signInRequest)))
