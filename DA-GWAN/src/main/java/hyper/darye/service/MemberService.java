@@ -1,5 +1,6 @@
 package hyper.darye.service;
 
+import hyper.darye.constant.Role;
 import hyper.darye.dto.Member;
 import hyper.darye.dto.SignUp;
 import hyper.darye.mapper.MemberMapper;
@@ -38,7 +39,7 @@ public class MemberService {
         // 일반 데이터
         member.setName(signUp.getName());
         member.setContact(signUp.getContact());
-        member.setRole(signUp.getRole());
+        member.setRole(Role.USER.name());
 
         return memberMapper.insertSelective(member);
     }

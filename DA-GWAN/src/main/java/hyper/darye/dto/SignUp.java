@@ -61,11 +61,4 @@ public class SignUp {
             message = "연락처 형식이 올바르지 않습니다. (예: 010-1234-5678)"
     )
     private String contact;
-
-    /** 선택 정보 **/
-
-    /**
-     * 권한 (기본값: USER)
-     */
-    private String role = "USER";
 }
