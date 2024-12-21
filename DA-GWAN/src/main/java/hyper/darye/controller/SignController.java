@@ -13,9 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -72,24 +70,10 @@ public class SignController {
      */
     @PreAuthorize("isAnonymous()") // 인증되지 않은 사용자만 접근 가능
     @PostMapping("/sign-up") // POST 방식으로 회원 가입
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUp signUpRequest, BindingResult bindingResult) {
-        // 유효성 검증 오류가 있을 경우
-        if (bindingResult.hasErrors()) {
-            // 오류가 있을 경우, 직접 오류 메시지를 바디에 담아 리턴
-            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors());
-        }
-
-        // 비밀번호 확인 로직
-        if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
-            bindingResult.rejectValue("confirmPassword", "비밀번호가 일치하지 않습니다.");
-
-            // 오류가 있을 경우, 직접 오류 메시지를 바디에 담아 리턴
-            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors());
-        }
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public void signUp(@Valid @RequestBody SignUp signUpRequest) {
         // 정상 회원 가입 처리
         memberService.insertSelective(signUpRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
