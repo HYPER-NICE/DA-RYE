@@ -12,7 +12,7 @@
     <result column="POINT" jdbcType="INTEGER" property="point" />
     <result column="LOCKED" jdbcType="BOOLEAN" property="locked" />
     <result column="PW_FAILED_COUNT" jdbcType="INTEGER" property="pwFailedCount" />
-    <result column="LATEST_LOGIN_DATE" jdbcType="TIMESTAMP" property="latestLoginDate" />
+    <result column="LATEST_SIGN_IN_DATE" jdbcType="TIMESTAMP" property="latestSignInDate" />
     <result column="REG_DATE" jdbcType="TIMESTAMP" property="regDate" />
     <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="LAST_MODIFIED_DATE" jdbcType="TIMESTAMP" property="lastModifiedDate" />
@@ -20,8 +20,8 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, EMAIL, `PASSWORD`, `NAME`, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT, 
-    LATEST_LOGIN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+    ID, EMAIL, `ROLE`, `PASSWORD`, `NAME`, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT,
+    LATEST_SIGN_IN_DATE, REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER,
     DELETED_DATE
   </sql>
   <update id="softDeleteByPrimaryKey" parameterType="java.lang.Long">
@@ -69,8 +69,8 @@
       <if test="pwFailedCount != null">
         PW_FAILED_COUNT,
       </if>
-      <if test="latestLoginDate != null">
-        LATEST_LOGIN_DATE,
+      <if test="latestSignInDate != null">
+        LATEST_SIGN_IN_DATE,
       </if>
       <if test="regDate != null">
         REG_DATE,
@@ -116,8 +116,8 @@
       <if test="pwFailedCount != null">
         #{pwFailedCount,jdbcType=INTEGER},
       </if>
-      <if test="latestLoginDate != null">
-        #{latestLoginDate,jdbcType=TIMESTAMP},
+      <if test="latestSignInDate != null">
+        #{latestSignInDate,jdbcType=TIMESTAMP},
       </if>
       <if test="regDate != null">
         #{regDate,jdbcType=TIMESTAMP},

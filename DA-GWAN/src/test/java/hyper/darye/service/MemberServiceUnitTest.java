@@ -49,7 +49,6 @@ class MemberServiceUnitTest {
         signUp.setPassword("P@ssword123");
         signUp.setConfirmPassword("P@ssword123");
         signUp.setContact("010-1234-5678");
-        signUp.setRole("USER");
         return signUp;
     }
 
@@ -60,7 +59,6 @@ class MemberServiceUnitTest {
         member.setEmail(signUp.getEmail());
         member.setPassword("EncodedP@ssword123");
         member.setContact(signUp.getContact());
-        member.setRole(signUp.getRole());
         member.setCreatedDate(new Date());
         return member;
     }

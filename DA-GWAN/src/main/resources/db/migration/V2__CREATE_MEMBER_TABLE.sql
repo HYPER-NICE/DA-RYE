@@ -16,7 +16,7 @@ CREATE TABLE MEMBER
     POINT                INT          NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
     LOCKED               BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '계정 잠금 여부',
     PW_FAILED_COUNT      INT          NOT NULL DEFAULT 0 COMMENT '비밀번호 실패 횟수',
-    LATEST_LOGIN_DATE    DATETIME NULL COMMENT '마지막 로그인 날짜',
+    LATEST_SIGN_IN_DATE    DATETIME NULL COMMENT '마지막 사인인 날짜',
     REG_DATE             DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '가입 날짜',
     CHECK (SEX IN ('M', 'F', 'O')),
 

@@ -15,20 +15,5 @@ services:
     volumes:
       - mysql_main_data:/var/lib/mysql
 
-  mysql-test:
-    image: mysql:8.4.3
-    container_name: da-rye-test
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ipsagwi_test
-      MYSQL_USER: ipsagwi
-      MYSQL_PASSWORD: ipsagwi
-    ports:
-      - "3308:3306"
-    volumes:
-      - mysql_test_data:/var/lib/mysql
-
 volumes:
   mysql_main_data:
-  mysql_test_data:

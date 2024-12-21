@@ -16,7 +16,7 @@ INSERT INTO POINT_TRANSACTION_TYPE (CODE_TYPE, CODE_VALUE, NAME, DESCRIPTION, CR
                                     DELETED_DATE)
 VALUES ('POINT_TRANSACTION_TYPE', 'save', '포인트 적립', '고객이 적립한 포인트 거래 코드', NOW(), NOW(), NULL),
        ('POINT_TRANSACTION_TYPE', 'use', '포인트 사용', '고객이 사용한 포인트 거래 코드', NOW(), NOW(), NULL),
-       ('POINT_TRANSACTION_TYPE', 'cancel', '포인트 소멸', '미로그인 1년 경과로 소멸된 포인트 거래 코드', NOW(), NOW(), NULL);
+       ('POINT_TRANSACTION_TYPE', 'cancel', '포인트 소멸', '미접속 1년 경과로 소멸된 포인트 거래 코드', NOW(), NOW(), NULL);
 
 -- ========================================================
 -- PRODUCT_STATUS
