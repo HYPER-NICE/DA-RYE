@@ -1,5 +1,6 @@
 package hyper.darye.dto.controller.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +9,11 @@ import lombok.Setter;
 @Setter
 public class SignIn {
 
+    @Schema(defaultValue = "root@darye.dev")
     @NotBlank
     private String email;
 
+    @Schema(defaultValue = "root")
     @NotBlank
     private String password;
 }

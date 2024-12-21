@@ -33,7 +33,6 @@ class MemberControllerTest {
     @MockBean
     private MemberService memberService;
 
-
     @Nested
     @DisplayName("회원 조회 테스트")
     class SelectMemberTests {
@@ -64,13 +63,9 @@ class MemberControllerTest {
 
         @Nested
         @DisplayName("일반 사용자 상태에서 회원 정보 조회")
-        @WithMockCustomUser(id = 1L, username = "user@darye.dev") // 사용자 ID 20L로 인증된 사용자
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev")
         class UserRoleTests {
 
-            /**
-             * 이 테스트 케이스의 목적은 내가 내 정보를 조회할 수 있는지 확인하는 것입니다.
-             * 데이터의 확인은 필요하지 않습니다.
-             */
             @Test
             @DisplayName("자신의 정보를 조회 - ID로 조회")
             void selectOwnMemberByPrimaryKeyTest() throws Exception {
@@ -80,10 +75,6 @@ class MemberControllerTest {
                         .andExpect(status().isOk());
             }
 
-            /**
-             * 이 테스트 케이스의 목적은 내가 다른 사람의 정보를 조회할 수 없음을 확인하는 것입니다.
-             * 데이터의 확인은 필요하지 않습니다.
-             */
             @Test
             @DisplayName("다른 회원의 정보를 조회하면 실패 - ID로 조회")
             void selectOtherMemberByPrimaryKeyTest() throws Exception {

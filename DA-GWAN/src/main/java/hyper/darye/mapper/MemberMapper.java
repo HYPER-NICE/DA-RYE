@@ -12,7 +12,7 @@ public interface MemberMapper {
     @Select("SELECT * FROM MEMBER WHERE email = #{email}")
     Member selectByEmail(String email);
 
-    @Update("UPDATE MEMBER SET LATEST_LOGIN_DATE = CURRENT_TIMESTAMP WHERE ID = #{id}")
+    @Update("UPDATE MEMBER SET LATEST_SIGN_IN_DATE = CURRENT_TIMESTAMP WHERE ID = #{id}")
     int updateLatestSignInDate(Long id);
 
     int softDeleteByPrimaryKey(Long id);

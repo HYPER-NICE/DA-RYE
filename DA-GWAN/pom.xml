@@ -131,6 +131,14 @@
             <version>3.0.3</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Spring REST Docs Asciidoctor: REST API 문서화 테스트 지원 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
     </dependencies>
 
 

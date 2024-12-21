@@ -68,9 +68,9 @@ public class Member implements Serializable {
     private Integer pwFailedCount;
 
     /**
-     * 마지막 로그인 날짜
+     * 마지막 사인인 날짜
      */
-    private Date latestLoginDate;
+    private Date latestSignInDate;
 
     /**
      * 가입 날짜
