@@ -21,15 +21,12 @@ public class StockService {
         stock.setStockChangeNote(stockChangeNote);
 
         List<Stock> recentStock = stockMapper.selectByProductId(productId);
-        if(recentStock.size() != 0) {
+        if(!recentStock.isEmpty()) {
             Long currentStock = recentStock.get(0).getCurrentStock();
-            stock.setCurrentStock(currentStock + inOutQuantity);
+            stock.setCurrentStock((Long)(currentStock +  inOutQuantity));
         }
         else {
-            if(inOutQuantity < 0)
-                throw new IllegalArgumentException("수량이 부족합니다");
-            else
-                stock.setCurrentStock(inOutQuantity);
+            stock.setCurrentStock(inOutQuantity);
         }
         stock.setStockInoutDate(new Date());
 

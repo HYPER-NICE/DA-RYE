@@ -18,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 class CartMapperTest {
 
@@ -31,85 +32,107 @@ class CartMapperTest {
     @Test
     @DisplayName("장바구니 넣기 테스트")
     void insertCartTest() {
-        //given
-        Cart cart = new Cart();
-        cart.setMemberId(100L);
-        cart.setProductId(100L);
-        cart.setQuantity(10L);
-        int result = 0;
+        // 데이터 세팅
+        Long memberId1 = (Long)3L;
 
-        //when
-        if(cartMapper.selectCartDuplicate(cart.getMemberId(), cart.getProductId()) != null) {
-            result = cartMapper.updateCart(cart.getProductId(), cart.getMemberId(), cart.getQuantity());
+        // 외래키 때문에 겹치지 않는 productId 삽입
+        List<Long> productIdList = new ArrayList<>();
+        List<Long> productId = new ArrayList<>();
+
+        // 기존 장바구니에서 productId 목록 가져오기
+        for (int i = 0; i < cartMapper.selectCart(memberId1).size(); i++) {
+            productIdList.add(cartMapper.selectCart(memberId1).get(i).getProductId());
         }
-        else
-            result = cartMapper.insertCart(cart);
 
-        //then
-        assertEquals(1, result);
-        cartMapper.selectCart(100L);
+        // 1부터 9까지의 ID 중에서 기존 productId와 겹치지 않는 것만 추가
+        for (Long i = (Long)1L; i < 10; i++) {
+            if (!productIdList.contains(i)) {
+                productId.add(i);
+            }
+        }
+
+        Long productId1 = productId.get(0); // 새로 추가할 productId
+        Long quantity = (Long)10L;
+
+        // 장바구니에 추가 전 사이즈
+        int sizeBefore = cartMapper.selectCart(memberId1).size();
+
+        Cart cart = new Cart();
+        cart.setMemberId(memberId1);
+        cart.setProductId(productId1);
+        cart.setQuantity(quantity);
+
+        // 장바구니에 상품 삽입
+        int result = cartMapper.insertCart(cart);
+
+        // then
+        assertEquals(1, result);  // 삽입이 성공하면 1이 반환되어야 함
+
     }
 
     @Test
     @DisplayName("장바구니 중복 처리 테스트")
     void insertDuplicateTest() {
+        Long memberId = (Long)3L;
+        Long productId = cartMapper.selectCart(memberId).get(0).getProductId();
+        Long quantity = cartMapper.selectCart(memberId).get(0).getQuantity();
+        Long addQuantity = (Long)10L;
+
         Cart cart = new Cart();
-        cart.setMemberId(1L);
-        cart.setProductId(5L);
-        cart.setQuantity(10L);
-        cartMapper.insertCart(cart);
+        cart.setMemberId(memberId);
+        cart.setProductId(productId);
+        cart.setQuantity(addQuantity);
 
+        // 이전 사이즈
+        int lastSize = cartMapper.selectCart(memberId).size();
 
-        int result = 0;
-        Cart duplicateCart = cartMapper.selectCartDuplicate(cart.getMemberId(), cart.getProductId());
+        Cart duplicateCart = cartMapper.selectCartDuplicate(memberId, productId);
 
         if (duplicateCart != null) {
-            result = cartMapper.updateCart(cart.getProductId(), cart.getMemberId(), cart.getQuantity());
+            cartMapper.updateCart(cart.getProductId(), cart.getMemberId(), cart.getQuantity());
         } else {
-            result = cartMapper.insertCart(cart);
+            cartMapper.insertCart(cart);
         }
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(100L);
-        assertEquals(1, cartSelect.size());
-        assertEquals(20, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
+        // 이후 사이즈
+        List<CartSelect> cartSelect = cartMapper.selectCart(memberId);
+        assertEquals(lastSize, cartSelect.size());
+        assertEquals(quantity + addQuantity, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
     }
 
 
     @Test
     @DisplayName("장바구니 데이터 조회 테스트")
     void selectCartTest() {
-        // given
+        // 데이터 세팅
+        Long memberId1 = (Long)3L;
+
+        // 외래키 때문에 겹치지 않는 productId 삽입
+        List<Long> productIdList = new ArrayList<>();
+        List<Long> productId = new ArrayList<>();
+        for (int i = 0; i < cartMapper.selectCart(memberId1).size(); i++)
+            productIdList.add(cartMapper.selectCart(memberId1).get(i).getProductId());
+
+        for(Long i = (Long)1L; i < 10; i++){
+            if(!productIdList.contains(i))
+                productId.add(i);
+        }
+
+        Long productId1 = productId.get(0);
+        Long quantity = (Long)10L;
+        int size = cartMapper.selectCart(memberId1).size(); // 이전 사이즈
+
         Cart cart1 = new Cart();
-        cart1.setMemberId(7L);
-        cart1.setProductId(9L);
-        cart1.setQuantity(2L);
+        cart1.setMemberId(memberId1);
+        cart1.setProductId(productId1);
+        cart1.setQuantity(quantity);
         cartMapper.insertCart(cart1);
 
-        Cart cart2 = new Cart();
-        cart2.setMemberId(7L);
-        cart2.setProductId(8L);
-        cart2.setQuantity(3L);
-        cartMapper.insertCart(cart2);
-
         // when
-        List<CartSelect> cartList = cartMapper.selectCart(7L); // member_id가 7인 데이터 조회
+        List<CartSelect> cartList = cartMapper.selectCart(memberId1); // member_id가 7인 데이터 조회
 
         // then
-        assertEquals(3, cartList.size()); // 세 개의 데이터가 존재해야 함
-
-        // 첫 번째 데이터 검증
-        CartSelect firstCart = cartList.get(2);
-        assertEquals(9L, firstCart.getProductId());
-        assertEquals(7L, firstCart.getMemberId());
-        assertEquals(2L, firstCart.getQuantity());
-        System.out.println("첫 번째 데이터: " + firstCart);
-
-        // 두 번째 데이터 검증
-        CartSelect secondCart = cartList.get(1);
-        assertEquals(8L, secondCart.getProductId());
-        assertEquals(7L, secondCart.getMemberId());
-        assertEquals(3L, secondCart.getQuantity());
-        System.out.println("두 번째 데이터: " + secondCart);
+        assertEquals(size+1, cartList.size()); // 추가 했으니 이전 사이즈 + 1
     }
 
 
@@ -117,73 +140,75 @@ class CartMapperTest {
     @DisplayName("장바구니 삭제")
     void deleteCartTest(){
 
-        Cart cart = new Cart();
-        cart.setMemberId(7L);
-        cart.setProductId(8L);
-        cart.setQuantity(10L);
+        // 데이터 세팅
+        Long memberId1 = (Long)3L;
 
-        cartMapper.insertCart(cart);
-
+        // 외래키 때문에 겹치지 않는 productId 삽입
         List<Long> productIdList = new ArrayList<>();
-        productIdList.add(8L); // productIdList에 product_id 삽입
+        List<Long> productId = new ArrayList<>();
+        for (int i = 0; i < cartMapper.selectCart(memberId1).size(); i++)
+            productIdList.add(cartMapper.selectCart(memberId1).get(i).getProductId());
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(7L); // 장바구니 조회
-        assertEquals(2, cartSelect.size()); // 장바구니 조회 결과 1개 검색
+        for(Long i = (Long)1L; i < 10; i++){
+            if(!productIdList.contains(i))
+                productId.add(i);
+        }
 
-        cartSelect = cartMapper.selectCart(7L);
-
-
-        cartMapper.deleteCart(cartSelect.get(0).getMemberId(), productIdList);
-
-        //then
-        cartSelect = cartMapper.selectCart(7L);
-        assertEquals(1, cartSelect.size());
-    }
-
-    @Test
-    @DisplayName("장바구니 삭제")
-    void ListdeleteCartTest(){
+        Long productId1 = productId.get(0);
 
         Cart cart1 = new Cart();
-        cart1.setMemberId(100L);
-        cart1.setProductId(100L);
-        cart1.setQuantity(10L);
+        cart1.setMemberId(memberId1);
+        cart1.setProductId(productId1);
+        cart1.setQuantity((Long)2L);
         cartMapper.insertCart(cart1);
 
-        Cart cart2 = new Cart();
-        cart2.setMemberId(100L);
-        cart2.setProductId(101L);
-        cart2.setQuantity(10L);
-        cartMapper.insertCart(cart2);
+        // 삭제 리스트에 deleteList에 넣는다
+        List<Long> productIdDeleteList = new ArrayList<>();
+        productIdDeleteList.add(productId1); // productIdList에 product_id 삽입
+        productIdDeleteList.add(productIdList.get(0)); // 2개를 삭제
 
-        List<Long> productIdList = new ArrayList<>();
-        productIdList.add(100L); // productIdList에 product_id 삽입
-        productIdList.add(101L);
+        List<CartSelect> cartSelect = cartMapper.selectCart(memberId1);
+        int size = cartMapper.selectCart(memberId1).size(); // 이전 사이즈
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(100L); // 장바구니 member = 100L 조회
-        assertEquals(2, cartSelect.size()); // 장바구니 조회 결과 2개 검색
-
-        cartSelect = cartMapper.selectCart(100L);
-
-
-        cartMapper.deleteCart(cartSelect.get(0).getMemberId(), productIdList); // 장바구니 비우기
+        //when
+        // 삭제 리스트에 있는 것을 삭제
+        cartMapper.deleteCart(memberId1, productIdDeleteList);
 
         //then
-        cartSelect = cartMapper.selectCart(100L);
-        assertEquals(0, cartSelect.size());
+        int afterSize = cartMapper.selectCart(memberId1).size();
+        assertEquals(size-productIdDeleteList.size(), afterSize);
     }
 
     @Test
     @DisplayName("장바구니 수량 변경")
     void updateCartTest(){
-        Cart cart1 = new Cart();
-        cart1.setMemberId(100L);
-        cart1.setProductId(100L);
-        cart1.setQuantity(10L);
-        cartMapper.insertCart(cart1);
-        cartMapper.updateCartQuantity(100L, 100L, 1000L);
+        // 데이터 세팅
+        Long memberId1 = (Long)3L;
 
-        assertEquals(1000, cartMapper.selectCart(100L).get(0).getQuantity());
+        // 외래키 때문에 겹치지 않는 productId 삽입
+        List<Long> productIdList = new ArrayList<>();
+        List<Long> productId = new ArrayList<>();
+        for (int i = 0; i < cartMapper.selectCart(memberId1).size(); i++)
+            productIdList.add(cartMapper.selectCart(memberId1).get(i).getProductId());
+
+        for(Long i = (Long)1L; i < 10; i++){
+            if(!productIdList.contains(i))
+                productId.add(i);
+        }
+
+        Long productId1 = productId.get(0);
+        Long quantity = (Long)10L;
+
+        Cart cart1 = new Cart();
+        cart1.setMemberId(memberId1);
+        cart1.setProductId(productId1);
+        cart1.setQuantity(quantity);
+        cartMapper.insertCart(cart1);
+
+        Long changeQuantity = (Long)100L;
+        cartMapper.updateCartQuantity(memberId1, productId1, changeQuantity);
+
+        assertEquals(changeQuantity, cartMapper.selectCart(memberId1).get(0).getQuantity());
     }
 
 }

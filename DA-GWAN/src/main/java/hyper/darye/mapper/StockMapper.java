@@ -38,4 +38,8 @@ public interface StockMapper {
             "order by CREATED_DATE DESC " +
             "LIMIT 1")
     Long selectRecentQuantity(Long productId);
+
+    @Select("select * from STOCK")
+    List<Stock> selectAll();
+
 }

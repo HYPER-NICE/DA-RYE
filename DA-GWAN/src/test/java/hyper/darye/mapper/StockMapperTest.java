@@ -22,8 +22,9 @@ class StockMapperTest {
     @Test
     @DisplayName("Stock 삽입및 조회 테스트")
     void insertStock() {
-        Long productId = 10L;
-        Long stockInoutQuantity = 10L;
+        Long productId = (Long)10L;
+        Long stockInoutQuantity = (Long)10L;
+        Long currentStock = (Long)100L;
         String stockChangeNote = "OUT_ORDER";
 
         Stock stock = new Stock();
@@ -31,7 +32,7 @@ class StockMapperTest {
         stock.setStockInoutQuantity(stockInoutQuantity);
         stock.setStockChangeNote(stockChangeNote);
         stock.setStockInoutDate(new Date());
-        stock.setCurrentStock(100L);
+        stock.setCurrentStock(currentStock);
 
         stockMapper.insertStock(stock);
 
@@ -50,8 +51,9 @@ class StockMapperTest {
     @Test
     @DisplayName("상품 최신 재고 조회 테스트")
     void selectRecentStock() {
-        Long productId = 10L;
-        Long stockInoutQuantity = 10L;
+        Long productId = (Long) 10L;
+        Long stockInoutQuantity = (Long) 10L;
+        Long currentStock = (Long)100L;
         String stockChangeNote = "OUT_ORDER";
 
         Stock stock = new Stock();
@@ -59,13 +61,13 @@ class StockMapperTest {
         stock.setStockInoutQuantity(stockInoutQuantity);
         stock.setStockChangeNote(stockChangeNote);
         stock.setStockInoutDate(new Date());
-        stock.setCurrentStock(100L);
+        stock.setCurrentStock(currentStock);
 
         stockMapper.insertStock(stock);
 
         // 변경된 재고 정보 확인
         Long currentQuantity = stockMapper.selectRecentQuantity(productId);
 
-        assertEquals(100L, currentQuantity);
+        assertEquals((Long)100L, currentQuantity);
     }
 }

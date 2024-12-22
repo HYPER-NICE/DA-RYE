@@ -27,15 +27,16 @@ class StockServiceTest {
     @Test
     @DisplayName("STOCK 삽입 테스트")
     void insertStockTest() {
-        Long productId = 10L;
-        Long stockInoutQuantity = 10L;
-        String stockChangeNote = "OUT_ORDER";
+        List<Stock> stockList = stockMapper.selectAll();
+        Long productId = stockList.get(0).getProductId();
+        Long stockInoutQuantity = (Long)3L;
+        String stockChangeNote = "In";
 
         // stockService를 호출하여 재고 변경
         stockService.insertStock(productId, stockInoutQuantity, stockChangeNote);
 
         // 변경된 재고 정보 확인
-        List<Stock> stockList = stockMapper.selectByProductId(productId);
+        stockList = stockMapper.selectByProductId(productId);
 
         Long quantity = stockList.get(1).getCurrentStock(); // 이전 재고
         Long currentQuantity = stockList.get(0).getCurrentStock(); // 현재 재고
@@ -49,14 +50,14 @@ class StockServiceTest {
     @Test
     @DisplayName("전체 조회 테스트")
     public void selectByProductId(){
-        Long productId = 5L;
+        Long productId = (Long)5L;
 
         List<Stock> stockList = stockMapper.selectByProductId(productId);
 
-        Integer size = stockList.size();
+        Integer size = (Integer) stockList.size();
         stockList.clear();
 
-        Long stockInoutQuantity = 10L;
+        Long stockInoutQuantity = (Long)10L;
         String stockChangeNote = "OUT_ORDER";
 
         // stockService를 호출하여 재고 변경
