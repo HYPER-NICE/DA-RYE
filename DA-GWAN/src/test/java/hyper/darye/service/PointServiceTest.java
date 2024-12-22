@@ -2,21 +2,16 @@ package hyper.darye.service;
 
 import hyper.darye.dto.Member;
 import hyper.darye.dto.OrderMain;
-import hyper.darye.dto.PointTransaction;
 import hyper.darye.dto.PointTransactionType;
 import hyper.darye.mapper.MemberMapper;
 import hyper.darye.mapper.OrderMainMapper;
 import hyper.darye.mapper.PointTransactionMapper;
 import hyper.darye.mapper.PointTransactionTypeMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -83,9 +78,6 @@ public class PointServiceTest {
         om.setMemberId(memberId);
         omMapper.insertSelective(om);
         Long omId = omMapper.selectByMemberId(memberId).getId();
-
-        // 이전 포인트
-        Integer lastPoint = memberMapper.selectMemberById(memberId).getPoint();
 
         // When
         pointService.addPoint(pointTransactionType, memberId, omId, description, amount);

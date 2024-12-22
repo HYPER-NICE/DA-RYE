@@ -2,9 +2,6 @@ package hyper.darye.service;
 
 import hyper.darye.dto.CartSelect;
 import hyper.darye.mapper.CartMapper;
-import hyper.darye.mapper.ForeignKeyMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +22,6 @@ class CartServiceTest {
 
     @Autowired
     CartMapper cartMapper;
-
-    @Autowired
-    private ForeignKeyMapper fkMapper;
-
-    @BeforeEach
-    void disableForeignKeyChecks() {
-        fkMapper.disableForeignKeyChecks();
-    }
-
-    @AfterEach
-    void enableForeignKeyChecks() {
-        fkMapper.enableForeignKeyChecks();
-    }
 
     @Test
     @DisplayName("장바구니 담기 테스트")
@@ -147,7 +131,7 @@ class CartServiceTest {
         Long changeQuantity = (Long)100L;
 
         // when
-        int result = cartService.insertCart(memberId1, productId1, Quantity);
+        cartService.insertCart(memberId1, productId1, Quantity);
         cartService.updateCartQuantity(memberId1, productId1, changeQuantity);
 
         //then
