@@ -54,16 +54,16 @@ public interface CartMapper {
             "</foreach>" +
             "</script>")
     int deleteCart(@Param("memberId") Long memberId, @Param("productIds") List<Long> productIdList);
-
-    int deleteByPrimaryKey(Long id);
-
-    int insert(Cart record);
-
-    int insertSelective(Cart record);
-
-    Cart selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Cart record);
-
-    int updateByPrimaryKey(Cart record);
+//
+//    int deleteByPrimaryKey(Long id);
+//
+//    int insert(Cart record);
+//
+//    int insertSelective(Cart record);
+//
+//    Cart selectByPrimaryKey(Long id);
+//
+//    int updateByPrimaryKeySelective(Cart record);
+//
+//    int updateByPrimaryKey(Cart record);
 }

@@ -49,29 +49,29 @@ public class CartService {
         return this.cartMapper.updateCartQuantity(memberId, productId, quantity);
     }
 
-
-    // cart_id로 삭제하기
-    public int deleteCart(Long cartId){
-        return cartMapper.deleteByPrimaryKey(cartId);
-    }
-
-    // 선택 삽입하기
-    public int insertSelective(Cart record){
-        return cartMapper.insertSelective(record);
-    }
-
-    // 선택 조회하기
-    public Cart selectByPrimaryKey(Long id){
-        return cartMapper.selectByPrimaryKey(id);
-    }
-
-    // cart_id로 선택 변경
-    public int updateByPrimaryKeySelective(Cart record){
-        return cartMapper.updateByPrimaryKeySelective(record);
-    }
-
-    // cart_id로 변경
-    public int updateByPrimaryKey(Cart record){
-        return cartMapper.updateByPrimaryKey(record);
-    }
+//
+//    // cart_id로 삭제하기
+//    public int deleteCart(Long cartId){
+//        return cartMapper.deleteByPrimaryKey(cartId);
+//    }
+//
+//    // 선택 삽입하기
+//    public int insertSelective(Cart record){
+//        return cartMapper.insertSelective(record);
+//    }
+//
+//    // 선택 조회하기
+//    public Cart selectByPrimaryKey(Long id){
+//        return cartMapper.selectByPrimaryKey(id);
+//    }
+//
+//    // cart_id로 선택 변경
+//    public int updateByPrimaryKeySelective(Cart record){
+//        return cartMapper.updateByPrimaryKeySelective(record);
+//    }
+//
+//    // cart_id로 변경
+//    public int updateByPrimaryKey(Cart record){
+//        return cartMapper.updateByPrimaryKey(record);
+//    }
 }
