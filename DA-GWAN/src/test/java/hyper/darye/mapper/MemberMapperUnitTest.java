@@ -45,7 +45,7 @@ class MemberMapperUnitTest {
     }
 
     @Test
-    void selectMemberByIdTest() {
+    void selectByPrimaryKeyTest() {
         Member foundMember = memberMapper.selectByPrimaryKey(1L);
 
         assertThat(foundMember.getId()).isEqualTo(1L);
@@ -70,5 +70,17 @@ class MemberMapperUnitTest {
                 .usingRecursiveComparison()
                 .ignoringFields("email", "lastModifiedDate")
                 .isEqualTo(member);
+    }
+
+    @Test
+    void updatePasswordTest() {
+        Member member = memberMapper.selectByPrimaryKey(2L);
+
+        memberMapper.updatePassword(2L, "p321");
+        Member updatedMember = memberMapper.selectByEmail(member.getEmail());
+
+        assertThat(updatedMember.getPassword()).isEqualTo("p321");
+        assertThat(updatedMember.getEmail()).isEqualTo("john.doe@example.com");
+        assertThat(updatedMember.getContact()).isEqualTo("010-1234-5678");
     }
 }

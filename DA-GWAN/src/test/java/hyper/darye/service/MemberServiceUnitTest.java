@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class MemberServiceUnitTest {
 
     @Mock
@@ -40,6 +42,8 @@ class MemberServiceUnitTest {
     void setUp() {
         signUp = createSignUp();
         expectedMember = createExpectedMember();
+
+        when(memberMapper.selectByPrimaryKey(1L)).thenReturn(expectedMember);
     }
 
     private SignUp createSignUp() {
@@ -170,5 +174,34 @@ class MemberServiceUnitTest {
             });
             verify(memberMapper).updateLatestSignInDate(1L);
         }
+    }
+
+    @Nested
+    @DisplayName("회원 암호 수정 테스트")
+    class UpdatePasswordTest {
+
+        @Test
+        @DisplayName("회원 암호 수정")
+        void updatePasswordTest() {
+            Member member = memberMapper.selectByPrimaryKey(1L);
+            String encodedOldPassword = member.getPassword();
+
+            System.out.println("encodedOldPassword = " + encodedOldPassword);
+
+            String newPassword = "p321";
+            String encodedNewPassword = passwordEncoder.encode(newPassword);
+
+            when(passwordEncoder.matches(anyString(), eq(encodedOldPassword))).thenReturn(true);
+
+            memberService.updatePassword(1L, encodedOldPassword, newPassword, newPassword);
+
+            Member updatedMember = memberMapper.selectByPrimaryKey(1L);
+            System.out.println("updatedMember.getPassword() = " + updatedMember.getPassword());
+            assertNotEquals(encodedOldPassword, updatedMember.getPassword());
+
+            verify(memberMapper).updatePassword(1L, encodedNewPassword);
+        }
+
+
     }
 }

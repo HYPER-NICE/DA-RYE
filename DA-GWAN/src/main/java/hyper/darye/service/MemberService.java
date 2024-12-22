@@ -110,4 +110,17 @@ public class MemberService {
         }
     }
 
+    public void updatePassword(Long id, String oldPassword, String newPassword, String confirmPassword) {
+        Member member = memberMapper.selectByPrimaryKey(id);
+        String encodedOldPassword = member.getPassword();
+
+        if(!passwordEncoder.matches(oldPassword, encodedOldPassword))
+            throw new IllegalArgumentException("기존 비밀번호를 확인해주세요.");
+        if(!newPassword.equals(confirmPassword))
+            throw new IllegalArgumentException("비밀번호를 다시 확인해주세요.");
+
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+
+        memberMapper.updatePassword(id, encodedNewPassword);
+    }
 }
