@@ -69,4 +69,24 @@ class StockServiceTest {
 
     }
 
+    @Test
+    @DisplayName("최신 재고 조회")
+    public void selectCurrentStockTest(){
+        List<Stock> stockList = stockMapper.selectAll();
+        Long productId = stockList.get(0).getProductId();
+        Long stockInoutQuantity = (Long)3L;
+        String stockChangeNote = "In";
+
+        // stockService를 호출하여 재고 변경
+        stockService.insertStock(productId, stockInoutQuantity, stockChangeNote);
+
+        // 변경된 재고 정보 확인
+        stockList = stockMapper.selectByProductId(productId);
+
+        Long currentQuantity = stockList.get(0).getCurrentStock(); // 현재 재고
+        Long currentStock = stockService.selectCurrentStock(productId);
+
+        assertEquals(currentQuantity, currentStock);
+    }
+
 }
