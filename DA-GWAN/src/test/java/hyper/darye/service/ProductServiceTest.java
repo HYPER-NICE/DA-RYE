@@ -75,14 +75,14 @@ class ProductServiceTest {
         productService.insertProduct(product1);
 
         List<Product> result = productService.selectAllProduct();
-        assertEquals(12, result.size());
+        assertEquals(17, result.size());
     }
 
     @Test
     @DisplayName("특정 ID의 상품 조회")
     void selectByPrimaryKeyTest() {
-        ProductWithBLOBs pwb = productService.selectByPrimaryKey(12L);
-        assertEquals("우전", pwb.getName());
+        ProductWithBLOBs pwb = productService.selectByPrimaryKey(1L);
+        assertEquals("세작", pwb.getName());
     }
 
     @Test

@@ -84,14 +84,14 @@ class ProductMapperTest {
 
         // then
         assertNotNull(p);
-        assertEquals(12, p.size());
+        assertEquals(17, p.size());
     }
 
     @Test
     @DisplayName("특정 ID의 상품을 조회")
     void selectByPrimaryKeyTest() {
         // given
-        Long id = 11L;
+        Long id = 1L;
 
         // when
         ProductWithBLOBs product = productMapper.selectByPrimaryKey(id);
