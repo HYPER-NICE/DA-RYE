@@ -101,7 +101,7 @@ class CartControllerTest {
         public void UnauthorizedSelectTest() throws Exception {
             // Mock 데이터 준비
             List<SelectCartRequest> searchCart = new ArrayList<>();
-            searchCart.add(new SelectCartRequest(1L, 1L, 1L, 10L, "과자", 10000)); // 필드 추가
+            searchCart.add(new SelectCartRequest(1L, 1L, 1L, 10L, "과자", 10000, (byte)12)); // 필드 추가
 
             when(cartService.selectCart(1L)).thenReturn(searchCart);
             mockMvc.perform(post("/api/members/1/cart")
@@ -117,7 +117,7 @@ class CartControllerTest {
         void selectCartByMemberIdTest() throws Exception {
             // Mock 데이터 준비
             List<SelectCartRequest> searchCart = new ArrayList<>();
-            searchCart.add(new SelectCartRequest(1L, 1L, 1L, 10L, "과자", 10000)); // 필드 추가
+            searchCart.add(new SelectCartRequest(1L, 1L, 1L, 10L, "과자", 10000, (byte)12)); // 필드 추가
 
             // Mock 설정
             doReturn(searchCart).when(cartService).selectCart(1L);

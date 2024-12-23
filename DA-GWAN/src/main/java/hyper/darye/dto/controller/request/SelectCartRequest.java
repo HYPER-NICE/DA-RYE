@@ -25,11 +25,11 @@ public class SelectCartRequest {
     @Schema(description = "상품명", example = "과자", required = true)
     private String productName;
 
-    // @Schema(description = "상품 이미지", example = "product.jpg")
-    // private String productImg; // 주석 처리된 필드는 필요 시 활성화
-
     @Schema(description = "상품 가격", example = "10000", required = true)
     private Integer productPrice;
+
+    @Schema(description = "상품 사진", example = "바이트 코드", required = true)
+    private Byte productImage;
 
 
 }

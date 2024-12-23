@@ -17,7 +17,7 @@ public interface CartMapper {
 
     // 장바구니 조회
     @Select("select c.ID as CART_ID, p.ID as PRODUCT_ID, m.ID as MEMBER_ID, " +
-            "c.QUANTITY as QUANTITY , p.NAME as PRODUCT_NAME, p.PRICE as PRODUCT_PRICE, c.DELETED_DATE " +
+            "c.QUANTITY as QUANTITY , p.NAME as PRODUCT_NAME, p.PRICE as PRODUCT_PRICE, p.THUMBNAIL_IMAGE as THUMBNAIL_IMAGE " +
             "from MEMBER as m inner join CART as c on m.ID = c.MEMBER_ID " +
             "inner join PRODUCT as p on c.PRODUCT_ID = p.ID " +
             "where m.ID=#{memberId} and c.DELETED_DATE IS NULL")
