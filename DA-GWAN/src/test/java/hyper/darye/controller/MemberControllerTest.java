@@ -41,6 +41,7 @@ class MemberControllerTest {
         @DisplayName("비인증 사용자 상태에서 회원 정보 조회")
         @WithAnonymousUser // 공통 적용 기능, 인증되지 않은 사용자
         class UnauthorizedTests {
+
             @Test
             @DisplayName("회원 정보 조회 실패 - ID로 조회")
             void selectMemberByPrimaryKeyTest() throws Exception {

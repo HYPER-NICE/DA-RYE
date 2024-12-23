@@ -1,28 +1,39 @@
 package hyper.darye.controller;
 
-import hyper.darye.dto.controller.request.CreateBoardRequestDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hyper.darye.constant.RootCategory;
+import hyper.darye.dto.Board;
+import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/notification-board")
+@RequestMapping("/api")
 public class BoardController {
 
     private final BoardService boardService;
+    private final ObjectMapper objectMapper;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, ObjectMapper objectMapper) {
         this.boardService = boardService;
+        this.objectMapper = objectMapper;
     }
 
+
     //공지사항 등록
-    @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/notification-board")
     @ResponseStatus(HttpStatus.CREATED)
-    public String registerBoard(@RequestBody CreateBoardRequestDTO boardRequestDTO) {
-        int result = boardService.insertBoard(boardRequestDTO);
-        if (result == 1) {
-            return "공지사항 등록 성공";
-        }
-        return "공지사항 등록 실패";
+    public void registerBoard(@Valid @RequestBody PostBoardDTO postBoardDTO,
+                              @AuthenticationPrincipal CustomUserDetails principal) {
+
+        postBoardDTO.setRootCategory(RootCategory.NOTICE.getValue());
+        postBoardDTO.setWriterId(principal.getId());
+        boardService.insertBoard(postBoardDTO);
     }
 }

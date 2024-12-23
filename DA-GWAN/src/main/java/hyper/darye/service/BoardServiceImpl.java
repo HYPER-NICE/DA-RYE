@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Board;
-import hyper.darye.dto.controller.request.CreateBoardRequestDTO;
+import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardMapper;
 import org.springframework.stereotype.Service;
@@ -21,16 +21,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
+    //보드 게시판 글 작성
     @Override
-    public int insertBoard(CreateBoardRequestDTO requestBoard) {
+    public int insertBoard(PostBoardDTO postBoardDTO) {
 
-        //공지사항에서 서브 카테고리가 어디인지 확인
-        String rootName = "공지사항";
-        String subName = requestBoard.getSubName();
+        Board board = new Board();
 
-        Map<String, Object> param = Map.of("rootName", rootName, "subName", subName);
-
-        //카테고리 코드 조회
+        //카테고리 코드 조희
+        Map<String, Object> param = Map.of("rootCategory", postBoardDTO.getRootCategory(), "subCategory", postBoardDTO.getSubCategory());
         Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
 
         //카테고리 코드가 없을시
@@ -38,14 +36,12 @@ public class BoardServiceImpl implements BoardService{
             throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
         } //예외처리 이게 맞나요....? 모르겠슴니다....ㅠㅠ
 
-        Board board = new Board();
         board.setCategoryId(categoryId);
-        board.setWriterId(requestBoard.getWriterId());
-        board.setTitle(requestBoard.getTitle());
-        board.setContent(requestBoard.getContent());
-        board.setFixed(requestBoard.getFixed());
-        board.setRegDate(new Date());
+        board.setTitle(postBoardDTO.getTitle());
+        board.setContent(postBoardDTO.getContent());
+        board.setFixed(postBoardDTO.getFixed());
+        board.setWriterId(postBoardDTO.getWriterId());
 
-        return boardMapper.insert(board);
+        return boardMapper.insertSelective(board);
     }
 }
