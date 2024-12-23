@@ -12,7 +12,11 @@ export default {
       },
       colors: {
         primary: "var(--primary, #09B1A7)",
-        basic: "var(--basic, #FFF)",
+        error: "var(--error, #F44336)",
+        basicWhite: "var(--basic, #FFF)",
+        basicBlack: "var(--basic, #000)",
+        disabled: "#A3A3A3",
+        disabledSub: "#EBEBEB"
       },
     },
   },
