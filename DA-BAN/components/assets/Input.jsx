@@ -7,7 +7,7 @@
  */
 export function Input({
 	                      state = inputState.DEFAULT,
-											  errorMessage,
+	                      errorMessage,
 	                      ...props
                       }) {
 	const isDisabled = state === inputState.DISABLED;
@@ -18,17 +18,16 @@ export function Input({
 				<input
 						type="text"
 						{...props}
-						disabled={isDisabled} // HTML `disabled` 속성 설정
-						className={`
-          px-4 py-2 rounded-md border text-sm focus:outline-none
-          focus:border-primary
-          ${isDisabled ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed' : ''}
-          ${isError ? 'border-red-500' : ''}
-          ${!isDisabled && !isError ? 'border-gray-300' : ''}
-        `}
+						disabled={isDisabled}
+						className={`px-4 py-2 rounded-md border text-sm focus:outline-none 
+          focus:border-semantic-primary-normal
+          ${isDisabled ? 'border-semantic-line-disabled bg-semantic-component-fill-disabled text-semantic-labelText-disabled cursor-not-allowed' : ''}
+          ${isError ? 'border-semantic-status-error' : ''}
+          ${!isDisabled && !isError ? 'border-semantic-line-normal' : ''}`}
 				/>
-
-				<p className="text-red-500 text-sm">{isError && errorMessage}</p>
+				{isError && (
+						<p className="text-semantic-status-error text-sm">{errorMessage}</p>
+				)}
 			</div>
 	);
 }
@@ -38,4 +37,3 @@ export const inputState = {
 	DISABLED: Symbol('disabled'),
 	ERROR: Symbol('error'),
 };
-

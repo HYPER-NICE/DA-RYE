@@ -10,18 +10,29 @@
  */
 export function Button({ type = 'button', name = '버튼', state = 'default', ...props }) {
 	return (
-		<button
-				type={type}
-				{...props} // className을 제외한 나머지 속성 전달
-				className={`
-      px-8 py-3 rounded-md font-semibold
-      ${state === 'default' ? 'border border-primary bg-white text-primary' : ''}
-      ${state === 'accent' ? 'bg-primary text-white' : ''}
-      ${state === 'disabled' ? 'bg-disabledSub text-disabled' : ''}
-    `}
-				disabled={state === 'disabled'}
-		>
-			{name}
-		</button>
+			<button
+					type={type}
+					{...props}
+					className={`px-8 py-3 rounded-md font-semibold
+        ${
+							state === 'default'
+									? 'border border-semantic-button-normalLine bg-semantic-button-normalFill text-semantic-button-primary'
+									: ''
+					}
+        ${
+							state === 'accent'
+									? 'bg-semantic-button-primary text-semantic-labelText-inverse'
+									: ''
+					}
+        ${
+							state === 'disabled'
+									? 'bg-semantic-button-disabledFill text-semantic-button-disabledText border-semantic-button-disabledLine cursor-not-allowed'
+									: ''
+					}
+      `}
+					disabled={state === 'disabled'}
+			>
+				{name}
+			</button>
 	);
 }
