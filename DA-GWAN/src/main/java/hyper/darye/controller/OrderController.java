@@ -1,26 +1,35 @@
 package hyper.darye.controller;
 
-import hyper.darye.dto.OrderDetail;
-import hyper.darye.dto.OrderMain;
 import hyper.darye.service.OrderService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 // /api/members/{id}/orders
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/members/{id}")
 public class OrderController {
+
+    @Autowired
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
-    // 주문생성
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String insertOrder(@RequestBody OrderDetail orderDetail){
-        orderService.insertOrderDetail(orderDetail);
-        return "ORDER 성공";
+
+    // 주문 생성
+    @PostMapping("orders")
+    public String insertOrder(@PathVariable Long id, Long order){
+
+        return "";
     }
+
+    // 주문 전체 조회
+
+    // 주문 상세 조회
+
+    // 주문 숨김
+
+    // 환불 요청
+
 }

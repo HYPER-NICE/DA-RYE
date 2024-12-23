@@ -1,6 +1,7 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -10,40 +11,12 @@ import lombok.Data;
  */
 @Data
 public class PaymentStatusCode implements Serializable {
-    /**
-     * 결제 상태 코드의 고유 ID (기본 키)
-     */
     private Long id;
-
-    /**
-     * 결제 상태 이름 (예: 결제 완료, 결제 취소 등)
-     */
     private String name;
-
-    /**
-     * 결제 상태 코드에 대한 상세 설명으로, 상태의 의미와 사용 목적을 설명합니다.
-     */
     private String description;
-
-    /**
-     * 레코드 생성 날짜 및 시간
-     */
-    private Date createdDate;
-
-    /**
-     * 마지막 수정된 날짜 및 시간
-     */
-    private Date lastModifiedDate;
-
-    /**
-     * 레코드를 마지막으로 수정한 회원 ID
-     */
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
     private Long lastModifiedMember;
-
-    /**
-     * 레코드가 삭제된 날짜 (논리 삭제)
-     */
-    private Date deletedDate;
-
+    private LocalDateTime deletedDate;
     private static final long serialVersionUID = 1L;
 }
