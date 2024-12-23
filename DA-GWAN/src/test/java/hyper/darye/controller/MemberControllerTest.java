@@ -325,4 +325,82 @@ class MemberControllerTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("회원 암호 수정 테스트")
+    class UpdatePasswordTests {
+
+        @Nested
+        @DisplayName("비인증 사용자 상태에서 회원 암호 수정")
+        @WithAnonymousUser // 인증되지 않은 사용자
+        class UnauthorizedTests {
+
+            @Test
+            @DisplayName("회원 암호 수정 실패 - 비인증 사용자")
+            void updatePasswordAsAnonymousTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isForbidden()); // 비인증 사용자에게는 접근 불가
+            }
+        }
+
+        @Nested
+        @DisplayName("일반 사용자 상태에서 회원 암호 수정")
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev", role = "USER") // 일반 사용자
+        class UserRoleTests {
+
+            @Test
+            @DisplayName("자신의 암호 수정 성공")
+            void updateOwnPasswordTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 암호 수정 후 204 반환
+            }
+
+            @Test
+            @DisplayName("다른 사용자의 암호 수정 실패")
+            void updateOtherPasswordTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/2")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isForbidden()); // 타인의 암호는 수정할 수 없음
+            }
+        }
+
+        @Nested
+        @DisplayName("관리자 사용자 상태에서 회원 암호 수정")
+        @WithMockCustomUser(id = 1L, username = "admin@darye.dev", role = "ADMIN") // 관리자
+        class AdminRoleTests {
+
+            @Test
+            @DisplayName("자신의 암호 수정 성공")
+            void updateOwnPasswordAsAdminTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 암호 수정 후 204 반환
+            }
+
+            @Test
+            @DisplayName("타인의 암호 수정 성공 - 관리자")
+            void updateOtherPasswordAsAdminTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/2")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 관리자는 다른 사용자의 암호도 수정 가능
+            }
+        }
+    }
 }
