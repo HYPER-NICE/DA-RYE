@@ -1,12 +1,14 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Board;
+import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
+import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -14,10 +16,12 @@ public class BoardServiceImpl implements BoardService{
 
     private final BoardCategoryCodeMapper boardCategoryCodeMapper;
     private final BoardMapper boardMapper;
+    private final BoardImageMapper boardImageMapper;
 
-    public BoardServiceImpl(BoardCategoryCodeMapper boardCategoryCodeMapper, BoardMapper boardMapper) {
+    public BoardServiceImpl(BoardCategoryCodeMapper boardCategoryCodeMapper, BoardMapper boardMapper, BoardImageMapper boardImageMapper) {
         this.boardCategoryCodeMapper = boardCategoryCodeMapper;
         this.boardMapper = boardMapper;
+        this.boardImageMapper = boardImageMapper;
     }
 
 
@@ -42,6 +46,20 @@ public class BoardServiceImpl implements BoardService{
         board.setFixed(postBoardDTO.getFixed());
         board.setWriterId(postBoardDTO.getWriterId());
 
-        return boardMapper.insertSelective(board);
+        int result = boardMapper.insertSelective(board);
+
+        if(postBoardDTO.getImages() != null && !postBoardDTO.getImages().isEmpty() ) {
+            List<byte[]> boardImages = postBoardDTO.getImages();
+            for (byte[] image : boardImages) {
+                BoardImage BoardImage = new BoardImage();
+                BoardImage.setImage(image);
+                BoardImage.setBoardId(board.getId());
+                boardImageMapper.insertSelective(BoardImage);
+            }
+
+        }
+
+        return result;
     }
+
 }

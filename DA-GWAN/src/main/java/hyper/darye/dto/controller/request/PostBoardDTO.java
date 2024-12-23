@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class PostBoardDTO {
@@ -29,5 +31,7 @@ public class PostBoardDTO {
     private Long rootCategory;
 
     private Long writerId;
+
+    private List<byte[]> images;
 
 }
