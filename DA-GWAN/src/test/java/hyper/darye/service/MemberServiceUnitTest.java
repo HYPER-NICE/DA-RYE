@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class MemberServiceUnitTest {
 
     @Mock
@@ -40,6 +42,8 @@ class MemberServiceUnitTest {
     void setUp() {
         signUp = createSignUp();
         expectedMember = createExpectedMember();
+
+//        when(memberMapper.selectByPrimaryKey(1L)).thenReturn(expectedMember);
     }
 
     private SignUp createSignUp() {
@@ -66,7 +70,7 @@ class MemberServiceUnitTest {
 
     @Nested
     @DisplayName("회원 생성 테스트")
-    class InsertSelectiveMemberTest {
+    class InsertSelectiveMemberTests {
 
         @Test
         @DisplayName("회원 생성 - 성공")
@@ -105,7 +109,7 @@ class MemberServiceUnitTest {
 
     @Nested
     @DisplayName("회원 조회 테스트")
-    class MemberQueryTest {
+    class MemberQueryTests {
         @Test
         @DisplayName("유효한 회원 ID로 회원 조회")
         void selectMemberByValidIdTest() {
@@ -151,7 +155,7 @@ class MemberServiceUnitTest {
 
     @Nested
     @DisplayName("회원 사인인 업데이트 테스트")
-    class UpdateLatestSignInDateTest {
+    class UpdateLatestSignInDateTests {
 
         @Test
         @DisplayName("회원 최신 사인인 날짜 업데이트")
@@ -171,4 +175,37 @@ class MemberServiceUnitTest {
             verify(memberMapper).updateLatestSignInDate(1L);
         }
     }
+
+//    @Nested
+//    @DisplayName("회원 암호 수정 테스트")
+//    class UpdatePasswordTests {
+//
+//        @Test
+//        @DisplayName("회원 암호 수정")
+//        void updatePasswordTest() {
+//            Member member = memberMapper.selectByPrimaryKey(1L);
+//            String encodedOldPassword = member.getPassword();
+//
+//            System.out.println("encodedOldPassword = " + encodedOldPassword);
+//
+//            String newPassword = "p321";
+//            String encodedNewPassword = passwordEncoder.encode(newPassword);
+//
+//            memberService.updatePassword(1L, encodedOldPassword, newPassword, newPassword);
+//
+//            Member updatedMember = memberMapper.selectByPrimaryKey(1L);
+//            System.out.println("updatedMember.getPassword() = " + updatedMember.getPassword());
+//            assertNotEquals(encodedOldPassword, updatedMember.getPassword());
+//
+//            verify(memberMapper).updatePassword(1L, encodedNewPassword);
+//        }
+//
+//        @Test
+//        @DisplayName("기존 비밀번호 불일치")
+//        void updatePasswordByInvalidOldPasswordTest() {}
+//
+//        @Test
+//        @DisplayName("새 비밀번호 재입력 불일치")
+//        void updatePasswordByInvalidNewRePasswordTest() {}
+//    }
 }
