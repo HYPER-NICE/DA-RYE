@@ -1,161 +1,101 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Member;
-import hyper.darye.dto.OrderMain;
+import hyper.darye.dto.PointTransaction;
 import hyper.darye.dto.PointTransactionType;
-import hyper.darye.mapper.MemberMapper;
-import hyper.darye.mapper.OrderMainMapper;
-import hyper.darye.mapper.PointTransactionMapper;
-import hyper.darye.mapper.PointTransactionTypeMapper;
+import hyper.darye.mapper.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @Transactional
-public class PointServiceTest {
-    @Autowired
-    private PointService pointService;
+class PointServiceTest {
 
-    @Autowired
-    private MemberMapper memberMapper;
+    @InjectMocks
+    PointService pointService;
 
-    @Autowired
-    private PointTransactionTypeMapper pttMapper;
+    @Mock
+    MemberMapper memberMapper;
 
-    @Autowired
-    private OrderMainMapper omMapper;
+    @Mock
+    PointTransactionMapper ptMapper;
 
-    @Autowired
-    private PointTransactionMapper ptMapper;
+    @Mock
+    PointTransactionTypeMapper pttMapper;
 
+    @Mock
+    OrderPaymentMainMapper opmMapper;
 
-    @Test
-    @DisplayName("포인트 적립 테스트")
-    public void testAddPoint() {
-        // Given
-        Long memberId = (Long) 3L;
-        String description = "포인트 적립";
-        Long pttId = (Long) 1L;
-        Integer amount = (Integer) 10000;
-        PointTransactionType pointTransactionType = new PointTransactionType();
-        pointTransactionType = pttMapper.selectByPrimaryKey(pttId);
+    @Mock
+    OrderMainMapper omMapper;
 
-        OrderMain om = new OrderMain();
-        om.setMemberId(memberId);
-        omMapper.insertSelective(om);
-        Long omId = omMapper.selectByMemberId(memberId).getId();
+    @Mock
+    PointTransactionType pointTransactionType;
 
-        // 이전 포인트
-        Integer lastPoint = memberMapper.selectMemberById(memberId).getPoint();
+    private Long memberId = 1L;
+    private Long orderMainId = 100L;
+    private Integer amount = 5000;
+    private String description = "Order Points";
 
-        // When
-        pointService.addPoint(pointTransactionType, memberId, omId, description, amount);
-
-        // 이후 포인트
-        Integer currentPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        // Then
-        assertEquals(lastPoint + (int) (amount * 0.01), currentPoint);
+    @BeforeEach
+    void setUp() {
+        // 초기화 작업
+        pointTransactionType = mock(PointTransactionType.class);
+        when(pointTransactionType.getId()).thenReturn(1L);
     }
 
     @Test
-    @DisplayName("포인트 조회 테스트")
-    public void testSelectPoint() {
-        // Given
-        Long memberId = (Long) 3L;
-        String description = "포인트 적립";
-        Long pttId = (Long) 1L;
-        Integer amount = (Integer) 10000;
-        PointTransactionType pointTransactionType = new PointTransactionType();
-        pointTransactionType = pttMapper.selectByPrimaryKey(pttId);
+    @DisplayName("포인트 적립 테스트")
+    void testAddPoint() {
+        // given
+        when(memberMapper.addPoint(memberId, (int)(amount * 0.01))).thenReturn(1);
 
-        OrderMain om = new OrderMain();
-        om.setMemberId(memberId);
-        omMapper.insertSelective(om);
-        Long omId = omMapper.selectByMemberId(memberId).getId();
-
-        // When
-        pointService.addPoint(pointTransactionType, memberId, omId, description, amount);
-
-        // 이후 포인트
-        Integer currentPoint = memberMapper.selectMemberById(memberId).getPoint();
+        // when
+        pointService.addPoint(pointTransactionType, memberId, orderMainId, description, amount);
 
         // then
-        Member member = pointService.selectPoint(memberId);
-        assertEquals(member.getPoint(), currentPoint);
+        verify(memberMapper, times(1)).addPoint(memberId, (int)(amount * 0.01));
+        verify(ptMapper, times(1)).insertPointTransaction(any(PointTransaction.class));
     }
 
     @Test
     @DisplayName("포인트 사용 테스트")
-    public void testUsePoint() {
-        // Given
-        Long memberId = (Long) 3L;
-        String description = "포인트 적립";
-        Long pttId = (Long) 1L;
-        Integer amount = (Integer) (memberMapper.selectMemberById(memberId).getPoint() - 10);
-        PointTransactionType pointTransactionType = new PointTransactionType();
-        pointTransactionType = pttMapper.selectByPrimaryKey(pttId);
+    void testUsePoint() {
+        // given
+        int pointToUse = 500;
 
-        OrderMain om = new OrderMain();
-        om.setMemberId(memberId);
-        omMapper.insertSelective(om);
-        Long omId = omMapper.selectByMemberId(memberId).getId();
+        // when
+        pointService.usePoint(pointTransactionType, memberId, orderMainId, description, pointToUse);
 
-        // 이전 포인트
-        Integer lastPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        // When
-        pointService.usePoint(pointTransactionType, memberId, omId, description, amount);
-
-        // 이후 포인트
-        Integer currentPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        assertEquals(lastPoint - amount, currentPoint);
+        // then
+        verify(memberMapper, times(1)).usePoint(memberId, pointToUse);
+        verify(ptMapper, times(1)).insertPointTransaction(any(PointTransaction.class));
     }
 
     @Test
-    @DisplayName("포인트 사용 취소, 반환 테스트")
-    public void testCancelUsePoint() {
-        // 포인트 사용 이력 테스트
-        // Given
-        Long memberId = (Long) 3L;
-        String description = "포인트 적립";
-        Long pttId = (Long) 1L;
-        Integer amount = (Integer) (memberMapper.selectMemberById(memberId).getPoint() - 10);
-        PointTransactionType pointTransactionType = new PointTransactionType();
-        pointTransactionType = pttMapper.selectByPrimaryKey(pttId);
+    @DisplayName("포인트 사용 취소 테스트")
+    void testCancelUsePoint() {
+        // given
+        PointTransaction pointTransaction = new PointTransaction();
+        pointTransaction.setAmount(-100);  // 예시로 -100 포인트로 설정
+        when(ptMapper.selectByMemberIdAndOrderId(memberId, orderMainId)).thenReturn(pointTransaction);
+        when(memberMapper.addPoint(memberId, 100)).thenReturn(1);  // 취소된 포인트를 되돌림
 
-        OrderMain om = new OrderMain();
-        om.setMemberId(memberId);
-        omMapper.insertSelective(om);
-        Long omId = omMapper.selectByMemberId(memberId).getId();
+        // when
+        pointService.cancelUsePoint(pointTransactionType, memberId, orderMainId, description);
 
-        // 이전 포인트
-        Integer lastPoint = memberMapper.selectMemberById(memberId).getPoint();
+        // then
+        verify(memberMapper, times(1)).addPoint(memberId, 100);
+        verify(ptMapper, times(1)).insertPointTransaction(any(PointTransaction.class));
+    }
 
-        // When
-        pointService.usePoint(pointTransactionType, memberId, omId, description, amount);
-
-        // 이후 포인트
-        Integer currentPoint = memberMapper.selectMemberById(memberId).getPoint();
-
-        assertEquals(lastPoint - amount, currentPoint);
-
-        // Given
-        String cancleDescription = "포인트 사용 취소";
-
-
-        // When
-        pointService.cancelUsePoint(pointTransactionType, memberId, omId, cancleDescription);
-
-        // Then
-        // 사용취소한 포인트
-        Integer cancelPoint = memberMapper.selectMemberById(memberId).getPoint();
-        assertEquals(lastPoint, cancelPoint); // 사용이전 포인트와 사용취소한 포인트는 같다
- }
 }

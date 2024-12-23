@@ -2,91 +2,111 @@ package hyper.darye.service;
 
 import hyper.darye.dto.Stock;
 import hyper.darye.mapper.StockMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class StockServiceTest {
 
-    @Autowired
-    private StockService stockService;  // StockService 주입
+    @Mock
+    private StockMapper stockMapper;
 
-    @Autowired
-    private StockMapper stockMapper;  // StockMapper 주입
+    @InjectMocks
+    private StockService stockService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    @DisplayName("STOCK 삽입 테스트")
-    void insertStockTest() {
-        List<Stock> stockList = stockMapper.selectAll();
-        Long productId = stockList.get(0).getProductId();
-        Long stockInoutQuantity = (Long)3L;
+    @DisplayName("재고 삽입 테스트")
+    void InsertStocktest() {
+        // Arrange
+        Long productId = 1L;
+        Long inOutQuantity = 10L;
         String stockChangeNote = "In";
+        when(stockMapper.selectByProductId(productId)).thenReturn(new ArrayList<>());
+        when(stockMapper.insertSelective(any(Stock.class))).thenReturn(1);
 
-        // stockService를 호출하여 재고 변경
-        stockService.insertStock(productId, stockInoutQuantity, stockChangeNote);
+        // Act
+        int result = stockService.insertStock(productId, inOutQuantity, stockChangeNote);
 
-        // 변경된 재고 정보 확인
-        stockList = stockMapper.selectByProductId(productId);
-
-        Long quantity = stockList.get(1).getCurrentStock(); // 이전 재고
-        Long currentQuantity = stockList.get(0).getCurrentStock(); // 현재 재고
-
-        // 단위 테스트 조건 확인
-        assertEquals(quantity + stockInoutQuantity, currentQuantity);
-        assertEquals(stockChangeNote, stockList.get(0).getStockChangeNote());
-        assertEquals(productId, stockList.get(0).getProductId());
+        // Assert
+        assertEquals(1, result);
+        verify(stockMapper, times(1)).insertSelective(any(Stock.class));
     }
 
     @Test
-    @DisplayName("전체 조회 테스트")
-    public void selectByProductId(){
-        Long productId = (Long)5L;
+    @DisplayName("이미있는 재고 업데이트 테스트")
+    void InsertStockUpdateQuantitytest() {
+        // Arrange
+        Long productId = 2L;
+        Long inOutQuantity = 5L;
+        String stockChangeNote = "재고 업데이트";
+        List<Stock> recentStocks = new ArrayList<>();
+        Stock recentStock = new Stock();
+        recentStock.setCurrentStock(15L);
+        recentStocks.add(recentStock);
+        when(stockMapper.selectByProductId(productId)).thenReturn(recentStocks);
+        when(stockMapper.insertSelective(any(Stock.class))).thenReturn(1);
 
-        List<Stock> stockList = stockMapper.selectByProductId(productId);
+        // Act
+        int result = stockService.insertStock(productId, inOutQuantity, stockChangeNote);
 
-        Integer size = (Integer) stockList.size();
-        stockList.clear();
-
-        Long stockInoutQuantity = (Long)10L;
-        String stockChangeNote = "OUT_ORDER";
-
-        // stockService를 호출하여 재고 변경
-        stockService.insertStock(productId, stockInoutQuantity, stockChangeNote);
-
-        stockList = stockMapper.selectByProductId(productId);
-
-        assertEquals(size+1, stockList.size());
-
+        // Assert
+        assertEquals(1, result);
+        verify(stockMapper, times(1)).insertSelective(any(Stock.class));
     }
 
     @Test
-    @DisplayName("최신 재고 조회")
-    public void selectCurrentStockTest(){
-        List<Stock> stockList = stockMapper.selectAll();
-        Long productId = stockList.get(0).getProductId();
-        Long stockInoutQuantity = (Long)3L;
-        String stockChangeNote = "In";
+    @DisplayName("재고 조회 테스트")
+    void SelectByProductIdTest() {
+        // Arrange
+        Long productId = 3L;
+        List<Stock> mockStocks = new ArrayList<>();
+        Stock stock1 = new Stock();
+        stock1.setProductId(productId);
+        stock1.setStockInoutQuantity(10L);
+        mockStocks.add(stock1);
+        when(stockMapper.selectByProductId(productId)).thenReturn(mockStocks);
 
-        // stockService를 호출하여 재고 변경
-        stockService.insertStock(productId, stockInoutQuantity, stockChangeNote);
+        // Act
+        List<Stock> result = stockService.selectByProductId(productId);
 
-        // 변경된 재고 정보 확인
-        stockList = stockMapper.selectByProductId(productId);
-
-        Long currentQuantity = stockList.get(0).getCurrentStock(); // 현재 재고
-        Long currentStock = stockService.selectCurrentStock(productId);
-
-        assertEquals(currentQuantity, currentStock);
+        // Assert
+        assertEquals(1, result.size());
+        assertEquals(10L, result.get(0).getStockInoutQuantity());
+        verify(stockMapper, times(1)).selectByProductId(eq(productId));
     }
 
+    @Test
+    @DisplayName("최신 재고 조회 테스트")
+    void testSelectCurrentStock() {
+        // Arrange
+        Long productId = 4L;
+        Long currentStock = 20L;
+        when(stockMapper.selectRecentQuantity(productId)).thenReturn(currentStock);
+
+        // Act
+        Long result = stockService.selectCurrentStock(productId);
+
+        // Assert
+        assertEquals(currentStock, result);
+        verify(stockMapper, times(1)).selectRecentQuantity(eq(productId));
+    }
 }

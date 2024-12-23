@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * POINT_HISTORY
+ * POINT_TRANSACTION
  */
 @Data
 public class PointTransaction implements Serializable {

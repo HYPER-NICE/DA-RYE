@@ -1,10 +1,12 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Cart;
-import hyper.darye.dto.CartSelect;
+import hyper.darye.dto.controller.request.SelectCartRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +16,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@MybatisTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 class CartMapperTest {
 
@@ -92,9 +94,9 @@ class CartMapperTest {
         }
 
         // 이후 사이즈
-        List<CartSelect> cartSelect = cartMapper.selectCart(memberId);
-        assertEquals(lastSize, cartSelect.size());
-        assertEquals(quantity + addQuantity, cartSelect.get(0).getQuantity()); // 기존 2 + 추가 10
+        List<SelectCartRequest> selectCartRequest = cartMapper.selectCart(memberId);
+        assertEquals(lastSize, selectCartRequest.size());
+        assertEquals(quantity + addQuantity, selectCartRequest.get(0).getQuantity()); // 기존 2 + 추가 10
     }
 
 
@@ -126,7 +128,7 @@ class CartMapperTest {
         cartMapper.insertCart(cart1);
 
         // when
-        List<CartSelect> cartList = cartMapper.selectCart(memberId1); // member_id가 7인 데이터 조회
+        List<SelectCartRequest> cartList = cartMapper.selectCart(memberId1); // member_id가 7인 데이터 조회
 
         // then
         assertEquals(size+1, cartList.size()); // 추가 했으니 이전 사이즈 + 1
@@ -164,7 +166,7 @@ class CartMapperTest {
         productIdDeleteList.add(productId1); // productIdList에 product_id 삽입
         productIdDeleteList.add(productIdList.get(0)); // 2개를 삭제
 
-        List<CartSelect> cartSelect = cartMapper.selectCart(memberId1);
+        List<SelectCartRequest> selectCartRequest = cartMapper.selectCart(memberId1);
         int size = cartMapper.selectCart(memberId1).size(); // 이전 사이즈
 
         //when

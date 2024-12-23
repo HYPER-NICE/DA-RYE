@@ -86,7 +86,7 @@ public class PointService {
 
     // 포인트 조회
     public Member selectPoint(Long memberId){
-        return memberMapper.selectMemberById(memberId);
+        return memberMapper.selectByPrimaryKey(memberId);
     }
 
 }
