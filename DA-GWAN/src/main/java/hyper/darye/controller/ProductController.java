@@ -1,42 +1,40 @@
 package hyper.darye.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.dto.controller.request.RequestPostProductDto;
+import hyper.darye.dto.controller.request.RequestPutProductDto;
 import hyper.darye.service.ProductService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/products")
+@AllArgsConstructor
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
+    private final ObjectMapper objectMapper;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String insertProduct(@RequestBody Product product) {
-        int result = productService.insertProduct(product);
-        if (result == 1) {
-            return "success";
-        }
-        return "fail";
+    public void insertProduct(@RequestBody RequestPostProductDto insertPostProductRequest) {
+        Product product = objectMapper.convertValue(insertPostProductRequest, Product.class);
+        productService.insertProduct(product);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> selectAllProduct() {
-        List<Product> product = productService.selectAllProduct();
-        if (product.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(product);
+    public List<Product> selectAllProduct() {
+        return productService.selectAllProduct();
     }
 
     @GetMapping("/{id}")
@@ -48,22 +46,24 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<String> updateByPrimaryKey(
             @PathVariable Long id,
-            @RequestBody Product request) {
+            @RequestBody RequestPutProductDto requestPutProductDto) {
         // 요청 본문의 ID와 경로의 ID가 일치하는지 확인
-        if (!id.equals(request.getId())) {
+        if (!id.equals(requestPutProductDto.getId())) {
             return ResponseEntity.badRequest().body("요청한 ID와 일치하는 상품이 없습니다.");
         }
 
         // 상품 정보 업데이트
-        int isUpdated = productService.updateByPrimaryKey(request);
+        Product product = objectMapper.convertValue(requestPutProductDto, Product.class);
+        int isUpdated = productService.updateByPrimaryKey(product);
 
         if (isUpdated == 1) {
             return ResponseEntity.ok("상품이 업데이트 되었습니다.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾지 못하였습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정된 내용이 없습니다.");
         }
     }
 }
