@@ -1,7 +1,7 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.Cart;
-import hyper.darye.dto.CartSelect;
+import hyper.darye.dto.controller.request.SelectCartRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.*;
 
@@ -21,7 +21,7 @@ public interface CartMapper {
             "from MEMBER as m inner join CART as c on m.ID = c.MEMBER_ID " +
             "inner join PRODUCT as p on c.PRODUCT_ID = p.ID " +
             "where m.ID=#{memberId} and c.DELETED_DATE IS NULL")
-    List<CartSelect> selectCart(Long memberId);
+    List<SelectCartRequest> selectCart(Long memberId);
 
     // 장바구니 수량 증가
 

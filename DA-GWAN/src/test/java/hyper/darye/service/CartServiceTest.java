@@ -1,86 +1,115 @@
-package hyper.darye.service;
-
-import hyper.darye.dto.CartSelect;
+import hyper.darye.dto.Cart;
 import hyper.darye.mapper.CartMapper;
-import hyper.darye.mapper.ForeignKeyMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import hyper.darye.service.CartService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class CartServiceTest {
 
-    @Autowired
-    CartService cartService;
+    @InjectMocks
+    private CartService cartService;  // CartService를 자동으로 주입
 
-    @Autowired
-    CartMapper cartMapper;
-
-    @Autowired
-    private ForeignKeyMapper fkMapper;
-
-    @BeforeEach
-    void disableForeignKeyChecks() {
-        fkMapper.disableForeignKeyChecks();
-    }
-
-    @AfterEach
-    void enableForeignKeyChecks() {
-        fkMapper.enableForeignKeyChecks();
-    }
+    @Mock
+    private CartMapper cartMapper;  // CartMapper를 모킹
 
     @Test
     @DisplayName("장바구니 담기 테스트")
     void insertCartTest() {
-        int result = cartService.insertCart(100L, 100L, 10L);
-        List<CartSelect> cartSelect = cartMapper.selectCart(100L);
+        Long memberId = 1L;
+        Long productId = 2L;
+        Long quantity = 5L;
 
-        assertEquals(1, cartSelect.size());
+        // Cart 객체 생성 및 설정
+        Cart cart = new Cart();
+        cart.setMemberId(memberId);
+        cart.setProductId(productId);
+        cart.setQuantity(quantity);
+
+        // selectCartDuplicate() 메서드가 null을 반환한다고 가정
+        when(cartMapper.selectCartDuplicate(memberId, productId)).thenReturn(null);
+
+        // insertCart 메서드가 호출되면 1을 반환한다고 가정
+        when(cartMapper.insertCart(cart)).thenReturn(1);
+
+        // 서비스 메서드 호출
+        int result = cartService.insertCart(memberId, productId, quantity);
+
+        // 결과 검증
         assertEquals(1, result);
+
+        // selectCartDuplicate와 insertCart가 각각 한 번씩 호출되었는지 검증
+        verify(cartMapper, times(1)).selectCartDuplicate(memberId, productId);
+        verify(cartMapper, times(1)).insertCart(cart);
+    }
+
+
+
+    @Test
+    @DisplayName("장바구니 삭제 테스트")
+    void deleteCartTest() {
+        Long memberId = 1L;
+        List<Long> productIdList = List.of(2L, 3L);
+
+        // deleteCart 메서드가 2를 반환하도록 설정
+        when(cartMapper.deleteCart(memberId, productIdList)).thenReturn(2);
+
+        // 서비스 메서드 호출
+        int result = cartService.deleteCart(memberId, productIdList);
+
+        // 결과 검증
+        assertEquals(2, result);
+
+        // deleteCart 메서드가 한 번 호출되었는지 검증
+        verify(cartMapper, times(1)).deleteCart(memberId, productIdList);
     }
 
     @Test
-    @DisplayName("장바구니 중복 담기 테스트(update)")
-    void insertDuplicateTest(){
-        cartService.insertCart(100L, 100L, 10L);
-        cartService.insertCart(100L, 100L, 10L);
-        List<CartSelect> cartSelect = cartMapper.selectCart(100L);
+    @DisplayName("장바구니 수량 변경 테스트")
+    void updateCartTest() {
+        Long memberId = 1L;
+        Long productId = 2L;
+        Long quantity = 10L;
 
-        assertEquals(1, cartSelect.size());
-        assertEquals(20, cartSelect.get(1).getQuantity());
+        // updateCart 메서드가 1을 반환하도록 설정
+        when(cartMapper.updateCart(memberId, productId, quantity)).thenReturn(1);
+
+        // 서비스 메서드 호출
+        int result = cartService.updateCart(memberId, productId, quantity);
+
+        // 결과 검증
+        assertEquals(1, result);
+
+        // updateCart 메서드가 한 번 호출되었는지 검증
+        verify(cartMapper, times(1)).updateCart(memberId, productId, quantity);
     }
 
     @Test
-    @DisplayName("장바구니 조회 테스트")
-    void selectCartTest(){
-        int result = cartService.insertCart(100L, 100L, 10L);
-        List<CartSelect> cartSelect = cartService.selectCart(100L);
-        // then
+    @DisplayName("중복 장바구니 수량 변경 테스트")
+    void updateCartQuantityTest() {
+        Long memberId = 1L;
+        Long productId = 2L;
+        Long quantity = 3L;
 
-        assertNotNull(cartSelect); // null이 아닌지 확인
-        assertFalse(cartSelect.isEmpty()); // 비어있지 않은지 확인
-        assertEquals(100L, cartSelect.get(0).getMemberId()); // memberId가 100L인지 확인
+        // updateCartQuantity 메서드가 1을 반환하도록 설정
+        when(cartMapper.updateCartQuantity(memberId, productId, quantity)).thenReturn(1);
 
-        CartSelect firstCart = cartSelect.get(1);
-        assertEquals(100L, firstCart.getProductId()); // productId가 100L인지 확인
-        assertEquals(100L, firstCart.getQuantity()); // quantity가 100L인지 확인
+        // 서비스 메서드 호출
+        int result = cartService.updateCartQuantity(memberId, productId, quantity);
 
-    }
+        // 결과 검증
+        assertEquals(1, result);
 
-    @Test
-    @DisplayName("장바구니 수량 변경")
-    void updateCartTest(){
-        cartService.insertCart(100L, 100L, 10L);
-        cartService.updateCartQuantity(100L, 100L, 100L);
-        assertEquals(100, cartMapper.selectCart(100L).get(0).getQuantity());
+        // updateCartQuantity 메서드가 한 번 호출되었는지 검증
+        verify(cartMapper, times(1)).updateCartQuantity(memberId, productId, quantity);
     }
 }

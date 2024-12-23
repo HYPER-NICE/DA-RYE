@@ -33,7 +33,7 @@ public interface MemberMapper {
     void updatePassword(Long id, String newPassword);
 
     @Update("UPDATE MEMBER SET point = point + #{point} WHERE id = #{id}")
-    int updatePoint(Long id, int point);
+    int addPoint(Long id, int point);
 
     @Update("UPDATE MEMBER SET point = point - #{point} WHERE id = #{id}")
     int usePoint(Long id, int point);

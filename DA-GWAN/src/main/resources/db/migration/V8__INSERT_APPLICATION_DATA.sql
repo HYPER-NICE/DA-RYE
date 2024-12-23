@@ -345,12 +345,12 @@ INSERT INTO ORDER_PAYMENT_DETAIL (
       (5, 1, 2, 'APPROVAL11223', 12000, '2024-11-25 09:25:00', '신용카드 결제 완료');
 
 -- ==================================================
--- POINT_HISTORY
+-- POINT_TRANSACTION
 -- 의존성
 -- MEMBER, POINT_TRANSACTION_TYPE
 -- ==================================================
 -- 포인트 적립 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 1, 1, 100, '첫 주문 적립', NOW()),        -- 회원 1, 주문 1, 포인트 적립
@@ -359,7 +359,7 @@ INSERT INTO POINT_HISTORY (
       (4, 1, 4, 300, '회원 가입 포인트 지급', NOW()); -- 회원 4, 첫 가입 포인트 적립
 
 -- 포인트 사용 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 2, 1, -50, '첫 주문 포인트 사용', NOW()),    -- 회원 1, 주문 1, 포인트 사용
@@ -368,7 +368,7 @@ INSERT INTO POINT_HISTORY (
       (4, 2, 4, -200, '프리미엄 제품 구매', NOW());    -- 회원 4, 주문 4, 포인트 사용
 
 -- 포인트 소멸 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 3, NULL, -30, '미접속 소멸', NOW()),  -- 회원 1, 소멸된 포인트
