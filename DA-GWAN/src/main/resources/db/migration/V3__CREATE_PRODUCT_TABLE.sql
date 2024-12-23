@@ -112,6 +112,7 @@ CREATE TABLE STOCK
 )
     COMMENT '상품의 재고 정보 테이블';
 
+
 CREATE TABLE CART
 (
     -- 기본키
@@ -125,7 +126,7 @@ CREATE TABLE CART
     CONSTRAINT FK_CART_PRODUCT FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT (ID) ON UPDATE CASCADE ON DELETE RESTRICT,
 
     -- 데이터
-    QUANTITY             BIGINT      DEFAULT 1                    NOT NULL COMMENT '상품별 주문 수량',
+    QUANTITY             BIGINT      DEFAULT 1                    NOT NULL COMMENT '구매 예정 수량',
     PICKED_DATE          DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NOT NULL COMMENT '장바구니에 담은 날짜',
 
     -- 시스템 관리 컬럼
