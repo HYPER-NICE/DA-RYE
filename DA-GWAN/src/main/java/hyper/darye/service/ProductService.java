@@ -1,5 +1,6 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,17 @@ public class ProductService {
             throw new RuntimeException("상품 삭제에 실패했습니다.");
         }
         return productMapper.updateProductStatus(id, 4L);
+    }
+
+    public List<ProductWithBLOBs> searchByKeyword(String keyword, Integer minPrice, Integer maxPrice, Integer orderBy) {
+        if(minPrice == null) {
+            minPrice = 0;
+        }
+
+        if(maxPrice == null) {
+            maxPrice = 10000000;
+        }
+        keyword = keyword.trim();
+        return this.productMapper.searchByKeyword(keyword, minPrice, maxPrice, orderBy      );
     }
 }

@@ -1,11 +1,18 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.mapper.ProductMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 import java.util.List;
@@ -13,10 +20,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @Transactional
 class ProductServiceUnitTest {
     @Autowired
     private ProductService productService;
+
+    @InjectMocks
+    private ProductService productService1;
+
+    @Mock
+    private ProductMapper productMapper;
 
     @Test
     @DisplayName("상품 등록")
@@ -144,4 +158,85 @@ class ProductServiceUnitTest {
         // 예외 메시지가 예상 메시지와 일치하는지 검증
         assertEquals("해당 ID의 상품이 존재하지 않습니다.", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("상품 검색 테스트")
+    void searchByKeywordTest() {
+        // given
+        ProductWithBLOBs productWithBLOBs = new ProductWithBLOBs();
+        productWithBLOBs.setId(1L);
+        productWithBLOBs.setCategoryId(1L);
+        productWithBLOBs.setProductStatusCodeId(1L);
+        productWithBLOBs.setName("test1");
+        productWithBLOBs.setPrice(100);
+        productWithBLOBs.setExpirationDate(new Date());
+        productWithBLOBs.setSaleDate(new Date());
+        productWithBLOBs.setQuantity(2);
+
+        ProductWithBLOBs productWithBLOBs1 = new ProductWithBLOBs();
+        productWithBLOBs1.setId(2L);
+        productWithBLOBs1.setCategoryId(1L);
+        productWithBLOBs1.setProductStatusCodeId(1L);
+        productWithBLOBs1.setName("test2");
+        productWithBLOBs1.setPrice(200);
+        productWithBLOBs1.setExpirationDate(new Date());
+        productWithBLOBs1.setSaleDate(new Date());
+        productWithBLOBs1.setQuantity(10);
+
+        productService.insertProduct(productWithBLOBs);
+        productService.insertProduct(productWithBLOBs1);
+
+
+        String keyword = "   es     ";
+        Integer minPrice = 0;
+        Integer maxPrice = 20000000;
+
+        // when
+        int result = productService.insertProduct(productWithBLOBs);
+        assertEquals(1, result);
+
+        List<ProductWithBLOBs> productList = productService.searchByKeyword(keyword, minPrice, maxPrice, 1);
+        assertEquals(3, productList.size());
+        assertEquals("test1", productList.get(0).getName());
+
+    }
+
+    @Test
+    @DisplayName("상품 검색 (가격 설정X) 테스트")
+    void searchByKeywordEmptyPriceTest() {
+        // given
+        ProductWithBLOBs product = new ProductWithBLOBs();
+        product.setName("test");
+        product.setShortDescription("test");
+        product.setLongDescription("test");
+        product.setPrice(10000);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
+        product.setManufacturer("test");
+        product.setExpirationDate(new Date());
+        product.setIngredients("test");
+        product.setPrecautions("test");
+        product.setImporter("test");
+        product.setSaleDate(new Date());
+        product.setCapacity(1);
+        product.setUnit("test");
+        product.setQuantity(2);
+
+        String keyword = "   es     ";
+        Integer minPrice = 100;
+        Integer maxPrice = 20000;
+
+        // when
+        int result = productService.insertProduct(product);
+        System.out.println("삽입된 결과: " + result);
+
+        List<ProductWithBLOBs> productList = productService.searchByKeyword(keyword, null, null, 2);
+
+        // 검색된 결과 확인
+        System.out.println("검색된 상품 개수: " + productList.size());
+
+        assertEquals(1, productList.size());
+        assertEquals("test", productList.get(0).getName());
+    }
+
 }

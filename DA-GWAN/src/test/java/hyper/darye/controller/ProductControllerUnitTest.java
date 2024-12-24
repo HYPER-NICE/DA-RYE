@@ -8,6 +8,7 @@ import hyper.darye.service.ProductService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import hyper.darye.validation.FieldCompare.FieldComparisonValidator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 @WebMvcTest(ProductController.class)
 @Import({SecurityConfig.class, FieldComparisonValidator.class})
@@ -341,5 +346,88 @@ class ProductControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(productWithBLOBs)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Nested
+    @DisplayName("상품 검색 테스트")
+    class searchProductTest{
+        @Test
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+        @DisplayName("상품 검색 (가격 설정X) 테스트")
+        void searchByKeywordEmptyPriceTest() throws Exception {
+            // given
+            String keyword = "test";
+            Integer minPrice = 100;
+            Integer maxPrice = 20000;
+            Integer orderBy = 2;
+
+            List<ProductWithBLOBs> productList = new ArrayList<>();
+            ProductWithBLOBs product = new ProductWithBLOBs();
+            product.setName("Test Product");
+            product.setPrice(15000);
+            productList.add(product);
+
+            // when
+            when(productService.searchByKeyword(anyString(), anyInt(), anyInt(), anyInt())).thenReturn(productList);
+
+            // then
+            mockMvc.perform(get("/api/products/test")
+                            .param("keyword", keyword)
+                            .param("minPrice", minPrice.toString())
+                            .param("maxPrice", maxPrice.toString())
+                            .param("orderBy", orderBy.toString())
+                            .with(csrf()))  // CSRF 토큰 추가)
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].name").value("Test Product"));
+
+            verify(productService, times(1)).searchByKeyword(anyString(), anyInt(), anyInt(), anyInt());
+        }
+
+        @Test
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+        @DisplayName("가격 설정 오류 테스트")
+        void searchByKeywordPriceErrorTest() throws Exception {
+            // given
+            String keyword = "test";
+            Integer minPrice = 20000;
+            Integer maxPrice = 100;
+            Integer orderBy = 2;
+
+            // then
+            mockMvc.perform(get("/api/products/test")
+                            .param("keyword", keyword)
+                            .param("minPrice", minPrice.toString())
+                            .param("maxPrice", maxPrice.toString())
+                            .param("orderBy", orderBy.toString()))
+                    .andExpect(status().isBadRequest()) // 상태 코드 400 예상
+                    .andExpect(content().string("가격 설정이 잘못 됐습니다.")); // 에러 메시지 확인
+        }
+
+
+        @Test
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+        @DisplayName("키워드가 없는 경우 모든 상품 조회 테스트")
+        void searchByKeywordEmptyKeywordTest() throws Exception {
+            // given
+            List<ProductWithBLOBs> productList = new ArrayList<>();
+            ProductWithBLOBs product = new ProductWithBLOBs();
+            product.setName("Test Product");
+            product.setPrice(15000);
+            productList.add(product);
+
+            // when
+            when(productService.selectAllProduct()).thenReturn(productList);
+
+            // then
+            mockMvc.perform(get("/api/products/test")
+                            .param("keyword", "")
+                            .param("minPrice", "100")
+                            .param("maxPrice", "20000")
+                            .param("orderBy", "1"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].name").value("Test Product"));
+
+            verify(productService, times(1)).selectAllProduct();
+        }
     }
 }

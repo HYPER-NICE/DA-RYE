@@ -8,14 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
+@MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 class ProductMapperUnitTest {
@@ -136,5 +137,27 @@ class ProductMapperUnitTest {
         Product deleteProduct = productMapper.selectByPrimaryKey(id);
 
         assertEquals(4, deleteProduct.getProductStatusCodeId());
+    }
+
+    @Test
+    @DisplayName("상품 검색 테스트")
+    void searchByKeywordTest() {
+        String keyword = "티";
+        List<ProductWithBLOBs> productList = productMapper.searchByKeyword(keyword, 0, 45000, 2);
+
+        // 검색 결과 출력
+        System.out.println("검색 결과:");
+        productList.forEach(product -> {
+            System.out.println("상품명: " + product.getName() + ", 가격: " + product.getPrice());
+        });
+
+        assertNotNull(productList);
+        assertFalse(productList.isEmpty(), "검색 결과가 비어 있습니다.");
+
+        // 키워드가 결과에 포함되는지 확인
+        boolean containsKeyword = productList.stream()
+                .anyMatch(product -> product.getName().contains(keyword));
+        assertTrue(containsKeyword, "검색 결과에 키워드가 포함된 상품이 없습니다.");
+
     }
 }
