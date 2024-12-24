@@ -1,26 +1,12 @@
-package hyper.darye.dto;
+package hyper.darye.dto.controller.request;
+
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-/**
- * 판매하는 상품의 정보 테이블
- * PRODUCT
- */
 @Data
-@Getter
-@Setter
-public class Product implements Serializable {
-    /**
-     * 상품 ID (기본 키)
-     */
-    private Long id;
-
+public class RequestPostProductDto implements Serializable {
     /**
      * 카테고리 ID (외래 키)
      */
@@ -97,24 +83,15 @@ public class Product implements Serializable {
     private Integer quantity;
 
     /**
-     * 생성 날짜
+     * 썸네일 이미지
      */
-    private Date createdDate;
+    private byte[] thumbnailImage;
 
     /**
-     * 수정 날짜
+     * 상세 설명 이미지
      */
-    private Date lastModifiedDate;
-
-    /**
-     * 레코드를 마지막으로 수정한 회원 ID
-     */
-    private Long lastModifiedMember;
-
-    /**
-     * 삭제 날짜
-     */
-    private Date deletedDate;
+    private byte[] descriptionImage;
 
     private static final long serialVersionUID = 1L;
+
 }
