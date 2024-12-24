@@ -1,5 +1,8 @@
 package hyper.darye.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum RootCategory {
     NOTICE(1L),
     FAQ(2L),
@@ -9,9 +12,5 @@ public enum RootCategory {
 
     RootCategory(Long value) {
         this.value = value;
-    }
-
-    public Long getValue() {
-        return value;
     }
 }

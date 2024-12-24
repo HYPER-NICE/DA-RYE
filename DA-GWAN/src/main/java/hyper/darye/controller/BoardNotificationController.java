@@ -1,8 +1,7 @@
 package hyper.darye.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.constant.RootCategory;
-import hyper.darye.dto.Board;
+import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
@@ -14,14 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class BoardController {
+public class BoardNotificationController {
 
     private final BoardService boardService;
-    private final ObjectMapper objectMapper;
 
-    public BoardController(BoardService boardService, ObjectMapper objectMapper) {
+    public BoardNotificationController(BoardService boardService) {
         this.boardService = boardService;
-        this.objectMapper = objectMapper;
     }
 
 
@@ -33,7 +30,27 @@ public class BoardController {
                               @AuthenticationPrincipal CustomUserDetails principal) {
 
         postBoardDTO.setRootCategory(RootCategory.NOTICE.getValue());
-        postBoardDTO.setWriterId(principal.getId());
-        boardService.insertBoard(postBoardDTO);
+        boardService.insertBoard(postBoardDTO, principal.getId());
+    }
+
+
+    //공지사항 수정
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/notification-board/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateBoard(@PathVariable Long id, @RequestBody UpdateBoardDTO updateBoardDTO,
+                            @AuthenticationPrincipal CustomUserDetails principal) {
+
+        boardService.updateBoard(id, updateBoardDTO, principal.getId());
+    }
+
+    //공지사항 삭제
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/notification-board/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void softDeleteBoard(@PathVariable Long id,
+                            @AuthenticationPrincipal CustomUserDetails principal) {
+
+        boardService.softDeleteBoard(id, principal.getId());
     }
 }

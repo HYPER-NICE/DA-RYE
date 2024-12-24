@@ -1,6 +1,5 @@
 package hyper.darye.dto.controller.request;
 
-import hyper.darye.constant.RootCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,8 +28,6 @@ public class PostBoardDTO {
     private Long subCategory;
 
     private Long rootCategory;
-
-    private Long writerId;
 
     private List<byte[]> images;
 
