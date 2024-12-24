@@ -270,14 +270,13 @@ INSERT INTO ORDER_DETAIL (
 -- ORDER_MAIN
 -- ==================================================
 INSERT INTO ORDER_DELIVERY_MAIN (
-    ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE
+    ORDER_MAIN_ID, ORDER_TYPE_CODE_ID, RECEIVER_NAME, RECEIVER_CONTACT, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE
 ) VALUES
-      (1, 'CJ대한통운', 'CJ123333789', '부재 시 경비실에 맡겨 주세요.'),
-      (2, '한진택배', 'HJ987654321', NULL),
-      (3, 'CJ대한통운', 'CJ12345678', '빠른 배송 부탁드립니다.'),
-      (4, '우체국택배', 'TRACKNUM12345678901234567890', '오전 9시 이전에 배송 부탁드립니다.'),
-      (5, '롯데택배', 'LOTT12345678', NULL);
-
+      (1, 1, 'John Doe', '010-1234-5678', '123 Main St', 'Apt 101', 'CJ대한통운', 'CJ123333789', '부재 시 경비실에 맡겨 주세요.'),
+      (2, 1, 'Jane Smith', '010-2345-6789', '456 Elm St', NULL, '한진택배', 'HJ987654321', NULL),
+      (3, 1, 'Alex Kim', '010-3456-7890', '789 Oak St', 'Suite 202', 'CJ대한통운', 'CJ12345678', '빠른 배송 부탁드립니다.'),
+      (4, 2, 'Lisa Park', '010-4567-8901', '101 Pine St', NULL, '우체국택배', 'TRACKNUM12345678901234567890', '오전 9시 이전에 배송 부탁드립니다.'),
+      (5, 2, 'Chris Lee', '010-5678-9012', '202 Maple St', NULL, '롯데택배', 'LOTT12345678', NULL);
 -- ==================================================
 -- ORDER_DELIVERY_STATUS
 -- 의존성
