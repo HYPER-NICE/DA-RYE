@@ -1,69 +1,67 @@
 package hyper.darye.controller;
 
-
-import hyper.darye.dto.Product;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.dto.controller.request.RequestDeleteProductDto;
+import hyper.darye.dto.controller.request.RequestPostProductDto;
+import hyper.darye.dto.controller.request.RequestPutProductDto;
+import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.ProductService;
+import lombok.AllArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/products")
+@AllArgsConstructor
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
+    private final ObjectMapper objectMapper;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String insertProduct(@RequestBody Product product) {
-        int result = productService.insertProduct(product);
-        if (result == 1) {
-            return "success";
-        }
-        return "fail";
+    public void insertProduct(@RequestBody RequestPostProductDto insertPostProductRequest) {
+        ProductWithBLOBs productWithBLOBs = objectMapper.convertValue(insertPostProductRequest, ProductWithBLOBs.class);
+        productService.insertProduct(productWithBLOBs);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> selectAllProduct() {
-        List<Product> product = productService.selectAllProduct();
-        if (product.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(product);
+    @ResponseStatus(HttpStatus.OK)
+    public void selectAllProduct() {
+        productService.selectAllProduct();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductWithBLOBs> selectByPrimaryKey(@PathVariable Long id) {
-        ProductWithBLOBs product = productService.selectByPrimaryKey(id);
-        if (product == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(product);
+    @ResponseStatus(HttpStatus.OK)
+    public void selectByPrimaryKey(@PathVariable Long id) {
+        productService.selectByPrimaryKey(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateByPrimaryKey(
+    @ResponseStatus(HttpStatus.OK)
+    public void updateByPrimaryKey(
             @PathVariable Long id,
-            @RequestBody Product request) {
-        // 요청 본문의 ID와 경로의 ID가 일치하는지 확인
-        if (!id.equals(request.getId())) {
-            return ResponseEntity.badRequest().body("요청한 ID와 일치하는 상품이 없습니다.");
-        }
-
+            @RequestBody RequestPutProductDto requestPutProductDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
         // 상품 정보 업데이트
-        int isUpdated = productService.updateByPrimaryKey(request);
+        ProductWithBLOBs productWithBLOBs = objectMapper.convertValue(requestPutProductDto, ProductWithBLOBs.class);
+        productWithBLOBs.setLastModifiedMember(userDetails.getId());
+        productService.updateByPrimaryKey(productWithBLOBs);
+    }
 
-        if (isUpdated == 1) {
-            return ResponseEntity.ok("상품이 업데이트 되었습니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾지 못하였습니다.");
-        }
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteByPrimaryKey(
+            @PathVariable Long id,
+            @RequestBody RequestDeleteProductDto requestDeleteProductDto) throws NotFoundException {
+        productService.deleteByPrimaryKey(requestDeleteProductDto.getId(), 4L); // 상태 코드 4로 업데이트
     }
 }
