@@ -103,11 +103,6 @@ public class RequestPutProductDto implements Serializable {
      */
     private byte[] descriptionImage;
 
-        /**
-     * 레코드를 마지막으로 수정한 회원 ID
-     */
-    private Long lastModifiedMember;
-
     private static final long serialVersionUID = 1L;
 
 }

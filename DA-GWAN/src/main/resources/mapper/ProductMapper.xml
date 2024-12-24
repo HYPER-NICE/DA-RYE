@@ -47,6 +47,11 @@
     delete from PRODUCT
     where ID = #{id,jdbcType=BIGINT}
   </delete>
+  <update id="updateProductStatus" parameterType="map">
+    update PRODUCT
+    set PRODUCT_STATUS_CODE_ID = #{statusCode}
+    where ID = #{id} and PRODUCT_STATUS_CODE_ID != 4
+  </update>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT (CATEGORY_ID, PRODUCT_STATUS_CODE_ID, `NAME`,
       SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 

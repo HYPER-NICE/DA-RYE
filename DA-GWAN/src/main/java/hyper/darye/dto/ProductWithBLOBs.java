@@ -1,13 +1,16 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
-import lombok.Data;
+
+import lombok.*;
 
 /**
  * 판매하는 상품의 정보 테이블
  * PRODUCT
  */
 @Data
+@Getter
+@Setter
 public class ProductWithBLOBs extends Product implements Serializable {
     /**
      * 썸네일 이미지

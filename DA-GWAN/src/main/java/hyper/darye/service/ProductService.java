@@ -1,7 +1,5 @@
 package hyper.darye.service;
 
-
-import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
@@ -17,19 +15,42 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
-    public int insertProduct(Product product) {
-        return this.productMapper.insertProduct(product);
+    public int insertProduct(ProductWithBLOBs productWithBLOBs) {
+        return this.productMapper.insertProduct(productWithBLOBs);
     }
 
-    public List<Product> selectAllProduct() {
+    public List<ProductWithBLOBs> selectAllProduct() {
         return this.productMapper.selectAllProduct();
     }
 
     public ProductWithBLOBs selectByPrimaryKey(Long id) {
-        return this.productMapper.selectByPrimaryKey(id);
+        ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(id);
+        if (productWithBLOBs == null) {
+            throw new RuntimeException("조회할 상품이 없습니다.");
+        }
+        return productWithBLOBs;
     }
 
-    public int updateByPrimaryKey(Product product) {
-        return this.productMapper.updateByPrimaryKey(product);
+    public int updateByPrimaryKey(ProductWithBLOBs productWithBLOBs) {
+        ProductWithBLOBs productWithBLOBs1 = this.productMapper.selectByPrimaryKey(productWithBLOBs.getId());
+        if (productWithBLOBs1 == null) {
+            throw new RuntimeException("상품이 없습니다.");
+        }
+        return this.productMapper.updateByPrimaryKey(productWithBLOBs1);
+    }
+
+    public int deleteByPrimaryKey(Long id, Long statusCode) {
+        ProductWithBLOBs productWithBLOBs = productMapper.selectByPrimaryKey(id);
+
+        // 상품 존재 여부 확인
+        if (productWithBLOBs == null) {
+            throw new RuntimeException("해당 ID의 상품이 존재하지 않습니다.");
+        }
+        // 상태 업데이트
+        int isUpdated = productMapper.updateProductStatus(id, 4L);
+        if (isUpdated != 1) {
+            throw new RuntimeException("상품 삭제에 실패했습니다.");
+        }
+        return productMapper.updateProductStatus(id, 4L);
     }
 }
