@@ -27,13 +27,17 @@ public class OrderController {
         return "";
     }
 
-    // 주문 전체 조회
+    // [클라이언트] 주문 전체 조회
     @GetMapping("orders")
     public String selectAllOrderMain(@PathVariable Long id){
 //        List<OrderMain> orders =  OrderService.selectAllOrderMain();
 
         return "";
     }
+
+    // [관리자] 모든 회원에 대한 "배송 완료 건"에 대한 조회
+
+
 
     // 주문 상세 조회
     @GetMapping("orders/{orderId}")
