@@ -27,7 +27,6 @@ public class OrderController {
         return "";
     }
 
-    // [클라이언트] 주문 전체 조회
     @GetMapping("orders")
     public String selectAllOrderMain(@PathVariable Long id){
 //        List<OrderMain> orders =  OrderService.selectAllOrderMain();
