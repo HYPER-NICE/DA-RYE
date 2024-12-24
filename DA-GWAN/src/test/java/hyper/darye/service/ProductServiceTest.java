@@ -4,6 +4,8 @@ import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @Transactional
 class ProductServiceTest {
@@ -108,4 +111,77 @@ class ProductServiceTest {
         assertEquals("강남 순수 녹차", pwb2.getName());
         assertEquals(80000, pwb2.getPrice());
     }
+
+    @Test
+    @DisplayName("상품 검색 테스트")
+    void searchByKeywordTest() {
+        // given
+        Product product = new Product();
+        product.setName("test");
+        product.setShortDescription("test");
+        product.setLongDescription("test");
+        product.setPrice(10000);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
+        product.setManufacturer("test");
+        product.setExpirationDate(new Date());
+        product.setIngredients("test");
+        product.setPrecautions("test");
+        product.setImporter("test");
+        product.setSaleDate(new Date());
+        product.setCapacity(1);
+        product.setUnit("test");
+        product.setQuantity(2);
+
+        String keyword = "   es     ";
+        Integer minPrice = 100;
+        Integer maxPrice = 20000;
+
+        // when
+        int result = productService.insertProduct(product);
+
+        List<Product> productList = productService.searchByKeyword(keyword, minPrice, maxPrice, 2);
+        assertEquals(1, productList.size());
+        assertEquals("test", productList.get(0).getName());
+
+    }
+
+    @Test
+    @DisplayName("상품 검색 (가격 설정X) 테스트")
+    void searchByKeywordEmptyPriceTest() {
+        // given
+        Product product = new Product();
+        product.setName("test");
+        product.setShortDescription("test");
+        product.setLongDescription("test");
+        product.setPrice(10000);
+        product.setCategoryId(1L);
+        product.setProductStatusCodeId(1L);
+        product.setManufacturer("test");
+        product.setExpirationDate(new Date());
+        product.setIngredients("test");
+        product.setPrecautions("test");
+        product.setImporter("test");
+        product.setSaleDate(new Date());
+        product.setCapacity(1);
+        product.setUnit("test");
+        product.setQuantity(2);
+
+        String keyword = "   es     ";
+        Integer minPrice = 100;
+        Integer maxPrice = 20000;
+
+        // when
+        int result = productService.insertProduct(product);
+        System.out.println("삽입된 결과: " + result);
+
+        List<Product> productList = productService.searchByKeyword(keyword, null, null, 2);
+
+        // 검색된 결과 확인
+        System.out.println("검색된 상품 개수: " + productList.size());
+
+        assertEquals(1, productList.size());
+        assertEquals("test", productList.get(0).getName());
+    }
+
 }

@@ -32,4 +32,16 @@ public class ProductService {
     public int updateByPrimaryKey(Product product) {
         return this.productMapper.updateByPrimaryKey(product);
     }
+
+    public List<Product> searchByKeyword(String keyword, Integer minPrice, Integer maxPrice, Integer orderBy) {
+        if(minPrice == null) {
+            minPrice = 0;
+        }
+
+        if(maxPrice == null) {
+            maxPrice = 10000000;
+        }
+         keyword = keyword.trim();
+        return this.productMapper.searchByKeyword(keyword, minPrice, maxPrice, orderBy      );
+    }
 }

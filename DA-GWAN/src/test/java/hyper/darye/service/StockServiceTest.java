@@ -44,7 +44,7 @@ class StockServiceTest {
         when(stockMapper.insertSelective(any(Stock.class))).thenReturn(1);
 
         // Act
-        int result = stockService.insertStock(productId, inOutQuantity, stockChangeNote);
+        int result = stockService.InsertStock(productId, inOutQuantity, stockChangeNote);
 
         // Assert
         assertEquals(1, result);
@@ -66,7 +66,7 @@ class StockServiceTest {
         when(stockMapper.insertSelective(any(Stock.class))).thenReturn(1);
 
         // Act
-        int result = stockService.insertStock(productId, inOutQuantity, stockChangeNote);
+        int result = stockService.InsertStock(productId, inOutQuantity, stockChangeNote);
 
         // Assert
         assertEquals(1, result);

@@ -66,4 +66,17 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾지 못하였습니다.");
         }
     }
+
+    @GetMapping("/test")
+    public List<Product> SearchByKeyword(@RequestParam String keyword,
+                                       @RequestParam Integer minPrice,
+                                       @RequestParam Integer maxPrice,
+                                         @RequestParam Integer orderBy) {
+        if(minPrice > maxPrice || !(minPrice instanceof Integer) || !(maxPrice instanceof Integer)) {
+            throw new IllegalStateException("가격 설정이 잘못 됐습니다.");
+        } else if (keyword == null || keyword.isEmpty())
+            return productService.selectAllProduct();
+          else
+            return productService.searchByKeyword(keyword, minPrice, maxPrice, orderBy);
+    }
 }

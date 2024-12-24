@@ -31,10 +31,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage()); // 400 Bad Request
     }
 
-
     // 인증 실패 시 처리
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException ex) {
         return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED); // 401 Unauthorized
     }
+
 }
