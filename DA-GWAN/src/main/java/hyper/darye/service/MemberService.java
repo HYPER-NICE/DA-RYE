@@ -44,6 +44,10 @@ public class MemberService {
         return memberMapper.insertSelective(member);
     }
 
+    public boolean isEmailTaken(String email) {
+        return memberMapper.selectByEmail(email) != null;
+    }
+
     /**
      * 회원 데이터 조회
      * @param id

@@ -146,6 +146,23 @@ class SignControllerUnitTest {
                             .content(objectMapper.writeValueAsString(signUpRequest)))
                     .andExpect(status().isForbidden());
         }
+
+        @Test
+        @DisplayName("사인업 실패 - 이미 등록된 이메일")
+        @WithAnonymousUser
+        void sigunUpFailWithAlreadyTakenEmail() throws Exception {
+            String existingEmail = "test@example.com";
+            SignUp signUpRequest = createSignUpDto("테스트사용자", existingEmail, "Password123!", "Password123!", "010-1234-5678");
+
+            when(memberService.isEmailTaken(existingEmail)).thenReturn(true);
+
+            mockMvc.perform(post("/api/sign-up")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(signUpRequest)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("이미 등록된 이메일입니다."));
+        }
     }
 
     @Nested

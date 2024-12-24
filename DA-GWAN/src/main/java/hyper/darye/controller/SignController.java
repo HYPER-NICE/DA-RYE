@@ -67,7 +67,7 @@ public class SignController {
             // 사인인 성공 후 작업
             memberService.updateLatestSignInDate(userId);
         } catch (AuthenticationException ex) {
-            throw new BadCredentialsException("Invalid credentials");
+            throw new BadCredentialsException("유효하지 않은 인증 정보입니다.");
         }
     }
 
@@ -78,6 +78,10 @@ public class SignController {
     @PostMapping("/sign-up") // POST 방식으로 회원 가입
     @ResponseStatus(HttpStatus.CREATED)
     public void signUp(@Valid @RequestBody SignUp signUpRequest) {
+        if (memberService.isEmailTaken(signUpRequest.getEmail()))
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+
+        if (signUpRequest.getEmail() == null || signUpRequest.getPassword() == null) {}
         // 정상 회원 가입 처리
         memberService.insertSelective(signUpRequest);
     }
