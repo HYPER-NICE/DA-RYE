@@ -1,6 +1,7 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.dto.controller.request.RequestDeleteProductDto;
 import hyper.darye.dto.controller.request.RequestPostProductDto;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -63,5 +66,18 @@ public class ProductController {
             @PathVariable Long id,
             @RequestBody RequestDeleteProductDto requestDeleteProductDto) throws NotFoundException {
         productService.deleteByPrimaryKey(requestDeleteProductDto.getId(), 4L); // 상태 코드 4로 업데이트
+    }
+
+    @GetMapping("/test")
+    public List<ProductWithBLOBs> SearchByKeyword(@RequestParam String keyword,
+                                         @RequestParam Integer minPrice,
+                                         @RequestParam Integer maxPrice,
+                                         @RequestParam Integer orderBy) {
+        if(minPrice > maxPrice || !(minPrice instanceof Integer) || !(maxPrice instanceof Integer)) {
+            throw new IllegalStateException("가격 설정이 잘못 됐습니다.");
+        } else if (keyword == null || keyword.isEmpty())
+            return productService.selectAllProduct();
+        else
+            return productService.searchByKeyword(keyword, minPrice, maxPrice, orderBy);
     }
 }
