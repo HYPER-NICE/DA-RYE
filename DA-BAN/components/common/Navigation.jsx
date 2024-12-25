@@ -1,7 +1,7 @@
 export function Navigation() {
 	return (
 			<div
-					className="flex justify-around p-4 pb-8 fixed bottom-0 w-[600px] bg-white"
+					className="flex justify-around p-4 pb-8 bg-white sticky bottom-0"
 			>
 				<button className={'flex flex-col items-center gap-1'}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
