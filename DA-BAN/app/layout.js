@@ -17,7 +17,7 @@ export default function RootLayout({children}) {
 	return (
 		<html lang="ko">
 			<body
-					className={`${pretendardVariable.variable} font-pretendard antialiased w-[600px] min-h-[600px] mx-auto relative`}
+					className={`${pretendardVariable.variable} border font-pretendard antialiased w-[600px] min-h-[600px] mx-auto relative`}
 			>
 				{children}
 			</body>
