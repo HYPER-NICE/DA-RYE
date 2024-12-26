@@ -205,38 +205,56 @@ class ProductServiceUnitTest {
     @DisplayName("상품 검색 (가격 설정X) 테스트")
     void searchByKeywordEmptyPriceTest() {
         // given
-        ProductWithBLOBs product = new ProductWithBLOBs();
-        product.setName("test");
-        product.setShortDescription("test");
-        product.setLongDescription("test");
-        product.setPrice(10000);
-        product.setCategoryId(1L);
-        product.setProductStatusCodeId(1L);
-        product.setManufacturer("test");
-        product.setExpirationDate(new Date());
-        product.setIngredients("test");
-        product.setPrecautions("test");
-        product.setImporter("test");
-        product.setSaleDate(new Date());
-        product.setCapacity(1);
-        product.setUnit("test");
-        product.setQuantity(2);
+        ProductWithBLOBs product1 = new ProductWithBLOBs();
+        product1.setName("test1");
+        product1.setShortDescription("test1");
+        product1.setLongDescription("test1");
+        product1.setPrice(10000);
+        product1.setCategoryId(1L);
+        product1.setProductStatusCodeId(1L);
+        product1.setManufacturer("test1");
+        product1.setExpirationDate(new Date());
+        product1.setIngredients("test1");
+        product1.setPrecautions("test1");
+        product1.setImporter("test1");
+        product1.setSaleDate(new Date());
+        product1.setCapacity(1);
+        product1.setUnit("test1");
+        product1.setQuantity(2);
 
-        String keyword = "   es     ";
+        ProductWithBLOBs product2 = new ProductWithBLOBs();
+        product2.setName("test2");
+        product2.setShortDescription("test2");
+        product2.setLongDescription("test2");
+        product2.setPrice(10000);
+        product2.setCategoryId(1L);
+        product2.setProductStatusCodeId(1L);
+        product2.setManufacturer("test2");
+        product2.setExpirationDate(new Date());
+        product2.setIngredients("test2");
+        product2.setPrecautions("test2");
+        product2.setImporter("test2");
+        product2.setSaleDate(new Date());
+        product2.setCapacity(1);
+        product2.setUnit("test2");
+        product2.setQuantity(2);
+
+        String keyword = "    s    e            ";
         Integer minPrice = 100;
         Integer maxPrice = 20000;
 
         // when
-        int result = productService.insertProduct(product);
-        System.out.println("삽입된 결과: " + result);
+        productService.insertProduct(product1);
+        productService.insertProduct(product2);
 
-        List<ProductWithBLOBs> productList = productService.searchByKeyword(keyword, null, null, 2);
+        List<ProductWithBLOBs> productList = productService.searchByKeyword(keyword, null, null, null);
 
         // 검색된 결과 확인
         System.out.println("검색된 상품 개수: " + productList.size());
 
-        assertEquals(1, productList.size());
-        assertEquals("test", productList.get(0).getName());
+        assertEquals(2, productList.size());
+        assertEquals("test1", productList.get(0).getName());
+        assertEquals("test2", productList.get(1).getName());
     }
 
 }
