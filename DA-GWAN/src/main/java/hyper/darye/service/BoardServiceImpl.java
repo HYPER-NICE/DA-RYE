@@ -1,6 +1,5 @@
 package hyper.darye.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Board;
 import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
@@ -8,31 +7,33 @@ import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@Service
+@Service("boardService")
 public class BoardServiceImpl implements BoardService{
 
     private final BoardCategoryCodeMapper boardCategoryCodeMapper;
     private final BoardMapper boardMapper;
     private final BoardImageMapper boardImageMapper;
-    private final ObjectMapper objectMapper;
 
-    public BoardServiceImpl(BoardCategoryCodeMapper boardCategoryCodeMapper, BoardMapper boardMapper, BoardImageMapper boardImageMapper, ObjectMapper objectMapper) {
+    @Autowired
+    public BoardServiceImpl(BoardCategoryCodeMapper boardCategoryCodeMapper, BoardMapper boardMapper, BoardImageMapper boardImageMapper) {
         this.boardCategoryCodeMapper = boardCategoryCodeMapper;
         this.boardMapper = boardMapper;
         this.boardImageMapper = boardImageMapper;
-        this.objectMapper = objectMapper;
     }
 
 
     //보드 게시판 글 작성
     @Override
+    @Transactional
     public int insertBoard(PostBoardDTO postBoardDTO, Long memberId) {
 
         Board board = new Board();
@@ -46,7 +47,9 @@ public class BoardServiceImpl implements BoardService{
             throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
         } //예외처리 이게 맞나요....? 모르겠슴니다....ㅠㅠ
 
-        board = objectMapper.convertValue(postBoardDTO, Board.class);
+        board.setTitle(postBoardDTO.getTitle());
+        board.setContent(postBoardDTO.getContent());
+        board.setFixed(postBoardDTO.getFixed());
         board.setCategoryId(categoryId);
         board.setWriterId(memberId);
 
@@ -69,7 +72,10 @@ public class BoardServiceImpl implements BoardService{
 
     //보드 게시판 글 수정
     @Override
+    @Transactional
     public void updateBoard(Long id, UpdateBoardDTO updateBoardDTO, Long memberId) {
+
+        Board board = new Board();
 
         //수정하면서 이미지 추가
         if(updateBoardDTO.getImages() != null && !updateBoardDTO.getImages().isEmpty() ) {
@@ -93,7 +99,8 @@ public class BoardServiceImpl implements BoardService{
             }
         }
 
-        Board board = objectMapper.convertValue(updateBoardDTO, Board.class);
+        board.setTitle(updateBoardDTO.getTitle());
+        board.setContent(updateBoardDTO.getContent());
 
         //서브 카테고리 변경시
         if(updateBoardDTO.getSubCategory() != null) {
@@ -126,7 +133,11 @@ public class BoardServiceImpl implements BoardService{
     //작성자가 본인인지를 판단하는 메서드
     @Override
     public boolean isWriter(Long id, Long memberId) {
-        return boardMapper.selectWriterId(id).equals(memberId);
+        Long writerId = boardMapper.selectWriterId(id);
+        if(writerId == null) {
+            throw new NoSuchElementException("존재하지 않는 키입니다.");
+        }
+        return writerId.equals(memberId);
     }
 
     //답변이 완료된 게시글인지 판단하는 메서드
@@ -138,6 +149,7 @@ public class BoardServiceImpl implements BoardService{
 
     //보드 게시판 글 소프트삭제
     @Override
+    @Transactional
     public void softDeleteBoard(Long id, Long memberId) {
         int result = boardMapper.softDeleteByPrimaryKey(id, memberId);
 

@@ -33,6 +33,6 @@ public interface BoardMapper {
     Long selectWriterId(Long id);
 
     //게시글 소프트 삭제
-    int softDeleteByPrimaryKey(Long id, Long memberId);
+    int softDeleteByPrimaryKey(Long id, Long lastModifiedMember);
 
 }
