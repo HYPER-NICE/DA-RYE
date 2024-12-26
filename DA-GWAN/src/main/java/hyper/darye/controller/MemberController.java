@@ -67,4 +67,10 @@ public class MemberController {
                                          updatePasswordRequest.getNewPassword(),
                                          updatePasswordRequest.getConfirmPassword());
     }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/members/findEmail")
+    public void findEmailByContact(@RequestParam String contact) {
+        memberService.findEmailByContact(contact);
+    }
 }

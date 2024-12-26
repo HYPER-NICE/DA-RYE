@@ -167,7 +167,7 @@ class MemberControllerTest {
             @DisplayName("회원 정보 조회 실패 - 이메일로 조회 (없는 이메일)")
             void selectMemberByEmailNotFoundTest() throws Exception {
                 // Given: 이메일이 존재하지 않도록 설정
-                when(memberService.selectByEmail("nonexistent@darye.dev")).thenThrow(new NoSuchElementException("존재하지 않는 이메일입니다."));
+                when(memberService.selectByEmail("nonexistent@darye.dev")).thenThrow(new NoSuchElementException("등록되지 않은 이메일입니다."));
                 // When & Then
                 mockMvc.perform(get("/api/members")
                                 .param("email", "nonexistent@darye.dev")
@@ -451,6 +451,32 @@ class MemberControllerTest {
                 doThrow(new NoSuchElementException("존재하지 않는 키입니다.")).when(memberService).softDeleteByPrimaryKey(0L);
                 // When & Then
                 mockMvc.perform(delete("/api/members/0")
+                                .with(csrf()))
+                        .andExpect(status().isNotFound());
+            }
+        }
+
+        @Nested
+        @DisplayName("휴대폰 번호로 이메일 찾기")
+        @WithAnonymousUser
+        class findEmailByContactTests {
+
+            @Test
+            @DisplayName("휴대폰 번호로 이메일 찾기 - 성공")
+            void findEmailByContactTest() throws Exception {
+                mockMvc.perform(get("/api/members/findEmail")
+                                .param("contact", "test@darye.dev")
+                                .with(csrf()))
+                        .andExpect(status().isOk());
+            }
+
+            @Test
+            @DisplayName("휴대폰 번호로 이메일 찾기 - 실패")
+            void findEmailByContactNotFoundTest() throws Exception {
+                when(memberService.findEmailByContact("010-0000-0000")).thenThrow(new NoSuchElementException("등록되지 않은 휴대폰 번호입니다."));
+
+                mockMvc.perform(get("/api/members/findEmail")
+                                .param("contact", "010-0000-0000")
                                 .with(csrf()))
                         .andExpect(status().isNotFound());
             }

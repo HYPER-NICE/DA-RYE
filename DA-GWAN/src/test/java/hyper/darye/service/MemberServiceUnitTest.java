@@ -146,7 +146,7 @@ class MemberServiceUnitTest {
             NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
                 memberService.selectByEmail("invalid@example.com");
             });
-            assertEquals("존재하지 않는 이메일입니다.", exception.getMessage());
+            assertEquals("등록되지 않은 이메일입니다.", exception.getMessage());
             verify(memberMapper).selectByEmail("invalid@example.com");
         }
     }
@@ -248,6 +248,84 @@ class MemberServiceUnitTest {
 
             Member updatedMember = memberMapper.selectByPrimaryKey(1L);
             assertEquals(member.getPassword(), updatedMember.getPassword());
+        }
+    }
+
+    @Nested
+    @DisplayName("휴대폰 번호로 이메일 찾기")
+    class findEmailByContactTests {
+
+        @Test
+        @DisplayName("휴대폰 번호로 이메일 찾기 - 성공")
+        void findEmailByContactTest() {
+            Member member = createExpectedMember();
+            String contact = member.getContact();
+            String expectedEmail = member.getEmail();
+
+            when(memberMapper.findEmailByContact(contact)).thenReturn(expectedEmail);
+
+            String foundEmail = memberService.findEmailByContact(member.getContact());
+            assertEquals(member.getEmail(), foundEmail);
+        }
+
+        @Test
+        @DisplayName("휴대폰 번호로 이메일 찾기 - 실패")
+        void findEmailByContactFailTest() {
+            String contact = "010-0000-0000";
+
+            when(memberMapper.findEmailByContact(contact)).thenReturn(null);
+
+            assertThrows(NoSuchElementException.class, () -> {
+                memberService.findEmailByContact(contact);
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("중복 검사 테스트")
+    class DuplicateCheckTests {
+        @Test
+        @DisplayName("이메일이 이미 존재하는지 확인 - 이메일 존재")
+        void isEmailTakenTestExisting() {
+            // Given: 이미 존재하는 이메일을 반환하도록 모킹
+            String email = "test@darye.dev";
+            when(memberMapper.selectByEmail(email)).thenReturn(new Member()); // 이메일이 존재한다고 가정
+
+            // When & Then
+            assertTrue(memberService.isEmailTaken(email)); // 이메일이 존재하면 true 반환
+        }
+
+        @Test
+        @DisplayName("이메일이 이미 존재하는지 확인 - 이메일 미존재")
+        void isEmailTakenTestNotExisting() {
+            // Given: 존재하지 않는 이메일을 반환하도록 모킹
+            String email = "nonexistent@darye.dev";
+            when(memberMapper.selectByEmail(email)).thenReturn(null); // 이메일이 존재하지 않음
+
+            // When & Then
+            assertFalse(memberService.isEmailTaken(email)); // 이메일이 존재하지 않으면 false 반환
+        }
+
+        @Test
+        @DisplayName("연락처가 이미 존재하는지 확인 - 연락처 존재")
+        void isContactTakenTest_ExistingContact() {
+            // Given: 이미 존재하는 연락처를 반환하도록 모킹
+            String contact = "010-1234-5678";
+            when(memberMapper.findEmailByContact(contact)).thenReturn("test@darye.dev"); // 연락처가 이미 존재
+
+            // When & Then
+            assertTrue(memberService.isContactTaken(contact)); // 연락처가 존재하면 true 반환
+        }
+
+        @Test
+        @DisplayName("연락처가 이미 존재하는지 확인 - 연락처 미존재")
+        void isContactTakenTest_NotExistingContact() {
+            // Given: 존재하지 않는 연락처를 반환하도록 모킹
+            String contact = "010-0000-0000";
+            when(memberMapper.findEmailByContact(contact)).thenReturn(null); // 연락처가 존재하지 않음
+
+            // When & Then
+            assertFalse(memberService.isContactTaken(contact)); // 연락처가 존재하지 않으면 false 반환
         }
     }
 }

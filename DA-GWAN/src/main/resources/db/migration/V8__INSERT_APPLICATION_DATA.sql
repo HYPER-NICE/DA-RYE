@@ -7,7 +7,7 @@ INSERT INTO MEMBER (
     EMAIL, ROLE, PASSWORD, NAME, SEX, BIRTHDATE, CONTACT, POINT, LOCKED, PW_FAILED_COUNT,
     LATEST_SIGN_IN_DATE, REG_DATE
 ) VALUES
-      ('root@darye.dev', 'ADMIN', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Root', 'M', '1990-01-01', '010-1234-5678', 0, FALSE, 0, NULL, NOW()),
+      ('root@darye.dev', 'ADMIN', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Root', 'M', '1990-01-01', '010-1111-1111', 0, FALSE, 0, NULL, NOW()),
       ('john.doe@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'John Doe', 'M', '1990-01-01', '010-1234-5678', 100, FALSE, 0, NULL, NOW()),
       ('jane.smith@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Jane Smith', 'F', '1995-05-15', '010-2345-6789', 200, FALSE, 0, NULL, NOW()),
       ('alex.kim@example.com', 'USER', '$2a$10$SS/aWir9xcxfp2NSvr5Hse9Abee4h/pjsoKwGEfFAW3N0XIRDP8pe', 'Alex Kim', 'O', '1988-10-10', '010-3456-7890', 50, TRUE, 2, '2024-06-01 08:00:00', NOW()),

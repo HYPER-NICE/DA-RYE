@@ -5,6 +5,7 @@ CREATE TABLE MEMBER
 
     -- 대체키
     EMAIL                VARCHAR(255) NOT NULL UNIQUE COMMENT '회원 이메일',
+    CONTACT              VARCHAR(13)  NOT NULL UNIQUE COMMENT '연락처',
 
     -- 데이터
     ROLE                 VARCHAR(20)  NOT NULL DEFAULT 'USER' COMMENT '계정 역할',
@@ -12,7 +13,6 @@ CREATE TABLE MEMBER
     NAME                 VARCHAR(50)  NOT NULL COMMENT '회원 이름',
     SEX                  CHAR(1) NULL COMMENT '성별',
     BIRTHDATE            DATE NULL COMMENT '생년월일',
-    CONTACT              VARCHAR(13)  NOT NULL COMMENT '연락처',
     POINT                INT          NOT NULL DEFAULT 0 COMMENT '현재 보유 포인트',
     LOCKED               BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '계정 잠금 여부',
     PW_FAILED_COUNT      INT          NOT NULL DEFAULT 0 COMMENT '비밀번호 실패 횟수',

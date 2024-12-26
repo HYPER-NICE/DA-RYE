@@ -83,4 +83,12 @@ class MemberMapperUnitTest {
         assertThat(updatedMember.getEmail()).isEqualTo("john.doe@example.com");
         assertThat(updatedMember.getContact()).isEqualTo("010-1234-5678");
     }
+
+    @Test
+    void findEmailByContactTest() {
+        Member member = memberMapper.selectByPrimaryKey(2L);
+
+        String foundEmail = memberMapper.findEmailByContact(member.getContact());
+        assertThat(foundEmail).isEqualTo("john.doe@example.com");
+    }
 }
