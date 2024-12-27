@@ -142,7 +142,7 @@ class ProductMapperUnitTest {
     }
 
     @Test
-    @DisplayName("상품 검색 테스트")
+    @DisplayName("상품 키워드 검색 테스트")
     void searchByKeywordTest() {
         String keyword = "제주 차";
         List<String> wordList = Arrays.asList(keyword.split(" "));
@@ -156,8 +156,22 @@ class ProductMapperUnitTest {
 
         assertNotNull(productList);
         assertFalse(productList.isEmpty(), "검색 결과가 비어 있습니다.");
+    }
 
+    @Test
+    @DisplayName("상품 카테고리 이름 검색 테스트")
+    void searchByCategoryNameTest() {
+        String keyword = "잎차";
+        List<String> wordList = Arrays.asList(keyword.split(" "));
+        List<ProductWithBLOBs> productList = productMapper.searchByKeyword(wordList, 0, 45000, null);
 
+        // 검색 결과 출력
+        System.out.println("검색 결과:");
+        productList.forEach(product -> {
+            System.out.println("상품명: " + product.getName() + ", 가격: " + product.getPrice());
+        });
 
+        assertNotNull(productList);
+        assertFalse(productList.isEmpty(), "검색 결과가 비어 있습니다.");
     }
 }

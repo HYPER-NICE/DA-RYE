@@ -81,11 +81,18 @@
   </select>
 
   <select id="searchByKeyword" resultType="hyper.darye.dto.ProductWithBLOBs">
-    SELECT * FROM PRODUCT
-    WHERE
-    <foreach collection="keyword" item="word" open="(" separator="AND" close=")">
+    SELECT *
+    FROM PRODUCT
+    WHERE (
+    <foreach collection="keyword" item="word" open="(" separator="OR" close=")">
       Name LIKE CONCAT('%', #{word}, '%')
+      OR CATEGORY_ID IN (
+      SELECT ID
+      FROM CATEGORY
+      WHERE NAME = #{word}
+      )
     </foreach>
+    )
     AND PRICE BETWEEN #{minPrice} AND #{maxPrice}
     ORDER BY
     <choose>
