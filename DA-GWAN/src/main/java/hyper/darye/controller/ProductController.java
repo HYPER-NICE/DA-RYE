@@ -11,10 +11,14 @@ import hyper.darye.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -26,11 +30,25 @@ public class ProductController {
     private final ObjectMapper objectMapper;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public void insertProduct(@RequestBody RequestPostProductDto insertPostProductRequest) {
+    public void insertProduct(@RequestPart RequestPostProductDto insertPostProductRequest,
+    @RequestPart(value = "thumbnailImage", required = false) byte[] thumbnailImage,
+    @RequestPart(value = "descriptionImage", required = false) byte[] descriptionImage ) throws Exception {
+
         ProductWithBLOBs productWithBLOBs = objectMapper.convertValue(insertPostProductRequest, ProductWithBLOBs.class);
-        productService.insertProduct(productWithBLOBs);
+
+        try {
+            // 썸네일 이미지 Base64 데이터 처리
+            productWithBLOBs.setThumbnailImage(insertPostProductRequest.getThumbnailImage());
+
+            // 상세 설명 이미지 Base64 데이터 처리
+            productWithBLOBs.setDescriptionImage(insertPostProductRequest.getDescriptionImage());
+
+            productService.insertProduct(productWithBLOBs);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없어 상품 등록에 실패했습니다.", e);
+        }
     }
 
     @GetMapping

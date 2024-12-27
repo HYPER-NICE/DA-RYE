@@ -59,9 +59,9 @@ CREATE TABLE PRODUCT
 
     -- 데이터
     NAME                 VARCHAR(255)          NOT NULL COMMENT '상품 이름',
-    THUMBNAIL_IMAGE      BLOB                  NULL COMMENT '썸네일 이미지',
+    THUMBNAIL_IMAGE      LONGBLOB                  NULL COMMENT '썸네일 이미지',
     SHORT_DESCRIPTION    TEXT                  NULL COMMENT '상품 간단 설명',
-    DESCRIPTION_IMAGE    BLOB                  NULL COMMENT '상세 설명 이미지',
+    DESCRIPTION_IMAGE    LONGBLOB                  NULL COMMENT '상세 설명 이미지',
     LONG_DESCRIPTION     TEXT                  NULL COMMENT '상품 상세 설명',
     PRICE                INT         DEFAULT 0 NOT NULL COMMENT '판매 가격',
 
