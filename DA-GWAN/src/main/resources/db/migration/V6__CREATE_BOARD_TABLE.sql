@@ -71,7 +71,7 @@ CREATE TABLE BOARD_IMAGE
     CONSTRAINT FK_BOARD_IMAGE_BOARD_ID FOREIGN KEY (BOARD_ID) REFERENCES BOARD (ID),
 
     -- 데이터
-    IMAGE                BLOB          NOT NULL COMMENT '게시글 이미지',
+    IMAGE                LONGBLOB          NOT NULL COMMENT '게시글 이미지',
 
     -- 시스템 관리 컬럼
     CREATED_DATE         DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '레코드 생성 날짜 및 시간',
