@@ -3,6 +3,7 @@ package hyper.darye.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Member;
 import hyper.darye.dto.MemberUpdateRequest;
+import hyper.darye.dto.controller.request.UpdatePasswordRequest;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -51,11 +52,19 @@ public class MemberController {
         memberService.updateByPrimaryKeySelective(member);
     }
 
-
     @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @DeleteMapping("/members/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void softDeleteMemberById(@PathVariable Long id) {
         memberService.softDeleteByPrimaryKey(id);
+    }
+
+    @PreAuthorize("hasRole('USER') and (#id == authentication.principal.id or hasRole('ADMIN'))")
+    @PatchMapping("/members/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePassword(@PathVariable Long id, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        memberService.updatePassword(id, updatePasswordRequest.getOldPassword(),
+                                         updatePasswordRequest.getNewPassword(),
+                                         updatePasswordRequest.getConfirmPassword());
     }
 }

@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class MemberServiceUnitTest {
 
     @Mock
@@ -59,13 +61,14 @@ class MemberServiceUnitTest {
         member.setEmail(signUp.getEmail());
         member.setPassword("EncodedP@ssword123");
         member.setContact(signUp.getContact());
+        member.setRole("USER");
         member.setCreatedDate(new Date());
         return member;
     }
 
     @Nested
     @DisplayName("회원 생성 테스트")
-    class InsertSelectiveMemberTest {
+    class InsertSelectiveMemberTests {
 
         @Test
         @DisplayName("회원 생성 - 성공")
@@ -104,7 +107,7 @@ class MemberServiceUnitTest {
 
     @Nested
     @DisplayName("회원 조회 테스트")
-    class MemberQueryTest {
+    class MemberQueryTests {
         @Test
         @DisplayName("유효한 회원 ID로 회원 조회")
         void selectMemberByValidIdTest() {
@@ -150,7 +153,7 @@ class MemberServiceUnitTest {
 
     @Nested
     @DisplayName("회원 사인인 업데이트 테스트")
-    class UpdateLatestSignInDateTest {
+    class UpdateLatestSignInDateTests {
 
         @Test
         @DisplayName("회원 최신 사인인 날짜 업데이트")
@@ -168,6 +171,83 @@ class MemberServiceUnitTest {
                 memberService.updateLatestSignInDate(1L);
             });
             verify(memberMapper).updateLatestSignInDate(1L);
+        }
+    }
+
+    @Nested
+    @DisplayName("회원 암호 수정 테스트")
+    class UpdatePasswordTests {
+
+        @Test
+        @DisplayName("회원 암호 수정")
+        void updatePasswordTest() {
+            Member member = createExpectedMember();
+            when(memberMapper.selectByPrimaryKey(1L)).thenReturn(member);
+
+            String oldPassword = "P@ssword123";
+            String encodedOldPassword = member.getPassword();
+            String newPassword = "P@ssword321";
+            String encodedNewPassword = "EncodedP@ssword321";
+
+            when(passwordEncoder.matches(eq("P@ssword123"), eq("EncodedP@ssword123"))).thenReturn(true);
+            when(passwordEncoder.encode(newPassword)).thenReturn(encodedNewPassword);
+
+            doAnswer(invocation -> {
+                member.setPassword(encodedNewPassword);
+                return null;
+            }).when(memberMapper).updatePassword(eq(1L), eq(encodedNewPassword));
+
+            memberService.updatePassword(1L, oldPassword, newPassword, newPassword);
+
+            assertEquals(encodedNewPassword, member.getPassword());
+            verify(memberMapper).updatePassword(1L, encodedNewPassword);
+
+            Member updatedMember = memberMapper.selectByPrimaryKey(1L);
+            assertNotEquals(encodedOldPassword, updatedMember.getPassword());
+            assertEquals(encodedNewPassword, updatedMember.getPassword());
+        }
+
+        @Test
+        @DisplayName("기존 비밀번호 불일치")
+        void updatePasswordByInvalidOldPasswordTest() {
+            Member member = createExpectedMember();
+            when(memberMapper.selectByPrimaryKey(1L)).thenReturn(member);
+
+            String wrongOldPassword = "P@ssword1234";
+            String newPassword = "P@ssword321";
+            String encodedNewPassword = "EncodedP@ssword321";
+
+            when(passwordEncoder.matches(eq(wrongOldPassword), eq("EncodedP@ssword123"))).thenReturn(false);
+
+            assertThrows(IllegalArgumentException.class, () -> {
+                memberService.updatePassword(1L, wrongOldPassword, newPassword, newPassword);
+            });
+            verify(memberMapper, never()).updatePassword(1L, encodedNewPassword);
+
+            Member updatedMember = memberMapper.selectByPrimaryKey(1L);
+            assertEquals(member.getPassword(), updatedMember.getPassword());
+        }
+
+        @Test
+        @DisplayName("새 비밀번호 재입력 불일치")
+        void updatePasswordByInvalidNewRePasswordTest() {
+            Member member = createExpectedMember();
+            when(memberMapper.selectByPrimaryKey(1L)).thenReturn(member);
+
+            String oldPassword = "P@ssword123";
+            String newPassword = "P@ssword321";
+            String wrongNewConfirmPassword = "P@ssword3210";
+            String encodedNewPassword = "EncodedP@ssword321";
+
+            when(passwordEncoder.matches(eq(oldPassword), eq("EncodedP@ssword123"))).thenReturn(true);
+
+            assertThrows(IllegalArgumentException.class, () -> {
+                memberService.updatePassword(1L, oldPassword, newPassword, wrongNewConfirmPassword);
+            });
+            verify(memberMapper, never()).updatePassword(1L, encodedNewPassword);
+
+            Member updatedMember = memberMapper.selectByPrimaryKey(1L);
+            assertEquals(member.getPassword(), updatedMember.getPassword());
         }
     }
 }

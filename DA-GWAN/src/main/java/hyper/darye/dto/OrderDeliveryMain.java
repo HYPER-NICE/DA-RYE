@@ -1,6 +1,7 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -10,50 +11,14 @@ import lombok.Data;
  */
 @Data
 public class OrderDeliveryMain implements Serializable {
-    /**
-     * 주문 배송 고유 ID (기본 키)
-     */
     private Long id;
-
-    /**
-     * 주문 ID
-     */
-    private Long orderMainId;
-
-    /**
-     * 배송 업체 이름
-     */
+    private Long orderMainId;                           // FK
     private String deliveryCompanyName;
-
-    /**
-     * 송장 번호
-     */
     private String trackingNumber;
-
-    /**
-     * 배송 요청 사항
-     */
     private String deliveryRequestNote;
-
-    /**
-     * 레코드 생성 날짜 및 시간
-     */
-    private Date createdDate;
-
-    /**
-     * 마지막 수정된 날짜 및 시간
-     */
-    private Date lastModifiedDate;
-
-    /**
-     * 레코드를 마지막으로 수정한 회원 ID
-     */
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
     private Long lastModifiedMember;
-
-    /**
-     * 레코드가 삭제된 날짜 (논리 삭제)
-     */
-    private Date deletedDate;
-
+    private LocalDateTime deletedDate;
     private static final long serialVersionUID = 1L;
 }

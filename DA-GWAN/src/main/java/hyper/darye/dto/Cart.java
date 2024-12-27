@@ -2,12 +2,15 @@ package hyper.darye.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * CART
  */
 @Data
+@AllArgsConstructor
 public class Cart implements Serializable {
     /**
      * 장바구니 ID (기본 키)
@@ -55,4 +58,12 @@ public class Cart implements Serializable {
     private Date deletedDate;
 
     private static final long serialVersionUID = 1L;
+
+    public Cart(Long memberId, Long productId, Long quantity) {
+        this.memberId = memberId;
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+    public Cart() {
+    }
 }

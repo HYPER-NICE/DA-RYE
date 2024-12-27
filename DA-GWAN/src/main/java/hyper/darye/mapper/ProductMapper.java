@@ -11,22 +11,17 @@ import java.util.List;
 public interface ProductMapper {
     @Insert("insert into PRODUCT (NAME, SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, CATEGORY_ID, PRODUCT_STATUS_CODE_ID, IMPORTER, MANUFACTURER, EXPIRATION_DATE, CAPACITY, INGREDIENTS, PRECAUTIONS, SALE_DATE) " +
             "values (#{name}, #{shortDescription}, #{longDescription}, #{price}, #{categoryId}, #{productStatusCodeId}, #{importer}, #{manufacturer}, #{expirationDate}, #{capacity}, #{ingredients}, #{precautions}, #{saleDate})")
-    int insertProduct(Product product);
+    int insertProduct(ProductWithBLOBs productWithBLOBs);
 
-    List<Product> selectAllProduct();
+    List<ProductWithBLOBs> selectAllProduct();
 
     ProductWithBLOBs selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKey(Product record);
+    int updateByPrimaryKey(ProductWithBLOBs productWithBLOBs);
 
-    int deleteByPrimaryKey(Long id);
+    int updateProductStatus(Long id, Long statusCode);
 
-    int insert(ProductWithBLOBs record);
-
-    int insertSelective(ProductWithBLOBs record);
-
-    int updateByPrimaryKeySelective(ProductWithBLOBs record);
-
-    int updateByPrimaryKeyWithBLOBs(ProductWithBLOBs record);
+    // 상품 검색용
+    List<ProductWithBLOBs> searchByKeyword(List<String> keyword, Integer minPrice, Integer maxPrice, Integer orderBy);
 
 }

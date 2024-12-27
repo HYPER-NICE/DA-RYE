@@ -81,22 +81,23 @@ class SignControllerUnitTest {
     class SignUpTests {
 
         @Test
-        @DisplayName("사인업 성공 - 유효한 요청")
+        @DisplayName("사인업 실패 - 이메일 중복")
         @WithAnonymousUser
-        void signUpSuccess() throws Exception {
+        void signUpFailDueToDuplicateEmail() throws Exception {
             // Given
-            SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
+            String duplicateEmail = "duplicate@example.com";
+            SignUp signUpRequest = createSignUpDto("테스트사용자", duplicateEmail, "Password123!", "Password123!", "010-1234-5678");
 
-            // Mocking
-            when(memberService.insertSelective(any(SignUp.class))).thenReturn(1);
+            // Mocking MemberService to return true for duplicate email
+            when(memberService.isEmailTaken(duplicateEmail)).thenReturn(true);
 
             // When & Then
             mockMvc.perform(post("/api/sign-up")
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signUpRequest)))
-                    .andExpect(status().isCreated())
-                    .andExpect(content().string("")); // No content expected
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.email").value("이미 등록된 이메일입니다."));
         }
 
         @Test
@@ -145,6 +146,22 @@ class SignControllerUnitTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(signUpRequest)))
                     .andExpect(status().isForbidden());
+        }
+
+        @Test
+        @DisplayName("사인업 실패 - 이미 등록된 이메일")
+        @WithAnonymousUser
+        void sigunUpFailWithAlreadyTakenEmail() throws Exception {
+            String existingEmail = "test@example.com";
+            SignUp signUpRequest = createSignUpDto("테스트사용자", existingEmail, "Password123!", "Password123!", "010-1234-5678");
+
+            when(memberService.isEmailTaken(existingEmail)).thenReturn(true);
+
+            mockMvc.perform(post("/api/sign-up")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(signUpRequest)))
+                    .andExpect(status().isBadRequest());
         }
     }
 

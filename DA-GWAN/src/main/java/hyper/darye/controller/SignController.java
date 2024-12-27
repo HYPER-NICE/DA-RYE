@@ -14,8 +14,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -44,25 +46,29 @@ public class SignController {
         String email = signInRequest.getEmail();
         String password = signInRequest.getPassword();
 
-        // 인증 시도
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
-        );
+        try {
+            // 인증 시도
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
 
-        // SecurityContext 업데이트
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // SecurityContext 업데이트
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 세션에 SecurityContext 저장
-        HttpSession session = request.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
+            // 세션에 SecurityContext 저장
+            HttpSession session = request.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
 
-        // 인증된 사용자 정보 추출
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+            // 인증된 사용자 정보 추출
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            Long userId = userDetails.getId();
 
-        // 사인인 성공 후 작업
-        memberService.updateLatestSignInDate(userId);
+            // 사인인 성공 후 작업
+            memberService.updateLatestSignInDate(userId);
+        } catch (AuthenticationException ex) {
+            throw new BadCredentialsException("유효하지 않은 인증 정보입니다.");
+        }
     }
 
     /**

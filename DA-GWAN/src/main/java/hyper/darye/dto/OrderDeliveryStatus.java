@@ -1,6 +1,7 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -10,45 +11,14 @@ import lombok.Data;
  */
 @Data
 public class OrderDeliveryStatus implements Serializable {
-    /**
-     * 주문 배송 상태 변경 이력 고유 ID (기본 키)
-     */
+
     private Long id;
-
-    /**
-     * 주문 배송 ID
-     */
-    private Long orderDeliveryMainId;
-
-    /**
-     * 배송 상태 코드 ID
-     */
-    private Long deliveryStatusCodeId;
-
-    /**
-     * 배송 상태 변경 시간, 예, 배송 출발 시간, 배송 완료 시간
-     */
-    private Date deliveryDate;
-
-    /**
-     * 레코드 생성 날짜 및 시간
-     */
-    private Date createdDate;
-
-    /**
-     * 마지막 수정된 날짜 및 시간
-     */
-    private Date lastModifiedDate;
-
-    /**
-     * 레코드를 마지막으로 수정한 회원 ID
-     */
+    private Long orderDeliveryMainId;               // FK
+    private Long deliveryStatusCodeId;              // FK
+    private LocalDateTime deliveryDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
     private Long lastModifiedMember;
-
-    /**
-     * 레코드가 삭제된 날짜 (논리 삭제)
-     */
-    private Date deletedDate;
-
+    private LocalDateTime deletedDate;
     private static final long serialVersionUID = 1L;
 }

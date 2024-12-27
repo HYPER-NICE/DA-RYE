@@ -47,6 +47,11 @@
     delete from PRODUCT
     where ID = #{id,jdbcType=BIGINT}
   </delete>
+  <update id="updateProductStatus" parameterType="map">
+    update PRODUCT
+    set PRODUCT_STATUS_CODE_ID = #{statusCode}
+    where ID = #{id} and PRODUCT_STATUS_CODE_ID != 4
+  </update>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT (CATEGORY_ID, PRODUCT_STATUS_CODE_ID, `NAME`,
       SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
@@ -74,6 +79,37 @@
       precautions, importer, sale_date AS saleDate, capacity, unit, quantity
     FROM PRODUCT
   </select>
+
+  <select id="searchByKeyword" resultType="hyper.darye.dto.ProductWithBLOBs">
+    SELECT *
+    FROM PRODUCT
+    WHERE (
+    <foreach collection="keyword" item="word" open="(" separator="OR" close=")">
+      Name LIKE CONCAT('%', #{word}, '%')
+      OR CATEGORY_ID IN (
+      SELECT ID
+      FROM CATEGORY
+      WHERE NAME = #{word}
+      )
+    </foreach>
+    )
+    AND PRICE BETWEEN #{minPrice} AND #{maxPrice}
+    ORDER BY
+    <choose>
+      <when test="orderBy == 1">
+        PRICE ASC
+      </when>
+      <when test="orderBy == 2">
+        PRICE DESC
+      </when>
+      <otherwise>
+        PRICE ASC
+      </otherwise>
+    </choose>
+  </select>
+
+
+
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT
     <trim prefix="(" suffix=")" suffixOverrides=",">

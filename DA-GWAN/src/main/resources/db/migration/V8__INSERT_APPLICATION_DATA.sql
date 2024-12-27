@@ -267,17 +267,73 @@ INSERT INTO ORDER_DETAIL (
 -- ==================================================
 -- ORDER_DELIVERY_MAIN
 -- 의존성
+-- ORDER_DETAIL,ORDER_STATUS_CODE
+-- ==================================================
+INSERT INTO ORDER_DETAIL_STATUS (
+    ORDER_DETAIL_ID,
+    ORDER_STATUS_CODE_ID,
+    ORDER_DATE,
+    CREATED_DATE,
+    LAST_MODIFIED_DATE,
+    LAST_MODIFIED_MEMBER,
+    DELETED_DATE
+) VALUES
+
+-- ORDER_DETAIL_ID에 따른 주문 접수
+-- 주문 1
+(1, 2, '2024-12-01 10:15:00.000000', '2024-12-01 10:15:00.000000', '2024-12-01 10:15:00.000000', NULL, NULL),
+(2, 2, '2024-12-01 10:15:00.000000', '2024-12-01 10:15:00.000000', '2024-12-01 12:15:00.000000', NULL, NULL),
+-- 주문 2
+(3, 2, '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', NULL, NULL),
+-- 주문 3
+(4, 2, '2024-12-03 14:45:00.000000', '2024-12-03 14:45:00.000000', '2024-12-03 14:45:00.000000', NULL, NULL),
+-- 주문 4
+(5, 2, '2024-12-01 08:00:00.000000', '2024-12-01 08:00:00.000000', '2024-12-01 08:00:00.000000', NULL, NULL),
+(6, 2, '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', NULL, NULL),
+-- 주문 5
+(7, 2, '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', NULL, NULL),
+
+-- ORDER_DETAIL_ID에 따른 주문 완료건
+-- 주문 1
+(1, 3, '2024-12-05 10:16:00.000000', '2024-12-05 10:16:00.000000', '2024-12-05 10:16:00.000000', NULL, NULL),
+(2, 3, '2024-12-05 10:16:00.000000', '2024-12-05 10:16:00.000000', '2024-12-05 10:16:00.000000', NULL, NULL),
+-- 주문 2
+(3, 3, '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', NULL, NULL),
+-- 주문 4
+(5, 3, '2024-12-01 08:00:00.000000', '2024-12-01 08:00:00.000000', '2024-12-01 08:00:00.000000', NULL, NULL),
+(6, 3, '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', '2024-12-04 18:00:00.000000', NULL, NULL),
+
+
+-- ORDER_DETAIL_ID에 따른 주문 취소 접수
+-- 주문 2
+(3, 4, '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', NULL, NULL),
+
+-- ORDER_DETAIL_ID에 따른 주문 취소 중
+-- 주문 2
+(3, 5, '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', NULL, NULL),
+
+-- ORDER_DETAIL_ID에 따른 주문 취소 완료
+-- 주문 2
+(3, 6, '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', '2024-12-01 09:00:00.000000', NULL, NULL);
+
+
+
+
+
+
+-- ==================================================
+-- ORDER_DELIVERY_MAIN
+-- 의존성
 -- ORDER_MAIN
 -- ==================================================
 INSERT INTO ORDER_DELIVERY_MAIN (
-    ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE
+    ORDER_MAIN_ID, ORDER_TYPE_CODE_ID, RECEIVER_NAME, RECEIVER_CONTACT, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE
 ) VALUES
-      (1, 'CJ대한통운', 'CJ123333789', '부재 시 경비실에 맡겨 주세요.'),
-      (2, '한진택배', 'HJ987654321', NULL),
-      (3, 'CJ대한통운', 'CJ12345678', '빠른 배송 부탁드립니다.'),
-      (4, '우체국택배', 'TRACKNUM12345678901234567890', '오전 9시 이전에 배송 부탁드립니다.'),
-      (5, '롯데택배', 'LOTT12345678', NULL);
-
+      (1, 1, 'John Doe', '010-1234-5678', '123 Main St', 'Apt 101', 'CJ대한통운', 'CJ123333789', '부재 시 경비실에 맡겨 주세요.'),
+      (2, 1, 'Jane Smith', '010-2345-6789', '456 Elm St', NULL, '한진택배', 'HJ987654321', NULL),
+      (3, 1, 'Alex Kim', '010-3456-7890', '789 Oak St', 'Suite 202', 'CJ대한통운', 'CJ12345678', '빠른 배송 부탁드립니다.'),
+      (4, 2, 'Lisa Park', '010-4567-8901', '101 Pine St', NULL, '우체국택배', 'TRACKNUM12345678901234567890', '오전 9시 이전에 배송 부탁드립니다.'),
+      (5, 2, 'Chris Lee', '010-5678-9012', '202 Maple St', NULL, '롯데택배', 'LOTT12345678', NULL);
 -- ==================================================
 -- ORDER_DELIVERY_STATUS
 -- 의존성
@@ -345,12 +401,12 @@ INSERT INTO ORDER_PAYMENT_DETAIL (
       (5, 1, 2, 'APPROVAL11223', 12000, '2024-11-25 09:25:00', '신용카드 결제 완료');
 
 -- ==================================================
--- POINT_HISTORY
+-- POINT_TRANSACTION
 -- 의존성
 -- MEMBER, POINT_TRANSACTION_TYPE
 -- ==================================================
 -- 포인트 적립 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 1, 1, 100, '첫 주문 적립', NOW()),        -- 회원 1, 주문 1, 포인트 적립
@@ -359,7 +415,7 @@ INSERT INTO POINT_HISTORY (
       (4, 1, 4, 300, '회원 가입 포인트 지급', NOW()); -- 회원 4, 첫 가입 포인트 적립
 
 -- 포인트 사용 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 2, 1, -50, '첫 주문 포인트 사용', NOW()),    -- 회원 1, 주문 1, 포인트 사용
@@ -368,7 +424,7 @@ INSERT INTO POINT_HISTORY (
       (4, 2, 4, -200, '프리미엄 제품 구매', NOW());    -- 회원 4, 주문 4, 포인트 사용
 
 -- 포인트 소멸 기록
-INSERT INTO POINT_HISTORY (
+INSERT INTO POINT_TRANSACTION (
     MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, AMOUNT, DESCRIPTION, CREATED_DATE
 ) VALUES
       (1, 3, NULL, -30, '미접속 소멸', NOW()),  -- 회원 1, 소멸된 포인트

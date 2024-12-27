@@ -23,4 +23,6 @@ public interface OrderMainMapper {
     @Select("select * from ORDER_MAIN where MEMBER_ID = #{memberId}")
     OrderMain selectByMemberId(Long memberId);
 
+    List<OrderMain> selectAllOrderMain();
+
 }

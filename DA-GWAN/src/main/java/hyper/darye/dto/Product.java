@@ -2,13 +2,19 @@ package hyper.darye.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 판매하는 상품의 정보 테이블
  * PRODUCT
  */
 @Data
+@Getter
+@Setter
 public class Product implements Serializable {
     /**
      * 상품 ID (기본 키)

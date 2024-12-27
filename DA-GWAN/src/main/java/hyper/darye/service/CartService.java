@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
 import hyper.darye.dto.Cart;
-import hyper.darye.dto.CartSelect;
+import hyper.darye.dto.controller.request.SelectCartRequest;
 import hyper.darye.mapper.CartMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class CartService {
     }
 
     // 장바구니 조회
-    public List<CartSelect> selectCart(Long memberId){
+    public List<SelectCartRequest> selectCart(Long memberId){
         return this.cartMapper.selectCart(memberId);
     }
 

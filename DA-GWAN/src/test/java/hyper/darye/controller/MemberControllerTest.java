@@ -1,6 +1,7 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hyper.darye.dto.Member;
 import hyper.darye.dto.MemberUpdateRequest;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;
@@ -16,6 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.NoSuchElementException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -147,6 +153,28 @@ class MemberControllerTest {
                                 .with(csrf()))
                         .andExpect(status().isOk());
             }
+
+            @Test
+            @DisplayName("회원 정보 조회 실패 - 기본 키로 조회 (없는 기본 키)")
+            void selectByPrimaryKeyNotFoundTest() throws Exception {
+                when(memberService.selectByPrimaryKey(0L)).thenThrow(new NoSuchElementException("존재하지 않는 키입니다."));
+                // When & Then
+                mockMvc.perform(get("/api/members/0")
+                                .with(csrf()))
+                        .andExpect(status().isNotFound());  // 404
+            }
+            
+            @Test
+            @DisplayName("회원 정보 조회 실패 - 이메일로 조회 (없는 이메일)")
+            void selectMemberByEmailNotFoundTest() throws Exception {
+                // Given: 이메일이 존재하지 않도록 설정
+                when(memberService.selectByEmail("nonexistent@darye.dev")).thenThrow(new NoSuchElementException("존재하지 않는 이메일입니다."));
+                // When & Then
+                mockMvc.perform(get("/api/members")
+                                .param("email", "nonexistent@darye.dev")
+                                .with(csrf()))
+                        .andExpect(status().isNotFound());  // 404
+            }
         }
     }
 
@@ -247,6 +275,21 @@ class MemberControllerTest {
                                 .content(jsonRequest))
                         .andExpect(status().isNoContent());
             }
+
+            @Test
+            @DisplayName("타인의 정보 수정 실패 - 없는 ID")
+            void updateOtherMemberByPrimaryKeyNotFoundTest() throws Exception {
+                MemberUpdateRequest testRequest = new MemberUpdateRequest();
+                String jsonRequest = objectMapper.writeValueAsString(testRequest);
+
+                doThrow(new NoSuchElementException("존재하지 않는 키입니다.")).when(memberService).updateByPrimaryKeySelective(any(Member.class));
+
+                mockMvc.perform(put("/api/members/0")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonRequest))
+                        .andExpect(status().isNotFound());
+            }
         }
     }
 
@@ -323,6 +366,94 @@ class MemberControllerTest {
                 mockMvc.perform(delete("/api/members/2")
                                 .with(csrf()))
                         .andExpect(status().isNoContent());
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("회원 암호 수정 테스트")
+    class UpdatePasswordTests {
+
+        @Nested
+        @DisplayName("비인증 사용자 상태에서 회원 암호 수정")
+        @WithAnonymousUser // 인증되지 않은 사용자
+        class UnauthorizedTests {
+
+            @Test
+            @DisplayName("회원 암호 수정 실패 - 비인증 사용자")
+            void updatePasswordAsAnonymousTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isForbidden()); // 비인증 사용자에게는 접근 불가
+            }
+        }
+
+        @Nested
+        @DisplayName("일반 사용자 상태에서 회원 암호 수정")
+        @WithMockCustomUser(id = 1L, username = "user@darye.dev", role = "USER") // 일반 사용자
+        class UserRoleTests {
+
+            @Test
+            @DisplayName("자신의 암호 수정 성공")
+            void updateOwnPasswordTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 암호 수정 후 204 반환
+            }
+
+            @Test
+            @DisplayName("다른 사용자의 암호 수정 실패")
+            void updateOtherPasswordTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/2")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isForbidden()); // 타인의 암호는 수정할 수 없음
+            }
+        }
+
+        @Nested
+        @DisplayName("관리자 사용자 상태에서 회원 암호 수정")
+        @WithMockCustomUser(id = 1L, username = "admin@darye.dev", role = "ADMIN") // 관리자
+        class AdminRoleTests {
+
+            @Test
+            @DisplayName("자신의 암호 수정 성공")
+            void updateOwnPasswordAsAdminTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/1")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 암호 수정 후 204 반환
+            }
+
+            @Test
+            @DisplayName("타인의 암호 수정 성공 - 관리자")
+            void updateOtherPasswordAsAdminTest() throws Exception {
+                // When & Then
+                mockMvc.perform(patch("/api/members/2")
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"oldPassword\":\"oldPass123\", \"newPassword\":\"newPass123\", \"confirmPassword\":\"newPass123\"}"))
+                        .andExpect(status().isNoContent()); // 관리자는 다른 사용자의 암호도 수정 가능
+            }
+
+            @Test
+            @DisplayName("타인의 암호 수정 실패 - 없는 ID")
+            void updateOtherPasswordAsAdminNotFoundTest() throws Exception {
+                doThrow(new NoSuchElementException("존재하지 않는 키입니다.")).when(memberService).softDeleteByPrimaryKey(0L);
+                // When & Then
+                mockMvc.perform(delete("/api/members/0")
+                                .with(csrf()))
+                        .andExpect(status().isNotFound());
             }
         }
     }

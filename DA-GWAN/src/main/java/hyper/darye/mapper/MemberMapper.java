@@ -25,8 +25,15 @@ public interface MemberMapper {
 
     int updateByPrimaryKey(Member record);
 
+    @Update("update MEMBER " +
+            "set PASSWORD = #{newPassword}, " +
+            "LAST_MODIFIED_DATE = CURRENT_TIMESTAMP, " +
+            "LAST_MODIFIED_MEMBER = #{id} " +
+            "where ID = #{id}")
+    void updatePassword(Long id, String newPassword);
+
     @Update("UPDATE MEMBER SET point = point + #{point} WHERE id = #{id}")
-    int updatePoint(Long id, int point);
+    int addPoint(Long id, int point);
 
     @Update("UPDATE MEMBER SET point = point - #{point} WHERE id = #{id}")
     int usePoint(Long id, int point);
