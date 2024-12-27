@@ -10,6 +10,7 @@ export function load({ params }) {
 export const actions = {
 	default: async ({ cookies, request }) => {
 
+		debugger;
 		const data = await request.formData();
 		const name = data.get('name');
 		const email = data.get('email');

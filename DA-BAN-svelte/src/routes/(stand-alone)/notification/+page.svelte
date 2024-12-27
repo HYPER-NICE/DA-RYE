@@ -14,6 +14,4 @@
 
 <!-- content -->
 
-
-
 {@render thread(data)}

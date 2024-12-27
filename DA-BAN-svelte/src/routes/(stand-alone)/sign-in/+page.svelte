@@ -1,4 +1,10 @@
-<form class="p-4 flex flex-col gap-6">
+<script>
+	import { enhance } from '$app/forms';
+
+	const { form } = $props();
+</script>
+
+<form method="post" use:enhance class="p-4 flex flex-col gap-6">
 	<!--	data -->
 	<div class="flex flex-col gap-4">
 		<label class="flex flex-col">
@@ -14,7 +20,7 @@
 
 	<!--	action -->
 	<div class="flex flex-col gap-4">
-		<button class="p-3 font-semibold border rounded bg-[#09B1A7] text-white">
+		<button type="submit" class="p-3 font-semibold border rounded bg-[#09B1A7] text-white">
 			로그인
 		</button>
 

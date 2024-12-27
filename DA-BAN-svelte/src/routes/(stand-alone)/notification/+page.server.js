@@ -1,15 +1,34 @@
 import { SECRET_BACKEND_HOST } from '$env/static/private';
 
-export async function load() {
-	const response = await fetch(`${SECRET_BACKEND_HOST}/api/noti`, {
+const pageData = {
+	title: '공지사항',
+}
+
+/** @type {import('./$types').LayoutServerLoad} */
+export async function load({cookies}) {
+
+	const jsessionId = cookies.get('JSESSIONID') ?? ''; // 없는 경우 대비
+	const cookieHeader = `JSESSIONID=${jsessionId}`;
+
+	const response = await fetch(`${SECRET_BACKEND_HOST}/api/notification-board`, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: { 'Content-Type': 'application/json',
+			'Cookie': {cookieHeader}
+		},
 		credentials: 'include',
-		body: JSON.stringify({ name, email, contact, password, confirmPassword })
 	});
 
+	console.log(response);
+	if (!response.ok) {
+		return {
+			...pageData,
+			status: response.status,
+			error: await response.text()
+		};
+	}
+
 	return {
-		title: '공지사항'
+		...pageData,
 	};
 }
 
