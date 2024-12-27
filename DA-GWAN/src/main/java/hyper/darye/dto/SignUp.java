@@ -3,6 +3,7 @@ package hyper.darye.dto;
 import hyper.darye.validation.FieldCompare.FieldComparison;
 import hyper.darye.validation.FieldCompare.CompareResult;
 import hyper.darye.validation.FieldCompare.CompareTarget;
+import hyper.darye.validation.contact.UniqueContact;
 import hyper.darye.validation.email.UniqueEmail;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,7 +35,7 @@ public class SignUp {
      */
     @Schema(description = "회원 이메일 주소", example = "example@darye.dev", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "이메일을 입력하세요.")
-    @Email(message = "이메일이 정확하지 않습니다.")
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "이메일이 정확하지 않습니다.")
     @UniqueEmail(message = "이미 등록된 이메일입니다.")
     private String email;
 
@@ -65,5 +66,6 @@ public class SignUp {
             regexp = "^01[0-9]-\\d{3,4}-\\d{4}$",
             message = "연락처 형식이 올바르지 않습니다. (예: 010-1234-5678)"
     )
+    @UniqueContact(message = "이미 등록된 휴대폰 번호입니다.")
     private String contact;
 }
