@@ -70,9 +70,9 @@ public class ProductController {
 
     @GetMapping("/test")
     public List<ProductWithBLOBs> SearchByKeyword(@RequestParam String keyword,
-                                         @RequestParam Integer minPrice,
-                                         @RequestParam Integer maxPrice,
-                                         @RequestParam Integer orderBy) {
+                                         @RequestParam(required = false) Integer minPrice,
+                                         @RequestParam(required = false) Integer maxPrice,
+                                         @RequestParam(required = false) Integer orderBy) {
         if(minPrice > maxPrice || !(minPrice instanceof Integer) || !(maxPrice instanceof Integer)) {
             throw new IllegalStateException("가격 설정이 잘못 됐습니다.");
         } else if (keyword == null || keyword.isEmpty())

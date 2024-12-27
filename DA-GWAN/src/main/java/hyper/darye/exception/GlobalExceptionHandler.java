@@ -28,11 +28,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage()); // 400 Bad Request
-    }
-
+    // IllegalArgumentException 처리 추가해봤습니다.....
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 
     // 인증 실패 시 처리
     @ExceptionHandler(BadCredentialsException.class)

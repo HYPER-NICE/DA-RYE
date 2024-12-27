@@ -18,4 +18,6 @@ public interface BoardImageMapper {
     int updateByPrimaryKeyWithBLOBs(BoardImage record);
 
     int updateByPrimaryKey(BoardImage record);
+
+    int deleteByBoardId(Long boardId);
 }

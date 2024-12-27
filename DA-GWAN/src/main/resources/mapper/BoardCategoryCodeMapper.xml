@@ -15,7 +15,7 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, ROOT_CATEGORY, SUB_CATEGORY, ROOT_NAME, ROOT_DESCRIPTION, SUB_NAME, SUB_DESCRIPTION, 
+    ID, ROOT_CATEGORY, SUB_CATEGORY, ROOT_NAME, ROOT_DESCRIPTION, SUB_NAME, SUB_DESCRIPTION,
     CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -155,4 +155,10 @@
       DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectCategoryCodeId" parameterType="map" resultType="java.lang.Long">
+    select ID
+    from BOARD_CATEGORY_CODE
+    where ROOT_CATEGORY = #{rootCategory,jdbcType=BIGINT}
+    and SUB_CATEGORY = #{subCategory,jdbcType=BIGINT}
+  </select>
 </mapper>

@@ -22,6 +22,6 @@ public interface ProductMapper {
     int updateProductStatus(Long id, Long statusCode);
 
     // 상품 검색용
-    List<ProductWithBLOBs> searchByKeyword(String keyword, Integer minPrice, Integer maxPrice, Integer orderBy);
+    List<ProductWithBLOBs> searchByKeyword(List<String> keyword, Integer minPrice, Integer maxPrice, Integer orderBy);
 
 }
