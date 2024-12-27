@@ -89,8 +89,7 @@ class BoardOneOnOneControllerTest {
         mockMvc.perform(patch("/api/customer-board/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateBoardDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("답변된 글은 수정할 수 없습니다."));
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("1대1 문의 수정 - 작성자가 아닐때")

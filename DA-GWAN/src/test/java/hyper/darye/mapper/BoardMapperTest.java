@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @MybatisTest
@@ -83,5 +85,16 @@ class BoardMapperTest {
         assertThat(deletedBoard).isNotNull();
         assertThat(deletedBoard.getDeletedDate()).isNotNull();
         assertThat(deletedBoard.getLastModifiedMember()).isEqualTo(5L);
+    }
+
+    @Test
+    @DisplayName("게시판 전체조회 테스트 - 카테고리당")
+    void selectBoardTest() {
+        //given & when
+        List<Board> board = boardMapper.selectAllCategory(boardCategoryCodeMapper.selectAllCategoryCodeId(1L));
+
+        //then
+        assertThat(board).isNotNull();
+        assertThat(board.size()).isEqualTo(2);
     }
 }

@@ -3,6 +3,7 @@ package hyper.darye.controller;
 import hyper.darye.constant.RootCategory;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -51,5 +54,12 @@ public class BoardFaqController {
                                 @AuthenticationPrincipal CustomUserDetails principal) {
 
         boardService.softDeleteBoard(id, principal.getId());
+    }
+
+    //FAQ 조회
+    @PreAuthorize("permitAll()")
+    @GetMapping("/faq-board")
+    public List<SearchBoardDTO> selectAllBoard(@RequestParam Long subCategoryId) {
+        return boardService.selectAllBoard(RootCategory.FAQ.getValue(), subCategoryId);
     }
 }

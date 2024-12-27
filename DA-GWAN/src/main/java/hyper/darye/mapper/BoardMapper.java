@@ -4,6 +4,8 @@ import hyper.darye.dto.Board;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface BoardMapper {
     int deleteByPrimaryKey(Long id);
@@ -20,13 +22,30 @@ public interface BoardMapper {
     int updateByPrimaryKey(Board record);
 
 
-    //전체 조회
-    @Select("SELECT * FROM BOARD WHERE CATEGORY_ID = #{CategoryId}")
-    Board selectAll(Long CategoryId);
+    //카테고리ID로 조회
+    @Select("SELECT * FROM BOARD WHERE CATEGORY_ID = #{categoryId} ORDER BY CREATED_DATE DESC")
+    List<Board> selectAll(Long categoryId);
+
+    //카테고리ID로 전체 카테고리 조회
+    @Select("SELECT * FROM BOARD WHERE CATEGORY_ID IN " +
+            "<foreach item='id' collection='categoryId' open='(' close=')' separator=','> " +
+            "#{id} " +
+            "</foreach>" +
+            "ORDER BY CATEGORY_ID ASC, CREATED_DATE DESC")
+    List<Board> selectAllCategory(List<Long> categoryId);
 
     //게시글 ID로 루트카테고리ID 조회
     @Select("SELECT bcc.ROOT_CATEGORY FROM BOARD b JOIN BOARD_CATEGORY_CODE bcc ON b.CATEGORY_ID = bcc.ID WHERE b.ID = #{id}")
     Long selectRootCategoryId(Long id);
+
+    //게시글 ID로 서브카테고리ID 조회
+    @Select("SELECT bcc.SUB_CATEGORY FROM BOARD b JOIN BOARD_CATEGORY_CODE bcc ON b.CATEGORY_ID = bcc.ID WHERE b.ID = #{id}")
+    Long selectSubCategoryId(Long id);
+
+    //게시글 ID로 서브 카테고리 이름 조회
+    @Select("SELECT bcc.SUB_NAME FROM BOARD b JOIN BOARD_CATEGORY_CODE bcc ON b.CATEGORY_ID = bcc.ID WHERE b.ID = #{id}")
+    String selectSubCategoryName(Long id);
+
 
     //게시글 ID로 작성자ID 조회
     @Select("SELECT WRITER_ID FROM BOARD WHERE ID = #{id}")

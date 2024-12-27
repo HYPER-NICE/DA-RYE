@@ -2,6 +2,9 @@ package hyper.darye.service;
 
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
+
+import java.util.List;
 
 public interface BoardService {
 
@@ -14,4 +17,6 @@ public interface BoardService {
     boolean isUpdatable(Long id);
 
     void softDeleteBoard(Long id, Long memberID);
+
+    List<SearchBoardDTO> selectAllBoard(Long rootCategoryId, Long subCategoryId);
 }
