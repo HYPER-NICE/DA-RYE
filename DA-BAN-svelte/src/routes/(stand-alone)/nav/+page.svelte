@@ -2,15 +2,15 @@
 	const menus = [
 		{
 			title: '상품',
-			items: ['녹차/말차', '명차', '말효차', '홍차', '허브차']
+			items: [{name: '전체 상품', href: "/products"}, {name: '베스트 상품', href: "/best"}, {name: '신상품', href: "/new"}]
 		},
 		{
 			title: '마이페이지',
-			items: ['나의 쇼핑', '리뷰작성', '문의내역', '설정']
+			items: [{name: '주문내역', href: "/order"}, {name: '배송지 관리', href: "/address"}, {name: '개인정보 수정', href: "/profile"}]
 		},
 		{
 			title: '고객센터',
-			items: ['공지사항', 'FAQ', '1:1 문의']
+			items: [{name: '공지사항', href: "/notification"}, {name: '자주 묻는 질문', href: "/faq"}, {name: '1:1 문의', href: "/inquiry"}]
 		}
 	];
 </script>
@@ -20,7 +20,7 @@
 		<div class="p-4 text-lg font-bold ">{data.title}</div>
 		<ul>
 			{#each data.items as item}
-				<li><a href="#" class="p-4  block font-medium hover:bg-gray-200 transition-colors duration-300">{item}</a></li>
+				<li><a href={item.href} class="p-4  block font-medium hover:bg-gray-200 transition-colors duration-300">{item.name}</a></li>
 			{/each}
 		</ul>
 	</div>
