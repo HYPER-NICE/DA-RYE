@@ -20,7 +20,8 @@
 		<div class="p-4 text-lg font-bold ">{data.title}</div>
 		<ul>
 			{#each data.items as item}
-<li><a href="#" class="p-4  block font-medium hover:bg-gray-200 transition-colors duration-300">{item}</a></li>			{/each}
+				<li><a href="#" class="p-4  block font-medium hover:bg-gray-200 transition-colors duration-300">{item}</a></li>
+			{/each}
 		</ul>
 	</div>
 {/snippet}
@@ -28,8 +29,11 @@
 <div class="p-4">
 	<!--	인증 액션 -->
 	<div class="mb-4 flex gap-4">
-		<a class="flex-1 p-3 text-center rounded text-white bg-[#09B1A7]">로그인</a>
-		<a class="flex-1 p-3 text-center rounded border border-[#09B1A7] bg-white">회원가입</a>
+		<a href="/sign-in" class="flex-1 p-3 text-center rounded text-white bg-[#09B1A7]">로그인</a>
+		<a
+			class="flex-1 p-3 text-center rounded border border-[#09B1A7] bg-white"
+			href="/sign-up"
+		>회원가입</a>
 	</div>
 
 	{#each menus as data}

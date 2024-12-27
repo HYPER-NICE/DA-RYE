@@ -1,5 +1,4 @@
 <script>
-
 	import Header from '$lib/Header.svelte';
 
 	let { children } = $props();
