@@ -153,4 +153,14 @@ class BoardNotificationControllerTest {
                 .andExpect(status().isOk());
 
     }
+
+    @DisplayName("공지사항 상세 조회")
+    @WithAnonymousUser
+    @Test
+    void selectBoard() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/notification-board/1"))
+                .andExpect(status().isOk());
+
+    }
 }

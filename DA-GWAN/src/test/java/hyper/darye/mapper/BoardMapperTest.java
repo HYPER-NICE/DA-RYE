@@ -108,4 +108,16 @@ class BoardMapperTest {
         assertThat(board).isNotNull();
         assertThat(board.size()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("게시판 상세 조회 테스트")
+    void selectBoardDetailTest() {
+        //given & when
+        Board board = boardMapper.selectBoard(1L);
+
+        //then
+        assertThat(board).isNotNull();
+        assertThat(board.getId()).isEqualTo(1L);
+        assertThat(board.getTitle()).isEqualTo("배송 지연 안내입니다.");
+    }
 }

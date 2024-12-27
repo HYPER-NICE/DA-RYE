@@ -1,6 +1,7 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -75,4 +76,5 @@ public class Board implements Serializable {
     private Date deletedDate;
 
     private static final long serialVersionUID = 1L;
+
 }

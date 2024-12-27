@@ -5,13 +5,13 @@ import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -207,6 +207,30 @@ public class BoardServiceImpl implements BoardService{
                     return dto;
                 })
                 .toList();
+        }
+
+        //보드 게시판 글 상세 조회
+        @Override
+        public SearchBoardDetailDTO selectBoardDetail(Long id) {
+            Board board = boardMapper.selectBoard(id);
+
+            if (board == null) {
+                throw new NoSuchElementException("존재하지 않는 키입니다.");
+            }
+
+            List<BoardImage> boardImages = boardImageMapper.selectByBoardId(id);
+
+            SearchBoardDetailDTO dto = new SearchBoardDetailDTO();
+            dto.setId(board.getId());
+            dto.setTitle(board.getTitle());
+            dto.setContent(board.getContent());
+            dto.setRegDate(board.getRegDate());
+            dto.setLastModifiedDate(board.getLastModifiedDate());
+            dto.setSubCategoryId(boardMapper.selectSubCategoryId(board.getId()));
+            dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+            dto.setImages(boardImages);
+
+            return dto;
         }
 
 

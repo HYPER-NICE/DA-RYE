@@ -4,6 +4,7 @@ import hyper.darye.constant.RootCategory;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import jakarta.validation.Valid;
@@ -62,5 +63,12 @@ public class BoardNotificationController {
     @GetMapping("/notification-board")
     public List<SearchBoardDTO> selectAllBoard(@RequestParam(required = false) Long subCategoryId) {
         return boardService.selectAllBoard(RootCategory.NOTICE.getValue(), subCategoryId);
+    }
+
+    //공지사항 상세 조회
+    @PreAuthorize("permitAll()")
+    @GetMapping("/notification-board/{id}")
+    public SearchBoardDetailDTO selectBoard(@PathVariable Long id) {
+        return boardService.selectBoardDetail(id);
     }
 }

@@ -53,6 +53,10 @@ public interface BoardMapper {
     @Select("SELECT WRITER_ID FROM BOARD WHERE ID = #{id}")
     Long selectWriterId(Long id);
 
+    //게시글 ID로 게시글 조회
+    @Select("SELECT * FROM BOARD WHERE ID = #{id}")
+    Board selectBoard(Long id);
+
     //게시글 소프트 삭제
     int softDeleteByPrimaryKey(Long id, Long lastModifiedMember);
 

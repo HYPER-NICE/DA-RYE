@@ -10,6 +10,7 @@ import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
@@ -307,6 +308,30 @@ class BoardServiceUnitTest {
         assertEquals("제목2", result.get(0).getTitle());
         assertEquals("일반", result.get(0).getSubCategoryName());
         assertEquals(subCategoryId, result.get(0).getSubCategoryId());
+    }
+
+    @Test
+    @DisplayName("게시글 상세 조회 테스트")
+    public void selectBoardDetailTest() {
+        // Given
+        Long boardId = 1L;
+        Board board = new Board(1L, null, 1L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null);
+        BoardImage boardImage = new BoardImage(1L, 1L, new Date(), new Date(), null, new byte[]{1, 2, 3});
+        BoardImage boardImage2 = new BoardImage(2L, 1L, new Date(), new Date(), null, new byte[]{1, 2});
+
+        when(boardMapper.selectBoard(boardId)).thenReturn(board);
+        when(boardImageMapper.selectByBoardId(boardId)).thenReturn(List.of(boardImage, boardImage2));
+
+        // When
+        SearchBoardDetailDTO result = boardService.selectBoardDetail(boardId);
+
+        // Then
+        verify(boardMapper, times(1)).selectBoard(boardId);
+        assertNotNull(result);
+        assertEquals(boardId, result.getId());
+        assertEquals("제목1", result.getTitle());
+        assertEquals("내용1", result.getContent());
+        assertThat(result.getImages()).hasSize(2);
     }
 }
 

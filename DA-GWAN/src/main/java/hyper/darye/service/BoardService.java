@@ -3,6 +3,7 @@ package hyper.darye.service;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface BoardService {
 
     void softDeleteBoard(Long id, Long memberID);
 
+    //보드 게시판 글 전체 조회
     List<SearchBoardDTO> selectAllBoard(Long rootCategoryId, Long subCategoryId);
+
+    //보드 게시판 글 상세 조회
+    SearchBoardDetailDTO selectBoardDetail(Long id);
 }

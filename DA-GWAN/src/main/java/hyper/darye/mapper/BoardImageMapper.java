@@ -2,6 +2,9 @@ package hyper.darye.mapper;
 
 import hyper.darye.dto.BoardImage;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface BoardImageMapper {
@@ -19,5 +22,10 @@ public interface BoardImageMapper {
 
     int updateByPrimaryKey(BoardImage record);
 
+    // 게시글 ID로 이미지 삭제
     int deleteByBoardId(Long boardId);
+
+    // 게시글 ID로 이미지 조회
+    @Select("SELECT * FROM BOARD_IMAGE WHERE BOARD_ID = #{boardId}")
+    List<BoardImage> selectByBoardId(Long boardId);
 }
