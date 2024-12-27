@@ -29,6 +29,10 @@
     delete from BOARD_IMAGE
     where ID = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByBoardId" parameterType="java.lang.Long">
+    delete from BOARD_IMAGE
+    where BOARD_ID = #{id,jdbcType=BIGINT}
+  </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.BoardImage" useGeneratedKeys="true">
     insert into BOARD_IMAGE (BOARD_ID, CREATED_DATE, LAST_MODIFIED_DATE, 
       DELETED_DATE, IMAGE)

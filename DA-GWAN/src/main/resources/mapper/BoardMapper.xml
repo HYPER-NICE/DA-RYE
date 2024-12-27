@@ -25,6 +25,11 @@
     from BOARD
     where ID = #{id,jdbcType=BIGINT}
   </select>
+  <update id="softDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update BOARD
+    set DELETED_DATE = CURRENT_TIMESTAMP, LAST_MODIFIED_MEMBER = #{lastModifiedMember, jdbcType=BIGINT}
+    where ID = #{id, jdbcType=BIGINT}
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from BOARD
     where ID = #{id,jdbcType=BIGINT}
