@@ -3,12 +3,16 @@ package hyper.darye.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * BOARD
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Board implements Serializable {
     /**
      * 게시판 고유 ID (기본 키)

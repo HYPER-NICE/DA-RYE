@@ -9,6 +9,7 @@ import hyper.darye.dto.Board;
 import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
@@ -250,6 +251,62 @@ class BoardServiceUnitTest {
         // Then
         verify(boardMapper, times(1)).softDeleteByPrimaryKey(boardId, memberId);
         verify(boardImageMapper, times(1)).deleteByBoardId(boardId);
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트 - 전체 카테고리")
+    public void selectAllBoardTest() {
+        // Given
+        Long rootCategoryId = 1L;
+        Long subCategoryId = null;
+
+        List<Long> categoryIds = List.of(1L, 2L);
+        List<Board> boards = List.of(
+                new Board(1L, null, 1L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null),
+                new Board(2L, null, 2L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        when(boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId)).thenReturn(categoryIds);
+        when(boardMapper.selectAllCategory(categoryIds)).thenReturn(boards);
+
+        // When
+        List<SearchBoardDTO> result = boardService.selectAllBoard(rootCategoryId, subCategoryId);
+
+        // Then
+        verify(boardCategoryCodeMapper, times(1)).selectAllCategoryCodeId(rootCategoryId);
+        verify(boardMapper, times(1)).selectAllCategory(categoryIds);
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting("title").contains("제목1", "제목2");
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트 - 서브 카테고리")
+    public void selectAllBoardTest_withSubCategory() {
+        // Given
+        Long rootCategoryId = 1L;
+        Long subCategoryId = 2L;
+        List<Board> boards = List.of(
+                new Board(2L, null, 2L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        // When
+        Map<String, Object> param = Map.of("rootCategory", rootCategoryId, "subCategory", subCategoryId);
+        Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
+
+        when(boardCategoryCodeMapper.selectCategoryCodeId(param)).thenReturn(categoryId);
+        when(boardMapper.selectAll(categoryId)).thenReturn(boards);
+        when(boardMapper.selectSubCategoryName(anyLong())).thenReturn("일반");
+        List<SearchBoardDTO> result = boardService.selectAllBoard(rootCategoryId, subCategoryId);
+
+        // Then
+        assertThat(result).hasSize(1);
+        assertThat(result).extracting("title").contains("제목2");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("제목2", result.get(0).getTitle());
+        assertEquals("일반", result.get(0).getSubCategoryName());
+        assertEquals(subCategoryId, result.get(0).getSubCategoryId());
     }
 }
 

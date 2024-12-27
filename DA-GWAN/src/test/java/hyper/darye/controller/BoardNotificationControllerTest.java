@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -120,6 +121,36 @@ class BoardNotificationControllerTest {
         // when & then
         mockMvc.perform(delete("/api/notification-board/1"))
                 .andExpect(status().isForbidden());
+
+    }
+
+    @DisplayName("공지사항 조회 - 서브카테고리지정")
+    @WithMockCustomUser(id = 1L, username = "test@darye.dev", role = "USER")
+    @Test
+    void selectAllBoard() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/notification-board?subCategoryId=1"))
+                .andExpect(status().isOk());
+
+    }
+
+    @DisplayName("공지사항 조회 - 서브카테고리 미지정")
+    @WithMockCustomUser(id = 1L, username = "test@darye.dev", role = "USER")
+    @Test
+    void selectAllBoardWithoutSubCategory() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/notification-board"))
+                .andExpect(status().isOk());
+
+    }
+
+    @DisplayName("공지사항 조회 - 비로그인")
+    @WithAnonymousUser
+    @Test
+    void selectAllBoardWithoutLogin() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/notification-board"))
+                .andExpect(status().isOk());
 
     }
 }

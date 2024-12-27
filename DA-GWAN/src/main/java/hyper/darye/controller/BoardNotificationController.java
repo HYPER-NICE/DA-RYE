@@ -60,7 +60,7 @@ public class BoardNotificationController {
     //공지사항 조회
     @PreAuthorize("permitAll()")
     @GetMapping("/notification-board")
-    public List<SearchBoardDTO> selectAllBoard(@RequestParam Long subCategoryId) {
+    public List<SearchBoardDTO> selectAllBoard(@RequestParam(required = false) Long subCategoryId) {
         return boardService.selectAllBoard(RootCategory.NOTICE.getValue(), subCategoryId);
     }
 }

@@ -97,4 +97,15 @@ class BoardMapperTest {
         assertThat(board).isNotNull();
         assertThat(board.size()).isEqualTo(2);
     }
+
+    @Test
+    @DisplayName("게시판 전체조회 테스트 - 서브 카테고리 지정")
+    void selectBoardBySubCategoryTest() {
+        //given & when
+        List<Board> board = boardMapper.selectAll(1L);
+
+        //then
+        assertThat(board).isNotNull();
+        assertThat(board.size()).isEqualTo(1);
+    }
 }
