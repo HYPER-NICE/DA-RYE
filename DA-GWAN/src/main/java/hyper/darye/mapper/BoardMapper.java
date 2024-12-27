@@ -27,11 +27,13 @@ public interface BoardMapper {
     List<Board> selectAll(Long categoryId);
 
     //카테고리ID로 전체 카테고리 조회
-    @Select("SELECT * FROM BOARD WHERE CATEGORY_ID IN " +
+    @Select("<script>" +
+            "SELECT * FROM BOARD WHERE CATEGORY_ID IN " +
             "<foreach item='id' collection='categoryId' open='(' close=')' separator=','> " +
             "#{id} " +
             "</foreach>" +
-            "ORDER BY CATEGORY_ID ASC, CREATED_DATE DESC")
+            "ORDER BY CATEGORY_ID ASC, CREATED_DATE DESC" +
+            "</script>")
     List<Board> selectAllCategory(List<Long> categoryId);
 
     //게시글 ID로 루트카테고리ID 조회
