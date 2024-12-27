@@ -67,7 +67,7 @@
       #{precautions,jdbcType=VARCHAR}, #{importer,jdbcType=VARCHAR}, #{saleDate,jdbcType=TIMESTAMP}, 
       #{capacity,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
-      #{deletedDate,jdbcType=TIMESTAMP}, #{thumbnailImage,jdbcType=LONGBLOB}, #{descriptionImage,jdbcType=BLOB}
+      #{deletedDate,jdbcType=TIMESTAMP}, #{thumbnailImage,jdbcType=LONGBLOB}, #{descriptionImage,jdbcType=LONGBLOB}
       )
   </insert>
   <!-- 전체 제품 조회 -->
@@ -236,10 +236,10 @@
         #{deletedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="thumbnailImage != null">
-        #{thumbnailImage,jdbcType=BLOB},
+        #{thumbnailImage,jdbcType=LONGBLOB},
       </if>
       <if test="descriptionImage != null">
-        #{descriptionImage,jdbcType=BLOB},
+        #{descriptionImage,jdbcType=LONGBLOB},
       </if>
     </trim>
   </insert>
@@ -304,10 +304,10 @@
         DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="thumbnailImage != null">
-        THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=BLOB},
+        THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=LONGBLOB},
       </if>
       <if test="descriptionImage != null">
-        DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=BLOB},
+        DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=LONGBLOB},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
@@ -333,8 +333,8 @@
       LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
       LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
       DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
-      THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=BLOB},
-      DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=BLOB}
+      THUMBNAIL_IMAGE = #{thumbnailImage,jdbcType=LONGBLOB},
+      DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=LONGBLOB}
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Product">
