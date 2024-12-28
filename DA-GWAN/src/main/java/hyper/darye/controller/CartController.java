@@ -5,6 +5,7 @@ import hyper.darye.dto.controller.request.SelectCartRequest;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,16 @@ public class CartController {
             throw new IllegalStateException("입력 실패했습니다."); // 적절한 런타임 예외
     }
 
+    // 내 장바구니 넣기
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/my/cart")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insertMyCart(@AuthenticationPrincipal CustomUserDetails userDetails,
+                               @RequestParam Long productId,
+                               @RequestParam Long quantity) {
+        this.insertCart(userDetails.getId(), productId, quantity);
+    }
+
     // 장바구니 수량 변경
     @PreAuthorize("#memberId == authentication.principal.id")
     @PatchMapping("/{memberId}/cart/{productId}")
@@ -46,6 +57,15 @@ public class CartController {
             return "성공";
         else
             throw new IllegalStateException("입력 실패"); // 적절한 런타임 예외
+    }
+
+    // 내 장바구니 수량 변경
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/my/cart/{productId}")
+    public void updateMyCart(@AuthenticationPrincipal CustomUserDetails userDetails,
+                               @PathVariable Long productId,
+                               @RequestParam Long quantity) {
+        this.updateCart(userDetails.getId(), productId, quantity);
     }
 
 
@@ -76,5 +96,12 @@ public class CartController {
             return 0; // 삭제할 항목이 없음을 나타냄
         }
         return cartService.deleteCart(memberId, productIdList);
+    }
+
+    // 내 장바구니 선택 삭제
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/my/cart")
+    public void deleteMyCart(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam List<Long> productIdList) {
+        this.deleteCart(userDetails.getId(), productIdList);
     }
 }
