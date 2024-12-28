@@ -1,25 +1,12 @@
 <script>
-	import { page } from '$app/stores'; // SvelteKit에서 제공하는 page 스토어
-
 	/**
 	 * @property {String} [classes] - 버튼의 클래스 이름.
-	 * @property {'toggle' | 'hide' | 'show' | null | undefined} [popovertargetaction] - popovertarget의 동작 방식.
 	 */
-	const { classes, popovertargetaction } = $props();
+	const { classes } = $props();
 </script>
 
 <!-- 기본 SVG -->
-{#if $page.url.pathname === '/nav'}
-	<a href="#" onclick={() => history.back()} class={classes}>
-		<svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29" fill="none">
-			<path
-				d="M12.3501 14.5L2.67505 24.175L4.32496 25.8249L14 16.1499L23.675 25.825L25.3249 24.175L15.6499 14.5L25.3249 4.82496L23.675 3.17505L14 12.8501L4.32497 3.17507L2.67505 4.82498L12.3501 14.5Z"
-				fill="#1E1E1E" />
-		</svg>
-	</a>
-{:else}
 	<a href="/nav" class={classes}>
-
 		<svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29" fill="none">
 			<!-- 첫 번째 줄 -->
 			<path fill-rule="evenodd" clip-rule="evenodd"
@@ -35,4 +22,3 @@
 						fill="#1E1E1E" />
 		</svg>
 	</a>
-{/if}
