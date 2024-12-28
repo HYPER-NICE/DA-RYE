@@ -56,6 +56,6 @@ export const actions = {
 		}
 
 		// 6. 성공 시 메인 페이지로 리다이렉트
-		throw redirect(303, '/');
+		redirect(303, '/');
 	},
 };
