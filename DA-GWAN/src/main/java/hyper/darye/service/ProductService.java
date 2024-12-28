@@ -5,6 +5,8 @@ import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -63,7 +65,11 @@ public class ProductService {
         if(maxPrice == null) {
             maxPrice = 10000000;
         }
-        keyword = keyword.trim();
-        return this.productMapper.searchByKeyword(keyword, minPrice, maxPrice, orderBy      );
+
+        List<String> wordList = Arrays.stream(keyword.split(" "))
+                .filter(word -> !word.isEmpty()) // 빈 문자열 제거
+                .toList();
+
+        return this.productMapper.searchByKeyword(wordList, minPrice, maxPrice, orderBy);
     }
 }

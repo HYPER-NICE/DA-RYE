@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 public class MemberService {
 
     private final MemberMapper memberMapper;
-
     private final PasswordEncoder passwordEncoder;
 
     public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {

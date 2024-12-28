@@ -1,0 +1,29 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+    /* 기본 스타일링 */
+    font-family: 'Pretendard Variable',
+    Pretendard,
+    'Pretendard JP Variable',
+    'Pretendard JP',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Hiragino Sans',
+    'Apple SD Gothic Neo',
+    Meiryo,
+    'Noto Sans JP',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    Osaka,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
+    font-feature-settings: 'ss05'; /* 스타일리스틱 세트 05 활성화 */
+}
