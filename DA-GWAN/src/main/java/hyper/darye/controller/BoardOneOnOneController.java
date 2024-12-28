@@ -3,6 +3,8 @@ package hyper.darye.controller;
 import hyper.darye.constant.RootCategory;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import jakarta.validation.Valid;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +38,7 @@ public class BoardOneOnOneController {
         boardService.insertBoard(postBoardDTO, principal.getId());
     }
 
+    //1대1 문의 수정
     @PreAuthorize("@boardService.isWriter(#id, principal.getId())")
     @PatchMapping("/customer-board/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -67,5 +72,20 @@ public class BoardOneOnOneController {
         boardService.softDeleteBoard(id, principal.getId());
     }
 
+    //1대1 문의 전체 조회
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/customer-board")
+    public List<SearchBoardDTO> selectOneBoard(@RequestParam(required = false) Long subCategoryId,
+                                               @AuthenticationPrincipal CustomUserDetails principal) {
+        return boardService.selectOneBoard(RootCategory.ONE_ON_ONE.getValue(), subCategoryId, principal.getId());
+    }
+
+    //1대1 문의 상세 조회
+    @PreAuthorize("@boardService.isWriter(#id, principal.getId())")
+    @GetMapping("/customer-board/{id}")
+    public SearchBoardDetailDTO selectBoard(@PathVariable Long id,
+                                            @AuthenticationPrincipal CustomUserDetails principal) {
+        return boardService.selectBoardDetail(id);
+    }
 
 }

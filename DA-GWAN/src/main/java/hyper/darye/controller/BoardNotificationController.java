@@ -3,6 +3,8 @@ package hyper.darye.controller;
 import hyper.darye.constant.RootCategory;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import jakarta.validation.Valid;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -52,5 +56,19 @@ public class BoardNotificationController {
                             @AuthenticationPrincipal CustomUserDetails principal) {
 
         boardService.softDeleteBoard(id, principal.getId());
+    }
+
+    //공지사항 조회
+    @PreAuthorize("permitAll()")
+    @GetMapping("/notification-board")
+    public List<SearchBoardDTO> selectAllBoard(@RequestParam(required = false) Long subCategoryId) {
+        return boardService.selectAllBoard(RootCategory.NOTICE.getValue(), subCategoryId);
+    }
+
+    //공지사항 상세 조회
+    @PreAuthorize("permitAll()")
+    @GetMapping("/notification-board/{id}")
+    public SearchBoardDetailDTO selectBoard(@PathVariable Long id) {
+        return boardService.selectBoardDetail(id);
     }
 }
