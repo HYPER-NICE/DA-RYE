@@ -10,7 +10,7 @@
 		},
 		{
 			title: '고객센터',
-			items: [{name: '공지사항', href: "/notification"}, {name: '자주 묻는 질문', href: "/faq"}, {name: '1:1 문의', href: "/inquiry"}]
+			items: [{name: '공지사항', href: "/notification"}, {name: '자주 묻는 질문', href: "/faq"}, {name: '문의', href: "/inquiry"}]
 		}
 	];
 </script>

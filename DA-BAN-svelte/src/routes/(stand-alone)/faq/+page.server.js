@@ -1,9 +1,13 @@
 import { SECRET_BACKEND_HOST } from '$env/static/private';
 import { languageTag } from '$lib/paraglide/runtime.js';
-import { mockBoardData, mockSubCategories } from '$lib/dummy/mockBoard.js';
+import {
+	mockFaqData as mockBoardData,
+	mockFaqSubCategories,
+	mockFaqSubCategories as mockSubCategories
+} from '$lib/dummy/mockBoard.js';
 
 const pageData = {
-	title: '공지사항'
+	title: 'FAQ'
 };
 
 /** @type {import('./$types').PageServerLoad} */

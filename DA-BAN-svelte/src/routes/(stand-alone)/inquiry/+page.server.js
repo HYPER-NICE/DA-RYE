@@ -1,9 +1,12 @@
 import { SECRET_BACKEND_HOST } from '$env/static/private';
 import { languageTag } from '$lib/paraglide/runtime.js';
-import { mockBoardData, mockSubCategories } from '$lib/dummy/mockBoard.js';
+import {
+	mockPrivateInquiryData as mockBoardData,
+	mockPrivateInquirySubCategories as mockSubCategories
+} from '$lib/dummy/mockBoard.js';
 
 const pageData = {
-	title: '공지사항'
+	title: '고객 문의'
 };
 
 /** @type {import('./$types').PageServerLoad} */
@@ -22,6 +25,7 @@ export async function load({url}) {
 	} catch (error) {
 		// 요청실패시 더미로 교체
 		boards = mockBoardData
+			.filter((board) => board.parentId == null)
 			.filter((board) => paramSubCategory == 0 || board.subCategoryId == paramSubCategory)
 			.filter((board) => board.title.includes(keyword))
 			.map((board) => ({
