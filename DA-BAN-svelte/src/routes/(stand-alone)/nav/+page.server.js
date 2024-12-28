@@ -28,7 +28,7 @@ export async function load({ params, cookies }) {
 		};
 	} catch (error) {
 		// 실패하면 세션이 만료되거나 로그인이 필요한 상태
-		cookies.delete('JSESSIONID');
+		cookies.delete('JSESSIONID', { path: '/' });
 		return { ...pageData }
 	}
 }

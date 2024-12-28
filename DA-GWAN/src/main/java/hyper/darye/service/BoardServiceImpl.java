@@ -170,7 +170,7 @@ public class BoardServiceImpl implements BoardService{
     public List<SearchBoardDTO> selectAllBoard(Long rootCategoryId, Long subCategoryId) {
 
         //서브 카테고리 선택하지 않았을 시 전체 목록 조회
-        if (subCategoryId == null) {
+        if (subCategoryId == null || subCategoryId == 0) {
             List<Long> categoryIds = boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId);
 
             List<Board> boards = boardMapper.selectAllCategory(categoryIds);

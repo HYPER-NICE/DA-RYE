@@ -3,6 +3,10 @@
 
 	const menus = [
 		{
+			title: '홈',
+			items: [{ name: '홈', href: '/' }]
+		},
+		{
 			title: '상품',
 			items: [{ name: '전체 상품', href: '/products' }, { name: '베스트 상품', href: '/best' }, { name: '신상품', href: '/new' }]
 		},

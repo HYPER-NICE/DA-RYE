@@ -7,12 +7,12 @@ const pageData = {
 };
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({url}) {
-	const paramSubCategory = url.searchParams.get('sub-category') ?? 0;
+export async function load({url, cookies}) {
+	const subCategoryId = url.searchParams.get('sub-category-id') ?? 0;
 	const keyword = url.searchParams.get('keyword') ?? '';
 
 	const requestUrl = new URL(`${SECRET_BACKEND_HOST}/api/notification-board`);
-	requestUrl.searchParams.set('sub-category', paramSubCategory);
+	requestUrl.searchParams.set('subCategoryId', subCategoryId);
 	requestUrl.searchParams.set('keyword', keyword);
 
 	let boards;
@@ -22,7 +22,7 @@ export async function load({url}) {
 	} catch (error) {
 		// 요청실패시 더미로 교체
 		boards = mockBoardData
-			.filter((board) => paramSubCategory == 0 || board.subCategoryId == paramSubCategory)
+			.filter((board) => subCategoryId == 0 || board.subCategoryId == subCategoryId)
 			.filter((board) => board.title.includes(keyword))
 			.map((board) => ({
 			...board, regDateFormatted: new Intl.DateTimeFormat(languageTag(), {
@@ -34,8 +34,8 @@ export async function load({url}) {
 	return {
 		...pageData,
 		boards,
-		paramSubCategory,
-		subCategories : mockSubCategories
+		paramSubCategory: subCategoryId,
+		subCategories : mockSubCategories,
 	};
 }
 

@@ -1,6 +1,5 @@
 <script>
 	import { page } from '$app/state';
-	import { enhance } from '$app/forms';
 
 	/** @type HTMLFormElement */
 	let form;
@@ -14,7 +13,7 @@
 	<label class={`flex-1 p-4  cursor-pointer ${data.id == page.data.paramSubCategory && "border-b-2 border-black"}`}>
 		<input
 			class="hidden"
-			onchange={handleSubCategory} type="radio" name="sub-category" value={data.id}>
+			onchange={handleSubCategory} type="radio" name="sub-category-id" value={data.id}>
 		<span class="font-semibold">{data.name}</span>
 	</label>
 {/snippet}
@@ -41,11 +40,10 @@
 		</div>
 
 		<div class="flex mt-4 gap-2">
-		<input type="search" name="keyword" placeholder="검색어를 입력하세요"
-					 class="flex-1 p-4 border border-gray-300 rounded-lg"
-		>
-		<button type="submit" class="p-4 content-center hover:bg-gray-200 rounded"
-		>검색</button>
+			<input type="search" name="keyword" placeholder="검색어를 입력하세요"
+						 class="flex-1 p-4 border border-gray-300 rounded-lg"
+			>
+			<button type="submit" class="p-4 content-center hover:bg-gray-200 rounded">검색</button>
 		</div>
 	</form>
 
@@ -55,4 +53,13 @@
 			{@render thread(board)}
 		{/each}
 	</div>
+
+	<!-- admin action -->
+	{#if page.data.role === 'ADMIN'}
+		<div class="flex justify-end mt-4">
+			<a href="/notification/write" class="inline-block border p-4 rounded bg-gray-300 hover:bg-gray-400">
+				글쓰기
+			</a>
+		</div>
+	{/if}
 </div>

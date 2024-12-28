@@ -1,6 +1,5 @@
 <script>
 	import { page } from '$app/state';
-	import { enhance } from '$app/forms';
 
 	/** @type HTMLFormElement */
 	let form;
@@ -33,7 +32,7 @@
 
 <div class="p-4">
 	<!-- filter -->
-	<form bind:this={form} >
+	<form bind:this={form}>
 		<div class="px-16 text-center flex justify-around">
 			{#each page.data.subCategories as item}
 				{@render subCategory(item)}
@@ -44,8 +43,7 @@
 			<input type="search" name="keyword" placeholder="검색어를 입력하세요"
 						 class="flex-1 p-4 border border-gray-300 rounded-lg"
 			>
-			<button type="submit" class="p-4 content-center hover:bg-gray-200 rounded"
-			>검색</button>
+			<button type="submit" class="p-4 content-center hover:bg-gray-200 rounded">검색</button>
 		</div>
 	</form>
 
@@ -55,4 +53,13 @@
 			{@render thread(board)}
 		{/each}
 	</div>
+
+	<!-- admin action -->
+	{#if page.data.role === 'ADMIN'}
+		<div class="flex justify-end mt-4">
+			<a href="/inquiry/write" class="inline-block border p-4 rounded bg-gray-300 hover:bg-gray-400">
+				글쓰기
+			</a>
+		</div>
+	{/if}
 </div>

@@ -55,4 +55,13 @@
 			{@render thread(board)}
 		{/each}
 	</div>
+
+	<!-- admin action -->
+	{#if page.data.role === 'ADMIN'}
+		<div class="flex justify-end mt-4">
+			<a href="/faq/write" class="inline-block border p-4 rounded bg-gray-300 hover:bg-gray-400">
+				글쓰기
+			</a>
+		</div>
+	{/if}
 </div>

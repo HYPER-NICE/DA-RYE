@@ -14,7 +14,7 @@ export async function load({url}) {
 	const paramSubCategory = url.searchParams.get('sub-category') ?? 0;
 	const keyword = url.searchParams.get('keyword') ?? '';
 
-	const requestUrl = new URL(`${SECRET_BACKEND_HOST}/api/notification-board`);
+	const requestUrl = new URL(`${SECRET_BACKEND_HOST}/api/customer-board`);
 	requestUrl.searchParams.set('sub-category', paramSubCategory);
 	requestUrl.searchParams.set('keyword', keyword);
 
