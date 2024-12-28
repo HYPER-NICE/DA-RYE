@@ -1,8 +1,8 @@
 import { SECRET_BACKEND_HOST } from '$env/static/private';
 import { languageTag } from '$lib/paraglide/runtime.js';
 import {
-	mockPrivateInquiryData as mockBoardData,
-	mockPrivateInquirySubCategories as mockSubCategories
+	mockInquiryData as mockBoardData,
+	mockInquirySubCategories as mockSubCategories
 } from '$lib/dummy/mockBoard.js';
 
 const pageData = {

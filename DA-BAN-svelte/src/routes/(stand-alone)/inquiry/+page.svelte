@@ -20,7 +20,7 @@
 {/snippet}
 
 {#snippet thread(board)}
-	<a href={`/private-inquiry/${board.id}`} class="flex flex-col gap-4 border-b py-6">
+	<a href={`/inquiry/${board.id}`} class="flex flex-col gap-4 border-b py-6">
 		<div class="flex gap-2">
 			<div
 				class={`px-6 py-1 rounded-full border text-lg font-medium`}>{board.subCategoryName}</div>

@@ -183,13 +183,13 @@ export const mockFaqData = [
 	}
 ];
 
-export const mockPrivateInquirySubCategories = [
+export const mockInquirySubCategories = [
 	{ id: 0, name: '전체' },
 	{ id: 1, name: '답변완료' },
 	{ id: 2, name: '미답변' }
 ];
 
-export const mockPrivateInquiryData = [
+export const mockInquiryData = [
 	{
 		id: 1,
 		parentId: null,

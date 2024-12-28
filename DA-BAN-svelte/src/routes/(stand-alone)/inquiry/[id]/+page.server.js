@@ -1,4 +1,4 @@
-import { mockPrivateInquiryData as mockBoardData } from '$lib/dummy/mockBoard.js';
+import { mockInquiryData as mockBoardData } from '$lib/dummy/mockBoard.js';
 import { languageTag } from '$lib/paraglide/runtime.js';
 import { SECRET_BACKEND_HOST } from '$env/static/private';
 
