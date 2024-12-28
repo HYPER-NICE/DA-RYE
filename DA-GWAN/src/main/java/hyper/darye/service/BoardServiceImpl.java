@@ -4,6 +4,8 @@ import hyper.darye.dto.Board;
 import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
@@ -162,4 +164,116 @@ public class BoardServiceImpl implements BoardService{
         boardImageMapper.deleteByBoardId(id);
 
     }
+
+    //보드 게시판 전체 조회(목록만)
+    @Override
+    public List<SearchBoardDTO> selectAllBoard(Long rootCategoryId, Long subCategoryId) {
+
+        //서브 카테고리 선택하지 않았을 시 전체 목록 조회
+        if (subCategoryId == null) {
+            List<Long> categoryIds = boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId);
+
+            List<Board> boards = boardMapper.selectAllCategory(categoryIds);
+
+            return boards.stream()
+                    .map(board -> {
+                        SearchBoardDTO dto = new SearchBoardDTO();
+                        dto.setId(board.getId());
+                        dto.setTitle(board.getTitle());
+                        dto.setSubCategoryId(boardMapper.selectSubCategoryId(board.getId()));
+                        dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                        dto.setRegDate(board.getRegDate());
+
+                        return dto;
+                    })
+                    .toList();
+        }
+
+        //서브 카테고리 선택했을 시 해당 카테고리만 조회
+        Map<String, Object> param = Map.of("rootCategory", rootCategoryId, "subCategory", subCategoryId);
+        Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
+
+        List<Board> boards = boardMapper.selectAll(categoryId);
+
+        return boards.stream()
+                .map(board -> {
+                    SearchBoardDTO dto = new SearchBoardDTO();
+                    dto.setId(board.getId());
+                    dto.setTitle(board.getTitle());
+                    dto.setSubCategoryId(subCategoryId);
+                    dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                    dto.setRegDate(board.getRegDate());
+
+                    return dto;
+                })
+                .toList();
+        }
+
+        //보드 게시판 글 상세 조회
+        @Override
+        public SearchBoardDetailDTO selectBoardDetail(Long id) {
+            Board board = boardMapper.selectBoard(id);
+
+            if (board == null) {
+                throw new NoSuchElementException("존재하지 않는 키입니다.");
+            }
+
+            List<BoardImage> boardImages = boardImageMapper.selectByBoardId(id);
+
+            SearchBoardDetailDTO dto = new SearchBoardDetailDTO();
+            dto.setId(board.getId());
+            dto.setTitle(board.getTitle());
+            dto.setContent(board.getContent());
+            dto.setRegDate(board.getRegDate());
+            dto.setLastModifiedDate(board.getLastModifiedDate());
+            dto.setSubCategoryId(boardMapper.selectSubCategoryId(board.getId()));
+            dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+            dto.setImages(boardImages);
+
+            return dto;
+        }
+
+        //1대1 문의 자신의 질문만 조회
+        @Override
+        public List<SearchBoardDTO> selectOneBoard(Long rootCategoryId, Long subCategoryId, Long memberId) {
+
+        //서브 카테고리 선택하지 않았을 시 전체 목록 조회
+            if (subCategoryId == null) {
+                List<Long> categoryIds = boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId);
+
+                List<Board> boards = boardMapper.selectByWriterId(memberId);
+
+                return boards.stream()
+                        .map(board -> {
+                            SearchBoardDTO dto = new SearchBoardDTO();
+                            dto.setId(board.getId());
+                            dto.setTitle(board.getTitle());
+                            dto.setSubCategoryId(boardMapper.selectSubCategoryId(board.getId()));
+                            dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                            dto.setRegDate(board.getRegDate());
+
+                            return dto;
+                        })
+                        .toList();
+            }
+
+            //서브 카테고리 선택했을 시 해당 카테고리만 조회
+            Map<String, Object> param = Map.of("rootCategory", rootCategoryId, "subCategory", subCategoryId);
+            Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
+
+            List<Board> boards = boardMapper.selectByWriterIdAndCategoryId(memberId, categoryId);
+
+            return boards.stream()
+                    .map(board -> {
+                        SearchBoardDTO dto = new SearchBoardDTO();
+                        dto.setId(board.getId());
+                        dto.setTitle(board.getTitle());
+                        dto.setSubCategoryId(subCategoryId);
+                        dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                        dto.setRegDate(board.getRegDate());
+
+                        return dto;
+                    })
+                    .toList();
+        }
 }

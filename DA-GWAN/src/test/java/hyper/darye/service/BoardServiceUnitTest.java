@@ -9,6 +9,8 @@ import hyper.darye.dto.Board;
 import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDTO;
+import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
@@ -250,6 +252,173 @@ class BoardServiceUnitTest {
         // Then
         verify(boardMapper, times(1)).softDeleteByPrimaryKey(boardId, memberId);
         verify(boardImageMapper, times(1)).deleteByBoardId(boardId);
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트 - 전체 카테고리")
+    public void selectAllBoardTest() {
+        // Given
+        Long rootCategoryId = 1L;
+        Long subCategoryId = null;
+
+        List<Long> categoryIds = List.of(1L, 2L);
+        List<Board> boards = List.of(
+                new Board(1L, null, 1L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null),
+                new Board(2L, null, 2L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        when(boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId)).thenReturn(categoryIds);
+        when(boardMapper.selectAllCategory(categoryIds)).thenReturn(boards);
+
+        // When
+        List<SearchBoardDTO> result = boardService.selectAllBoard(rootCategoryId, subCategoryId);
+
+        // Then
+        verify(boardCategoryCodeMapper, times(1)).selectAllCategoryCodeId(rootCategoryId);
+        verify(boardMapper, times(1)).selectAllCategory(categoryIds);
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting("title").contains("제목1", "제목2");
+    }
+
+    @Test
+    @DisplayName("게시글 조회 테스트 - 서브 카테고리")
+    public void selectAllBoardTest_withSubCategory() {
+        // Given
+        Long rootCategoryId = 1L;
+        Long subCategoryId = 2L;
+        List<Board> boards = List.of(
+                new Board(2L, null, 2L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        // When
+        Map<String, Object> param = Map.of("rootCategory", rootCategoryId, "subCategory", subCategoryId);
+        Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
+
+        when(boardCategoryCodeMapper.selectCategoryCodeId(param)).thenReturn(categoryId);
+        when(boardMapper.selectAll(categoryId)).thenReturn(boards);
+        when(boardMapper.selectSubCategoryName(anyLong())).thenReturn("일반");
+        List<SearchBoardDTO> result = boardService.selectAllBoard(rootCategoryId, subCategoryId);
+
+        // Then
+        assertThat(result).hasSize(1);
+        assertThat(result).extracting("title").contains("제목2");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("제목2", result.get(0).getTitle());
+        assertEquals("일반", result.get(0).getSubCategoryName());
+        assertEquals(subCategoryId, result.get(0).getSubCategoryId());
+    }
+
+    @Test
+    @DisplayName("게시글 상세 조회 테스트")
+    public void selectBoardDetailTest() {
+        // Given
+        Long boardId = 1L;
+        Board board = new Board(1L, null, 1L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null);
+        BoardImage boardImage = new BoardImage(1L, 1L, new Date(), new Date(), null, new byte[]{1, 2, 3});
+        BoardImage boardImage2 = new BoardImage(2L, 1L, new Date(), new Date(), null, new byte[]{1, 2});
+
+        when(boardMapper.selectBoard(boardId)).thenReturn(board);
+        when(boardImageMapper.selectByBoardId(boardId)).thenReturn(List.of(boardImage, boardImage2));
+
+        // When
+        SearchBoardDetailDTO result = boardService.selectBoardDetail(boardId);
+
+        // Then
+        verify(boardMapper, times(1)).selectBoard(boardId);
+        assertNotNull(result);
+        assertEquals(boardId, result.getId());
+        assertEquals("제목1", result.getTitle());
+        assertEquals("내용1", result.getContent());
+        assertThat(result.getImages()).hasSize(2);
+
+        System.out.println(result.getRegDate());
+    }
+
+    @Test
+    @DisplayName("1대1 문의 조회 - 작성자 일때")
+    public void selectOneOnOneBoard() {
+        // Given
+        Long memberId = 1L;
+        List<Board> boards = List.of(
+                new Board(1L, null, 8L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null),
+                new Board(2L, null, 9L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+            when(boardMapper.selectByWriterId(memberId)).thenReturn(boards);
+
+        // When
+        List<SearchBoardDTO> result = boardService.selectOneBoard(3L, null, memberId);
+
+        // Then
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting("title").contains("제목1", "제목2");
+    }
+
+    @Test
+    @DisplayName("1대1 문의 조회 - 작성자가 아닐때")
+    public void selectOneOnOneBoard_NotWriter() {
+        // Given
+        Long memberId = 2L;
+        List<Board> boards = List.of(
+                new Board(1L, null, 8L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null),
+                new Board(2L, null, 9L, 1L, "제목2", "내용2", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        List<Board> boards2 = List.of(
+                new Board(3L, null, 8L, 2L, "제목3", "내용3", false, new Date(), new Date(), new Date(), null, null)
+        );
+
+        when(boardMapper.selectByWriterId(memberId)).thenReturn(boards2);
+
+        // When
+        List<SearchBoardDTO> result = boardService.selectOneBoard(3L, null, memberId);
+
+        // Then
+        assertThat(result).hasSize(1);
+        assertThat(result).extracting("title").contains("제목3");
+    }
+
+    @Test
+    @DisplayName("1대1 문의 전체 조회 - 없을때")
+    public void selectOneOnOneBoard_NotExist() {
+        // Given
+        Long memberId = 1L;
+        List<Board> boards = new ArrayList<>();
+
+        when(boardMapper.selectByWriterId(memberId)).thenReturn(boards);
+
+        // When
+        List<SearchBoardDTO> result = boardService.selectOneBoard(3L, null, memberId);
+
+        // Then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("1대1 문의 상세 조회 - 작성자일때")
+    public void selectOneOnOneBoardDetail() {
+        // Given
+        Long boardId = 1L;
+        Long memberId = 1L;
+
+        Board board = new Board(1L, null, 8L, 1L, "제목1", "내용1", false, new Date(), new Date(), new Date(), null, null);
+        BoardImage boardImage = new BoardImage(1L, 1L, new Date(), new Date(), null, new byte[]{1, 2, 3});
+        BoardImage boardImage2 = new BoardImage(2L, 1L, new Date(), new Date(), null, new byte[]{1, 2});
+
+        when(boardMapper.selectBoard(boardId)).thenReturn(board);
+        when(boardImageMapper.selectByBoardId(boardId)).thenReturn(List.of(boardImage, boardImage2));
+
+        // When
+        SearchBoardDetailDTO result = boardService.selectBoardDetail(boardId);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(boardId, result.getId());
+        assertEquals("제목1", result.getTitle());
+        assertEquals("내용1", result.getContent());
+        assertThat(result.getImages()).hasSize(2);
     }
 }
 

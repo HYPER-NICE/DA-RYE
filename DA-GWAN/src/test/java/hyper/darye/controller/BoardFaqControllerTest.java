@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -120,6 +121,46 @@ class BoardFaqControllerTest {
         // when & then
         mockMvc.perform(delete("/api/faq-board/1"))
                 .andExpect(status().isForbidden());
+
+    }
+
+    @DisplayName("faq 조회 - 서브카테고리지정")
+    @WithMockCustomUser(id = 1L, username = "test@darye.dev", role = "USER")
+    @Test
+    void selectAllBoard() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/faq-board?subCategoryId=1"))
+                .andExpect(status().isOk());
+
+    }
+
+    @DisplayName("faq 조회 - 서브카테고리 미지정")
+    @WithMockCustomUser(id = 1L, username = "test@darye.dev", role = "USER")
+    @Test
+    void selectAllBoardWithoutSubCategory() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/faq-board"))
+                .andExpect(status().isOk());
+
+    }
+
+    @DisplayName("faq 조회 - 비로그인")
+    @WithAnonymousUser
+    @Test
+    void selectAllBoardWithoutLogin() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/faq-board"))
+                .andExpect(status().isOk());
+
+    }
+
+    @DisplayName("faq 상세 조회")
+    @WithAnonymousUser
+    @Test
+    void selectBoard() throws Exception {
+        // when & then
+        mockMvc.perform(get("/api/faq-board/1"))
+                .andExpect(status().isOk());
 
     }
 
