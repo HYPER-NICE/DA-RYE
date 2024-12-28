@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/sign-up").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/check/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/notification-board/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/faq-board/**").permitAll()
 
                         // `/api/members`에 대한 POST 요청은 인증 없이 접근 허용
                         .requestMatchers(HttpMethod.POST, "/api/members").permitAll()

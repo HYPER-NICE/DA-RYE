@@ -233,5 +233,47 @@ public class BoardServiceImpl implements BoardService{
             return dto;
         }
 
+        //1대1 문의 자신의 질문만 조회
+        @Override
+        public List<SearchBoardDTO> selectOneBoard(Long rootCategoryId, Long subCategoryId, Long memberId) {
 
+        //서브 카테고리 선택하지 않았을 시 전체 목록 조회
+            if (subCategoryId == null) {
+                List<Long> categoryIds = boardCategoryCodeMapper.selectAllCategoryCodeId(rootCategoryId);
+
+                List<Board> boards = boardMapper.selectByWriterId(memberId);
+
+                return boards.stream()
+                        .map(board -> {
+                            SearchBoardDTO dto = new SearchBoardDTO();
+                            dto.setId(board.getId());
+                            dto.setTitle(board.getTitle());
+                            dto.setSubCategoryId(boardMapper.selectSubCategoryId(board.getId()));
+                            dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                            dto.setRegDate(board.getRegDate());
+
+                            return dto;
+                        })
+                        .toList();
+            }
+
+            //서브 카테고리 선택했을 시 해당 카테고리만 조회
+            Map<String, Object> param = Map.of("rootCategory", rootCategoryId, "subCategory", subCategoryId);
+            Long categoryId = boardCategoryCodeMapper.selectCategoryCodeId(param);
+
+            List<Board> boards = boardMapper.selectByWriterIdAndCategoryId(memberId, categoryId);
+
+            return boards.stream()
+                    .map(board -> {
+                        SearchBoardDTO dto = new SearchBoardDTO();
+                        dto.setId(board.getId());
+                        dto.setTitle(board.getTitle());
+                        dto.setSubCategoryId(subCategoryId);
+                        dto.setSubCategoryName(boardMapper.selectSubCategoryName(board.getId()));
+                        dto.setRegDate(board.getRegDate());
+
+                        return dto;
+                    })
+                    .toList();
+        }
 }

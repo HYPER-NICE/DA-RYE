@@ -16,8 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,8 +44,8 @@ class BoardOneOnOneControllerTest {
         postBoardDTO.setContent("1대1 문의 내용");
 
         mockMvc.perform(post("/api/customer-board")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(postBoardDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(postBoardDTO)))
                 .andExpect(status().isCreated());
 
     }
@@ -67,8 +66,8 @@ class BoardOneOnOneControllerTest {
         // why new ObjectMapper??
         //위에서 뉴 안해서...?
         mockMvc.perform(patch("/api/customer-board/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(updateBoardDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updateBoardDTO)))
                 .andExpect(status().isNoContent());
     }
 
@@ -138,6 +137,45 @@ class BoardOneOnOneControllerTest {
         mockMvc.perform(delete("/api/customer-board/1"))
                 .andExpect(status().isForbidden());
     }
+
+    @DisplayName("1대1 문의 전체 조회")
+    @Test
+    @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+    void selectOneOnOneBoard() throws Exception {
+
+        mockMvc.perform(get("/api/customer-board"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("1대1 문의 상세 조회 - 작성자일때")
+    @Test
+    @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+    void selectOneOnOneBoardDetail() throws Exception {
+
+        Long boardId = 1L;
+        Long memberId = 1L;
+
+        when(boardService.isWriter(boardId, memberId)).thenReturn(true);
+
+        mockMvc.perform(get("/api/customer-board/1"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("1대1 문의 상세 조회 - 작성자가 아닐때")
+    @Test
+    @WithMockCustomUser(id = 1L, username = "user@darye.dev")
+    void selectOneOnOneBoardDetail_NotWriter() throws Exception {
+
+        Long boardId = 1L;
+        Long memberId = 2L;
+
+        when(boardService.isWriter(boardId, memberId)).thenReturn(false);
+
+        mockMvc.perform(get("/api/customer-board/1"))
+                .andExpect(status().isForbidden());
+    }
+
+
 
 
 }

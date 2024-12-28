@@ -57,6 +57,14 @@ public interface BoardMapper {
     @Select("SELECT * FROM BOARD WHERE ID = #{id}")
     Board selectBoard(Long id);
 
+    //작성자ID로 게시글 조회
+    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} ORDER BY CREATED_DATE DESC")
+    List<Board> selectByWriterId(Long writerId);
+
+    //작성자ID로 카테고리별 게시글 조회
+    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} AND CATEGORY_ID = #{categoryId} ORDER BY CREATED_DATE DESC")
+    List<Board> selectByWriterIdAndCategoryId(Long writerID, Long categoryId);
+
     //게시글 소프트 삭제
     int softDeleteByPrimaryKey(Long id, Long lastModifiedMember);
 
