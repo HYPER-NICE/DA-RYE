@@ -18,7 +18,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,12 +57,12 @@ class ProductControllerUnitTest {
         // given
         given(productService.insertProduct(any(ProductWithBLOBs.class))).willReturn(1);
 
-        String expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String saleDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String expirationDate = dateFormat.format(new Date());
+        String saleDate = dateFormat.format(new Date());
 
         String jsonContent = """
         {
-            "id": 1,
             "categoryId": 1,
             "productStatusCodeId": 1,
             "name": "title",
@@ -87,8 +89,9 @@ class ProductControllerUnitTest {
         // given
         given(productService.insertProduct(any(ProductWithBLOBs.class))).willReturn(1);
 
-        String expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String saleDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String expirationDate = dateFormat.format(new Date());
+        String saleDate = dateFormat.format(new Date());
 
         String jsonContent = """
     {
@@ -211,6 +214,9 @@ class ProductControllerUnitTest {
         productWithBLOBs.setPrice(1200);
         productWithBLOBs.setCategoryId(4L);
         productWithBLOBs.setManufacturer("Updated Manufacturer");
+        productWithBLOBs.setCreatedDate(new Date());
+        productWithBLOBs.setLastModifiedDate(new Date());
+        productWithBLOBs.setDeletedDate(new Date());
 
         // Mocking Service
         Mockito.when(productService.updateByPrimaryKey(Mockito.any(ProductWithBLOBs.class))).thenReturn(1);
@@ -219,7 +225,8 @@ class ProductControllerUnitTest {
         mockMvc.perform(put("/api/products/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(productWithBLOBs)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
 
         // 서비스 계층 호출 검증
         verify(productService, times(1)).updateByPrimaryKey(productWithBLOBs);
@@ -281,13 +288,13 @@ class ProductControllerUnitTest {
         Long productId = 1L;
         ProductWithBLOBs productWithBLOBs = new ProductWithBLOBs();
         productWithBLOBs.setId(productId);
-        productWithBLOBs.setProductStatusCodeId(1L);
+        productWithBLOBs.setProductStatusCodeId(4L);
         productWithBLOBs.setName("세작");
         productWithBLOBs.setPrice(20000);
         productWithBLOBs.setCategoryId(7L);
         productWithBLOBs.setManufacturer("오설록농장");
 
-        Mockito.when(productService.deleteByPrimaryKey(productId, 4L)).thenReturn(1);
+        Mockito.when(productService.deleteByPrimaryKey(productId, productWithBLOBs.getProductStatusCodeId())).thenReturn(1);
 
         // When & Then
         mockMvc.perform(delete("/api/products/{id}", productId)

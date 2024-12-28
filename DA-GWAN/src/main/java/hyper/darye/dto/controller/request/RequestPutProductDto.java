@@ -9,14 +9,7 @@ import java.util.Date;
 
 
 @Data
-@Getter
-@Setter
 public class RequestPutProductDto implements Serializable {
-
-    /**
-     * 상품 ID (기본 키)
-     */
-    private Long id;
 
     /**
      * 카테고리 ID (외래 키)

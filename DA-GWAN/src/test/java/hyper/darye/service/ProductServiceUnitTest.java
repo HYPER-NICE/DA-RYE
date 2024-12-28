@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,14 +21,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
 @Transactional
 class ProductServiceUnitTest {
     @Autowired
     private ProductService productService;
-
-    @InjectMocks
-    private ProductService productService1;
 
     @Mock
     private ProductMapper productMapper;
@@ -46,6 +43,8 @@ class ProductServiceUnitTest {
         productWithBLOBs.setQuantity(2);
 
         // when
+        Mockito.when(productMapper.insertProduct(productWithBLOBs)).thenReturn(1);  // Mocking insertProduct 호출
+
         int result = productService.insertProduct(productWithBLOBs);
 
         // then

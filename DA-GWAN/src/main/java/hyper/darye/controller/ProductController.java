@@ -1,7 +1,6 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import hyper.darye.dto.controller.request.RequestDeleteProductDto;
 import hyper.darye.dto.controller.request.RequestPostProductDto;
@@ -9,7 +8,6 @@ import hyper.darye.dto.controller.request.RequestPutProductDto;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,14 +33,14 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void selectAllProduct() {
-        productService.selectAllProduct();
+    public List<ProductWithBLOBs> selectAllProduct() {
+        return productService.selectAllProduct();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void selectByPrimaryKey(@PathVariable Long id) {
-        productService.selectByPrimaryKey(id);
+    public ProductWithBLOBs selectByPrimaryKey(@PathVariable Long id) {
+        return productService.selectByPrimaryKey(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,7 +53,12 @@ public class ProductController {
     ) {
         // 상품 정보 업데이트
         ProductWithBLOBs productWithBLOBs = objectMapper.convertValue(requestPutProductDto, ProductWithBLOBs.class);
+
+        // 요청된 id를 설정하고, 수정한 상품 정보 업데이트
+        productWithBLOBs.setId(id);
         productWithBLOBs.setLastModifiedMember(userDetails.getId());
+
+        // 서비스에서 검증 후 업데이트
         productService.updateByPrimaryKey(productWithBLOBs);
     }
 
@@ -64,8 +67,13 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteByPrimaryKey(
             @PathVariable Long id,
-            @RequestBody RequestDeleteProductDto requestDeleteProductDto) throws NotFoundException {
-        productService.deleteByPrimaryKey(requestDeleteProductDto.getId(), 4L); // 상태 코드 4로 업데이트
+            @RequestBody RequestDeleteProductDto requestDeleteProductDto) {
+        // 상태 코드가 4일 경우에만 삭제 상태로 변경
+        if (requestDeleteProductDto.getProductStatusCodeId() == 4L) {
+            productService.deleteByPrimaryKey(id, requestDeleteProductDto.getProductStatusCodeId());
+        } else {
+            throw new IllegalArgumentException("잘못된 상태 코드입니다. 삭제 상태는 4이어야 합니다.");
+        }
     }
 
     @GetMapping("/test")
