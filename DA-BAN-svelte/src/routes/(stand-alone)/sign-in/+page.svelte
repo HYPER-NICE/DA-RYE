@@ -1,10 +1,21 @@
 <script>
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 
 	const { form } = $props();
 </script>
 
-<form method="post" use:enhance class="p-4 flex flex-col gap-6">
+<form method="post"
+			use:enhance={() => {
+				return async ({result, update}) => {
+					if (result.type === 'redirect') {
+						await goto(result.location, {replaceState: true});
+					} else {
+					await applyAction(result);
+					}
+				}
+			}}
+			class="p-4 flex flex-col gap-6">
 	<!--	data -->
 	<div class="flex flex-col gap-4">
 		<label class="flex flex-col">
