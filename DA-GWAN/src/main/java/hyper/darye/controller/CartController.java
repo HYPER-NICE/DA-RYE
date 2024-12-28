@@ -2,9 +2,11 @@ package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.controller.request.SelectCartRequest;
+import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -58,6 +60,13 @@ public class CartController {
         return cartService.selectCart(memberId);
     }
 
+    // 내 장바구니 조회
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my/cart")
+    public List<SelectCartRequest> selectMyCartByMemberId(@AuthenticationPrincipal CustomUserDetails userDetails)
+    {
+        return this.selectCartByMemberId(userDetails.getId());
+    }
 
     // 장바구니 선택 삭제
     @PreAuthorize("#memberId == authentication.principal.id")
