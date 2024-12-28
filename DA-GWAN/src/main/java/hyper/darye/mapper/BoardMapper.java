@@ -3,6 +3,7 @@ package hyper.darye.mapper;
 import hyper.darye.dto.Board;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -54,18 +55,29 @@ public interface BoardMapper {
     Long selectWriterId(Long id);
 
     //게시글 ID로 게시글 조회
-    @Select("SELECT * FROM BOARD WHERE ID = #{id}")
+    @Select("SELECT * FROM BOARD WHERE ID = #{id} AND DELETED_DATE IS NULL")
     Board selectBoard(Long id);
 
     //작성자ID로 게시글 조회
-    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} ORDER BY CREATED_DATE DESC")
+    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} AND DELETED_DATE IS NULL ORDER BY CREATED_DATE DESC")
     List<Board> selectByWriterId(Long writerId);
 
     //작성자ID로 카테고리별 게시글 조회
-    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} AND CATEGORY_ID = #{categoryId} ORDER BY CREATED_DATE DESC")
+    @Select("SELECT * FROM BOARD WHERE WRITER_ID = #{writerId} AND CATEGORY_ID = #{categoryId} AND DELETED_DATE IS NULL ORDER BY CREATED_DATE DESC")
     List<Board> selectByWriterIdAndCategoryId(Long writerID, Long categoryId);
 
     //게시글 소프트 삭제
     int softDeleteByPrimaryKey(Long id, Long lastModifiedMember);
 
+    //게시글ID로 게시글 상태 업데이트(카테고리 변화)
+    @Update("UPDATE BOARD SET CATEGORY_ID = #{categoryId} WHERE ID = #{id}")
+    int updateCategory(Long id, Long categoryId);
+
+    //부모게시글ID로 답글 조회
+    @Select("SELECT * FROM BOARD WHERE PARENT_ID = #{parentId} AND DELETED_DATE IS NULL ORDER BY CREATED_DATE DESC")
+    List<Board> selectByParentId(Long parentId);
+
+//    //부모게시글ID로 답글ID 조회
+//    @Select("SELECT ID FROM BOARD WHERE PARENT_ID = #{parentId} AND DELETED_DATE IS NULL ORDER BY CREATED_DATE DESC")
+//    List<Long> selectIdByParentId(Long parentId);
 }

@@ -8,9 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Board;
 import hyper.darye.dto.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.dto.controller.request.PostReplyDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.dto.controller.request.UpdateReplyDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
+import hyper.darye.dto.controller.response.SearchReplyDTO;
 import hyper.darye.mapper.BoardCategoryCodeMapper;
 import hyper.darye.mapper.BoardImageMapper;
 import hyper.darye.mapper.BoardMapper;
@@ -420,6 +423,133 @@ class BoardServiceUnitTest {
         assertEquals("내용1", result.getContent());
         assertThat(result.getImages()).hasSize(2);
     }
+
+    //1대1 문의 댓글 작성
+    @Test
+    @DisplayName("1대1 문의 댓글 작성 성공")
+    public void insertReplyTest() {
+        // Given
+        PostReplyDTO postReplyDTO = new PostReplyDTO("내용", 1L, null);
+        when(boardMapper.insertSelective(any(Board.class))).thenReturn(1);
+        Board expectedBoard2 = new Board();
+        expectedBoard2.setId(2L);
+        expectedBoard2.setTitle("RE: ");
+        expectedBoard2.setContent(postReplyDTO.getContent());
+        expectedBoard2.setCategoryId(9L);
+        expectedBoard2.setParentId(postReplyDTO.getParentId());
+
+        // When
+        int result = boardService.insertReply(1L, postReplyDTO, 1L);
+
+        // Then
+        assertEquals(1, result);
+        verify(boardMapper, times(1)).insertSelective(any(Board.class));
+        verify(boardImageMapper, times(0)).insertSelective(any(BoardImage.class));  // 이미지가 없을 경우 호출되지 않음
+        assertEquals(1L, expectedBoard.getId());
+        assertThat(expectedBoard2.getTitle()).isEqualTo("RE: ");
+        assertThat(expectedBoard2.getContent()).isEqualTo("내용");
+        assertThat(expectedBoard2.getCategoryId()).isEqualTo(9L);
+        assertThat(expectedBoard2.getParentId()).isEqualTo(1L);
+    }
+
+
+    //1대1 문의 댓글 수정
+    @Test
+    @DisplayName("1대1 문의 댓글 수정 성공")
+    public void updateReplyTest() {
+        // Given
+        Long replyId = 3L;
+        UpdateReplyDTO updateReplyDTO = new UpdateReplyDTO("수정된 내용", null, null);
+
+        Board board = new Board();
+        board.setId(3L);
+        board.setTitle("RE: ");
+        board.setContent("수정된 내용");
+        board.setCategoryId(9L);
+        board.setParentId(1L);
+        board.setWriterId(1L);
+
+        when(boardMapper.selectByPrimaryKey(replyId)).thenReturn(board);
+        when(boardMapper.updateByPrimaryKeySelective(any(Board.class))).thenReturn(1);
+
+        // When
+        boardService.updateReply(3L, updateReplyDTO, 1L);
+
+        // Then
+        verify(boardMapper, times(1)).updateByPrimaryKeySelective(any(Board.class));
+    }
+
+    //1대1 문의 댓글 조회
+    @Test
+    @DisplayName("1대1 문의 댓글 조회")
+    public void selectAllReplyTest() {
+
+        Board board1 = new Board();
+        board1.setId(2L);
+        board1.setContent("댓글 1");
+        board1.setRegDate(new Date());
+        board1.setParentId(1L);
+
+        Board board2 = new Board();
+        board2.setId(3L);
+        board2.setContent("댓글 2");
+        board2.setRegDate(new Date());
+        board2.setParentId(1L);
+
+        List<Board> replays = Arrays.asList(board1, board2);
+
+        // 댓글에 대한 이미지 리스트
+        BoardImage image1 = new BoardImage();
+        image1.setBoardId(2L);
+        image1.setImage(new byte[]{1, 2, 3});
+
+        BoardImage image2 = new BoardImage();
+        image2.setBoardId(3L);
+        image2.setImage(new byte[]{4, 5, 6});
+
+        List<BoardImage> images = Arrays.asList(image1, image2);
+
+        when(boardMapper.selectByParentId(1L)).thenReturn(replays);
+        when(boardImageMapper.selectByBoardId(2L)).thenReturn(Collections.singletonList(image1));
+        when(boardImageMapper.selectByBoardId(3L)).thenReturn(Collections.singletonList(image2));
+
+        // When
+        List<SearchReplyDTO> result = boardService.selectAllReply(1L);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        SearchReplyDTO dto1 = result.get(0);
+        assertEquals(2L, dto1.getId());
+        assertEquals("댓글 1", dto1.getContent());
+        assertEquals(1, dto1.getImages().size());
+
+        SearchReplyDTO dto2 = result.get(1);
+        assertEquals(3L, dto2.getId());
+        assertEquals("댓글 2", dto2.getContent());
+        assertEquals(1, dto2.getImages().size());
+
+        verify(boardMapper, times(1)).selectByParentId(1L);
+        verify(boardImageMapper, times(1)).selectByBoardId(2L);
+        verify(boardImageMapper, times(1)).selectByBoardId(3L);
+    }
+
+    @Test
+    @DisplayName("1대1 문의 댓글 조회 - 댓글이 없을때")
+    void testSelectAllReplyWhenNoRepliesFound() {
+        //given
+        when(boardMapper.selectByParentId(1L)).thenReturn(Collections.emptyList());
+
+        //when
+        List<SearchReplyDTO> result = boardService.selectAllReply(1L);
+
+        //then
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
 }
+
+
 
 
