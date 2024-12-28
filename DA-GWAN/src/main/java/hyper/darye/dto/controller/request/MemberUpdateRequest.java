@@ -1,4 +1,4 @@
-package hyper.darye.dto;
+package hyper.darye.dto.controller.request;
 
 import lombok.Getter;
 import lombok.Setter;

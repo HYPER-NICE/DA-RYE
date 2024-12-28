@@ -47,6 +47,10 @@ public class MemberService {
         return memberMapper.selectByEmail(email) != null;
     }
 
+    public boolean isContactTaken(String contact) {
+        return memberMapper.findEmailByContact(contact) != null;
+    }
+
     /**
      * 회원 데이터 조회
      * @param id
@@ -72,7 +76,7 @@ public class MemberService {
         Member result = memberMapper.selectByEmail(email);
 
         if (result == null)
-            throw new NoSuchElementException("존재하지 않는 이메일입니다.");
+            throw new NoSuchElementException("등록되지 않은 이메일입니다.");
 
         return result;
     }
@@ -125,5 +129,14 @@ public class MemberService {
         String encodedNewPassword = passwordEncoder.encode(newPassword);
 
         memberMapper.updatePassword(id, encodedNewPassword);
+    }
+
+    public String findEmailByContact(String contact) {
+        String result = memberMapper.findEmailByContact(contact);
+
+        if (result == null)
+            throw new NoSuchElementException("등록되지 않은 휴대폰 번호입니다.");
+
+        return result;
     }
 }
