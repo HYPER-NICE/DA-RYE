@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -119,5 +120,20 @@ class BoardMapperTest {
         assertThat(board).isNotNull();
         assertThat(board.getId()).isEqualTo(1L);
         assertThat(board.getTitle()).isEqualTo("배송 지연 안내입니다.");
+    }
+
+    @Test
+    @DisplayName("댓글이 달리면 카테고리 변경 테스트")
+    void updateBoardCategoryTest() {
+        //given
+        Long id = 1L;  // 테스트할 Board ID
+        Long categoryId = 9L;  // 변경할 Category ID
+
+        // 실행
+        int result = boardMapper.updateCategory(id, categoryId);
+
+        // 검증
+        assertThat(result).isEqualTo(1);
+        assertThat(boardMapper.selectByPrimaryKey(id).getCategoryId()).isEqualTo(categoryId);
     }
 }
