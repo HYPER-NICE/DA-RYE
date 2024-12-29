@@ -1,5 +1,6 @@
 package hyper.darye.dto.controller.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ public class MemberUpdateRequest {
 //    private String email;
     private String name;
     private Character sex;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date birthdate;
     private String contact;
 }

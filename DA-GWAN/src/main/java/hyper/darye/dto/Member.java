@@ -1,5 +1,6 @@
 package hyper.darye.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -45,6 +46,7 @@ public class Member implements Serializable {
     /**
      * 생년월일
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date birthdate;
 
     /**
@@ -70,21 +72,25 @@ public class Member implements Serializable {
     /**
      * 마지막 사인인 날짜
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date latestSignInDate;
 
     /**
      * 가입 날짜
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date regDate;
 
     /**
      * 레코드 생성 날짜 및 시간
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date createdDate;
 
     /**
      * 마지막 수정된 날짜 및 시간
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date lastModifiedDate;
 
     /**
@@ -95,6 +101,7 @@ public class Member implements Serializable {
     /**
      * 레코드가 삭제된 날짜 (논리 삭제)
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date deletedDate;
 
     private static final long serialVersionUID = 1L;
