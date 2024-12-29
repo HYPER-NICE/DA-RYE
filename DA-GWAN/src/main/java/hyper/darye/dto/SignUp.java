@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldComparison(message = "패스워드와 확인 패스워드가 일치하지 않습니다.")
-@Schema(description = "회원 가입 요청 DTO - 필수 및 선택 정보 포함")
+@Schema(description = "회원 가입 요청 DTO")
 public class SignUp {
 
     /** 필수 정보 **/
@@ -43,9 +43,14 @@ public class SignUp {
      * 비밀번호 (필수)
      * - 최소 8자, 대문자, 소문자, 숫자, 특수문자 포함
      */
-    @Schema(description = "회원 비밀번호", example = "Password@123", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "회원 비밀번호(비밀번호는 최소 8자, 최대 16자, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다)",
+            example = "Password@123",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "암호를 입력하세요.")
-    @Size(min = 4, message = "비밀번호는 최소 8자리 이상이어야 합니다.")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$",
+            message = "비밀번호는 최소 8자, 최대 16자, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다."
+    )
     @CompareTarget
     private String password;
 
