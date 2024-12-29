@@ -49,4 +49,9 @@ public class GlobalExceptionHandler {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage()); // 400 Bad Request
+    }
 }

@@ -2,7 +2,7 @@ package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Member;
-import hyper.darye.dto.MemberUpdateRequest;
+import hyper.darye.dto.controller.request.MemberUpdateRequest;
 import hyper.darye.dto.controller.request.UpdatePasswordRequest;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.MemberService;
@@ -66,5 +66,11 @@ public class MemberController {
         memberService.updatePassword(id, updatePasswordRequest.getOldPassword(),
                                          updatePasswordRequest.getNewPassword(),
                                          updatePasswordRequest.getConfirmPassword());
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/members/findEmail")
+    public void findEmailByContact(@RequestParam String contact) {
+        memberService.findEmailByContact(contact);
     }
 }

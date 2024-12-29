@@ -67,7 +67,7 @@ class SignControllerIntegrationTest {
         @DisplayName("사인업 성공 - 유효한 요청")
         @WithAnonymousUser
         void signUpSuccess() throws Exception {
-            SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
+            SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-9999-9999");
             performPostRequest("/api/sign-up", signUpRequest, status().isCreated());
         }
 
@@ -91,10 +91,10 @@ class SignControllerIntegrationTest {
         @DisplayName("사인업 실패 - 이미 등록된 이메일")
         @WithAnonymousUser
         void signUpFailEmailAlreadyTaken() throws Exception {
-            SignUp firstSignUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
+            SignUp firstSignUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-9999-9999");
             performPostRequest("/api/sign-up", firstSignUpRequest, status().isCreated());
 
-            SignUp secondSignUpRequest = createSignUpDto("테스트사용자2", "test@example.com", "Password123!", "Password123!", "010-2345-6789");
+            SignUp secondSignUpRequest = createSignUpDto("테스트사용자2", "test@example.com", "Password123!", "Password123!", "010-8888-8888");
             performPostRequest("/api/sign-up", secondSignUpRequest, status().isBadRequest());
         }
     }
@@ -108,7 +108,7 @@ class SignControllerIntegrationTest {
         @WithAnonymousUser
         void signInSuccess() throws Exception {
             // 회원가입 먼저 수행
-            SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-1234-5678");
+            SignUp signUpRequest = createSignUpDto("테스트사용자", "test@example.com", "Password123!", "Password123!", "010-9999-9999");
             performPostRequest("/api/sign-up", signUpRequest, status().isCreated());
 
             // 사인인 수행

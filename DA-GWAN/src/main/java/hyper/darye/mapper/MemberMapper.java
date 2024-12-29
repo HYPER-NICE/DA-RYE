@@ -32,6 +32,10 @@ public interface MemberMapper {
             "where ID = #{id}")
     void updatePassword(Long id, String newPassword);
 
+    @Select("select EMAIL from MEMBER " +
+            "where CONTACT = #{contact}")
+    String findEmailByContact(String contact);
+
     @Update("UPDATE MEMBER SET point = point + #{point} WHERE id = #{id}")
     int addPoint(Long id, int point);
 

@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/sign-in").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/sign-up").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/check/**").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/api/members/findEmail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/notification-board/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/faq-board/**").permitAll()
 

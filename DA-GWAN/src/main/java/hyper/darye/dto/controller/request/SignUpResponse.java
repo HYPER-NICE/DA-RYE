@@ -1,5 +1,6 @@
 package hyper.darye.dto.controller.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,7 @@ public class SignUpResponse implements Serializable {
     /**
      * 가입 날짜
      */
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date regDate;
 
     /**

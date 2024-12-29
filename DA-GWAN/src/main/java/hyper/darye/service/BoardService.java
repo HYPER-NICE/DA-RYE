@@ -1,9 +1,13 @@
 package hyper.darye.service;
 
+import hyper.darye.dto.controller.request.PostReplyDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.dto.controller.request.PostBoardDTO;
+import hyper.darye.dto.controller.request.UpdateReplyDTO;
 import hyper.darye.dto.controller.response.SearchBoardDTO;
 import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
+import hyper.darye.dto.controller.response.SearchReplyDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,4 +31,13 @@ public interface BoardService {
 
     //1대1 문의 자신의 질문만 조회
     List<SearchBoardDTO> selectOneBoard(Long rootCategoryId, Long subCategoryId, Long memberId);
+
+    //1대1 문의 댓글 작성
+    int insertReply(Long id, PostReplyDTO postReplyDTO, Long memberId);
+
+    //1대1 문의 댓글 수정
+    void updateReply(Long replyId, UpdateReplyDTO updateReplyDTO, Long memberId);
+
+    //1대1 문의 댓글 조회
+    List<SearchReplyDTO> selectAllReply(Long id);
 }
