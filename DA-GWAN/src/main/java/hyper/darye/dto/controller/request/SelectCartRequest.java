@@ -29,7 +29,7 @@ public class SelectCartRequest {
     private Integer productPrice;
 
     @Schema(description = "상품 사진", example = "바이트 코드", required = true)
-    private Byte productImage;
+    private byte[] productImage;
 
 
 }

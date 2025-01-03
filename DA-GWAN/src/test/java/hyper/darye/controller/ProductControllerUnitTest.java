@@ -3,6 +3,7 @@ package hyper.darye.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.dto.controller.request.RequestPostProductDto;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.ProductService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -50,35 +52,79 @@ class ProductControllerUnitTest {
 
     @Test
     @WithMockCustomUser(role = "ADMIN")
-    @DisplayName("상품 등록 - 관리자")
-    void insertPostProductUnitTest() throws Exception {
-        // given
-        given(productService.insertProduct(any(ProductWithBLOBs.class))).willReturn(1);
+    @DisplayName("상품, 상품이미지 등록 - 관리자")
+    public void testInsertProduct() throws Exception {
+        // 테스트용 상품 데이터 생성
+        RequestPostProductDto requestDto = new RequestPostProductDto();
+        requestDto.setName("테스트 상품");
+        requestDto.setCategoryId(1L);
 
-        String expirationDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String saleDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        // JSON 데이터를 MockMultipartFile로 생성
+        MockMultipartFile requestDtoFile = new MockMultipartFile(
+                "insertPostProductRequest",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(requestDto).getBytes()
+        );
 
-        String jsonContent = """
-        {
-            "id": 1,
-            "categoryId": 1,
-            "productStatusCodeId": 1,
-            "name": "title",
-            "price": 100,
-            "expirationDate": "%s",
-            "saleDate": "%s",
-            "quantity": 2
-        }
-        """.formatted(expirationDate, saleDate);
+        // 테스트용 이미지 파일 생성
+        byte[] thumbnailImageBytes = { 0x01, 0x02, 0x03 }; // 썸네일 이미지 데이터
+        MockMultipartFile thumbnailImageFile = new MockMultipartFile(
+                "thumbnailImage", // Controller에서 @RequestPart의 파라미터 이름과 일치해야 함
+                "thumbnail.png",
+                MediaType.IMAGE_PNG_VALUE,
+                thumbnailImageBytes
+        );
 
-        // when
-        mockMvc.perform(post("/api/products")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent))
-                // then
-                .andExpect(status().isCreated())
+        byte[] descriptionImageBytes = { 0x04, 0x05, 0x06 }; // 상세 설명 이미지 데이터
+        MockMultipartFile descriptionImageFile = new MockMultipartFile(
+                "descriptionImage", // Controller에서 @RequestPart의 파라미터 이름과 일치해야 함
+                "description.png",
+                MediaType.IMAGE_PNG_VALUE,
+                descriptionImageBytes
+        );
+
+        // ProductService의 insertProduct 메서드가 호출될 때 예외를 발생시키지 않도록 설정
+        when(productService.insertProduct(any())).thenReturn(1);
+
+        // 컨트롤러 호출
+        mockMvc.perform(multipart("/api/products")
+                        .file(requestDtoFile) // JSON 데이터
+                        .file(thumbnailImageFile) // 썸네일 이미지 파일
+                        .file(descriptionImageFile) // 상세 설명 이미지 파일
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated()) // 생성 성공
                 .andDo(print());
     }
+
+    @Test
+    @WithMockCustomUser(role = "ADMIN")
+    @DisplayName("상품 등록 - 이미지 없이 관리자")
+    public void testInsertProductWithoutImages() throws Exception {
+        // 테스트용 상품 데이터 생성
+        RequestPostProductDto requestDto = new RequestPostProductDto();
+        requestDto.setName("테스트 상품");
+        requestDto.setCategoryId(1L);
+
+        // JSON 데이터를 MockMultipartFile로 생성
+        MockMultipartFile requestDtoFile = new MockMultipartFile(
+                "insertPostProductRequest",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(requestDto).getBytes()
+        );
+
+        // ProductService의 insertProduct 메서드가 호출될 때 예외를 발생시키지 않도록 설정
+        when(productService.insertProduct(any())).thenReturn(1);
+
+        // 컨트롤러 호출
+        mockMvc.perform(multipart("/api/products")
+                        .file(requestDtoFile) // JSON 데이터만 추가
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated()) // 생성 성공
+                .andDo(print());
+    }
+
 
     @Test
     @WithMockCustomUser(role = "USER")
@@ -103,14 +149,22 @@ class ProductControllerUnitTest {
     }
     """.formatted(expirationDate, saleDate);
 
+        MockMultipartFile requestPart = new MockMultipartFile(
+                "insertPostProductRequest",
+                "insertPostProductRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                jsonContent.getBytes()
+        );
+
         // when
-        mockMvc.perform(post("/api/products")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent))
+        mockMvc.perform(multipart("/api/products")
+                        .file(requestPart) // JSON 데이터
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 // then
                 .andExpect(status().isForbidden()) // 권한이 없으므로 403 상태 코드가 반환되어야 함
                 .andDo(print());
     }
+
 
     @Test
     @WithMockCustomUser(role = "ADMIN")

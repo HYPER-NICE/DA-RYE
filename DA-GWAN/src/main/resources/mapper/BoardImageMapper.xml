@@ -9,7 +9,7 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="hyper.darye.dto.BoardImage">
-    <result column="IMAGE" jdbcType="BLOB" property="image" />
+    <result column="IMAGE" jdbcType="LONGBLOB" property="image" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, BOARD_ID, CREATED_DATE, LAST_MODIFIED_DATE, DELETED_DATE
@@ -37,7 +37,7 @@
     insert into BOARD_IMAGE (BOARD_ID, CREATED_DATE, LAST_MODIFIED_DATE, 
       DELETED_DATE, IMAGE)
     values (#{boardId,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
-      #{deletedDate,jdbcType=TIMESTAMP}, #{image,jdbcType=BLOB})
+      #{deletedDate,jdbcType=TIMESTAMP}, #{image,jdbcType=LONGBLOB})
   </insert>
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.BoardImage" useGeneratedKeys="true">
     insert into BOARD_IMAGE
@@ -72,7 +72,7 @@
         #{deletedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="image != null">
-        #{image,jdbcType=BLOB},
+        #{image,jdbcType=LONGBLOB},
       </if>
     </trim>
   </insert>
@@ -92,7 +92,7 @@
         DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="image != null">
-        IMAGE = #{image,jdbcType=BLOB},
+        IMAGE = #{image,jdbcType=LONGBLOB},
       </if>
     </set>
     where ID = #{id,jdbcType=BIGINT}
@@ -103,7 +103,7 @@
       CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
       LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
       DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
-      IMAGE = #{image,jdbcType=BLOB}
+      IMAGE = #{image,jdbcType=LONGBLOB}
     where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.BoardImage">
