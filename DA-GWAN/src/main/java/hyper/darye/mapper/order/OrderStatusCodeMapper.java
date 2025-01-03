@@ -1,4 +1,4 @@
-package hyper.darye.mapper;
+package hyper.darye.mapper.order;
 
 import hyper.darye.dto.OrderStatusCode;
 import org.apache.ibatis.annotations.Mapper;

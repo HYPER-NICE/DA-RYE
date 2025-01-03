@@ -1,4 +1,4 @@
-package hyper.darye.mapper;
+package hyper.darye.mapper.order.delivery;
 
 import hyper.darye.dto.OrderDeliveryMain;
 import org.apache.ibatis.annotations.Mapper;

@@ -1,10 +1,12 @@
-package hyper.darye.mapper;
+package hyper.darye.mapper.order;
 
 import hyper.darye.dto.OrderDetail;
 import hyper.darye.dto.OrderMain;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -17,4 +19,5 @@ public interface OrderMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertOrderDetail(OrderDetail orderDetail);
 
+    void insert(List<OrderDetail> products);
 }

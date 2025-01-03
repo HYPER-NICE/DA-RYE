@@ -1,10 +1,7 @@
-package hyper.darye.mapper;
+package hyper.darye.mapper.order;
 
 import hyper.darye.dto.OrderMain;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 @Mapper
 public interface OrderMainMapper {
@@ -19,10 +16,4 @@ public interface OrderMainMapper {
     int updateByPrimaryKeySelective(OrderMain record);
 
     int updateByPrimaryKey(OrderMain record);
-
-    @Select("select * from ORDER_MAIN where MEMBER_ID = #{memberId}")
-    OrderMain selectByMemberId(Long memberId);
-
-    List<OrderMain> selectAllOrderMain();
-
 }

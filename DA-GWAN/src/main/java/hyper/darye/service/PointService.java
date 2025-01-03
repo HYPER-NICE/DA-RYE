@@ -4,6 +4,8 @@ import hyper.darye.dto.Member;
 import hyper.darye.dto.PointTransaction;
 import hyper.darye.dto.PointTransactionType;
 import hyper.darye.mapper.*;
+import hyper.darye.mapper.order.OrderMainMapper;
+import hyper.darye.mapper.order.payment.OrderPaymentMainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

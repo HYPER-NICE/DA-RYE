@@ -1,12 +1,8 @@
 package hyper.darye.controller;
 
-import hyper.darye.dto.OrderMain;
-import hyper.darye.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import hyper.darye.service.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 // /api/members/{id}/orders
 @RestController
