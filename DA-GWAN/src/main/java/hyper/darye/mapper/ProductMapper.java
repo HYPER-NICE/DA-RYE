@@ -4,6 +4,7 @@ import hyper.darye.dto.Product;
 import hyper.darye.dto.ProductWithBLOBs;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface ProductMapper {
     // 상품 검색용
     List<ProductWithBLOBs> searchByKeyword(List<String> keyword, Integer minPrice, Integer maxPrice, Integer orderBy);
 
+    @Select("SELECT * FROM PRODUCT")
+    List<Product> selectAll();
 }
