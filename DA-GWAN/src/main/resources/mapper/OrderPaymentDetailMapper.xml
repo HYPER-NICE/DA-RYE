@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyper.darye.mapper.OrderPaymentDetailMapper">
   <resultMap id="BaseResultMap" type="hyper.darye.dto.OrderPaymentDetail">
-    <id column="ORDER_PAYMENT_MAIN_ID" jdbcType="BIGINT" property="orderPaymentMainId" />
-    <id column="PAYMENT_METHOD_CODE_ID" jdbcType="BIGINT" property="paymentMethodCodeId" />
-    <id column="ORDER_PAYMENT_STATUS_CODE_ID" jdbcType="BIGINT" property="orderPaymentStatusCodeId" />
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_PAYMENT_MAIN_ID" jdbcType="BIGINT" property="orderPaymentMainId" />
+    <result column="PAYMENT_METHOD_CODE_ID" jdbcType="BIGINT" property="paymentMethodCodeId" />
+    <result column="ORDER_PAYMENT_STATUS_CODE_ID" jdbcType="BIGINT" property="orderPaymentStatusCodeId" />
     <result column="APPROVAL_NUMBER" jdbcType="VARCHAR" property="approvalNumber" />
     <result column="PAYMENT_AMOUNT" jdbcType="INTEGER" property="paymentAmount" />
     <result column="PAYMENT_DATE" jdbcType="TIMESTAMP" property="paymentDate" />
@@ -15,37 +16,38 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ORDER_PAYMENT_MAIN_ID, PAYMENT_METHOD_CODE_ID, ORDER_PAYMENT_STATUS_CODE_ID, APPROVAL_NUMBER, 
-    PAYMENT_AMOUNT, PAYMENT_DATE, PAYMENT_COMMENT, CREATED_DATE, LAST_MODIFIED_DATE, 
+    ID, ORDER_PAYMENT_MAIN_ID, PAYMENT_METHOD_CODE_ID, ORDER_PAYMENT_STATUS_CODE_ID, 
+    APPROVAL_NUMBER, PAYMENT_AMOUNT, PAYMENT_DATE, PAYMENT_COMMENT, CREATED_DATE, LAST_MODIFIED_DATE, 
     LAST_MODIFIED_MEMBER, DELETED_DATE
   </sql>
-  <select id="selectByPrimaryKey" parameterType="hyper.darye.dto.OrderPaymentDetailKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from ORDER_PAYMENT_DETAIL
-    where ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT}
-      and PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT}
-      and ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="hyper.darye.dto.OrderPaymentDetailKey">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ORDER_PAYMENT_DETAIL
-    where ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT}
-      and PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT}
-      and ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ORDER_PAYMENT_MAIN_ID" keyProperty="orderPaymentMainId" parameterType="hyper.darye.dto.OrderPaymentDetail" useGeneratedKeys="true">
-    insert into ORDER_PAYMENT_DETAIL (PAYMENT_METHOD_CODE_ID, ORDER_PAYMENT_STATUS_CODE_ID, 
-      APPROVAL_NUMBER, PAYMENT_AMOUNT, PAYMENT_DATE, 
-      PAYMENT_COMMENT, CREATED_DATE, LAST_MODIFIED_DATE, 
-      LAST_MODIFIED_MEMBER, DELETED_DATE)
-    values (#{paymentMethodCodeId,jdbcType=BIGINT}, #{orderPaymentStatusCodeId,jdbcType=BIGINT}, 
-      #{approvalNumber,jdbcType=VARCHAR}, #{paymentAmount,jdbcType=INTEGER}, #{paymentDate,jdbcType=TIMESTAMP}, 
-      #{paymentComment,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderPaymentDetail" useGeneratedKeys="true">
+    insert into ORDER_PAYMENT_DETAIL (ORDER_PAYMENT_MAIN_ID, PAYMENT_METHOD_CODE_ID, 
+      ORDER_PAYMENT_STATUS_CODE_ID, APPROVAL_NUMBER, 
+      PAYMENT_AMOUNT, PAYMENT_DATE, PAYMENT_COMMENT, 
+      CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+      DELETED_DATE)
+    values (#{orderPaymentMainId,jdbcType=BIGINT}, #{paymentMethodCodeId,jdbcType=BIGINT}, 
+      #{orderPaymentStatusCodeId,jdbcType=BIGINT}, #{approvalNumber,jdbcType=VARCHAR}, 
+      #{paymentAmount,jdbcType=INTEGER}, #{paymentDate,jdbcType=TIMESTAMP}, #{paymentComment,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
+      #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ORDER_PAYMENT_MAIN_ID" keyProperty="orderPaymentMainId" parameterType="hyper.darye.dto.OrderPaymentDetail" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderPaymentDetail" useGeneratedKeys="true">
     insert into ORDER_PAYMENT_DETAIL
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderPaymentMainId != null">
+        ORDER_PAYMENT_MAIN_ID,
+      </if>
       <if test="paymentMethodCodeId != null">
         PAYMENT_METHOD_CODE_ID,
       </if>
@@ -78,6 +80,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderPaymentMainId != null">
+        #{orderPaymentMainId,jdbcType=BIGINT},
+      </if>
       <if test="paymentMethodCodeId != null">
         #{paymentMethodCodeId,jdbcType=BIGINT},
       </if>
@@ -113,6 +118,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.OrderPaymentDetail">
     update ORDER_PAYMENT_DETAIL
     <set>
+      <if test="orderPaymentMainId != null">
+        ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentMethodCodeId != null">
+        PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT},
+      </if>
+      <if test="orderPaymentStatusCodeId != null">
+        ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT},
+      </if>
       <if test="approvalNumber != null">
         APPROVAL_NUMBER = #{approvalNumber,jdbcType=VARCHAR},
       </if>
@@ -138,13 +152,14 @@
         DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT}
-      and PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT}
-      and ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.OrderPaymentDetail">
     update ORDER_PAYMENT_DETAIL
-    set APPROVAL_NUMBER = #{approvalNumber,jdbcType=VARCHAR},
+    set ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT},
+      PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT},
+      ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT},
+      APPROVAL_NUMBER = #{approvalNumber,jdbcType=VARCHAR},
       PAYMENT_AMOUNT = #{paymentAmount,jdbcType=INTEGER},
       PAYMENT_DATE = #{paymentDate,jdbcType=TIMESTAMP},
       PAYMENT_COMMENT = #{paymentComment,jdbcType=VARCHAR},
@@ -152,8 +167,6 @@
       LAST_MODIFIED_DATE = #{lastModifiedDate,jdbcType=TIMESTAMP},
       LAST_MODIFIED_MEMBER = #{lastModifiedMember,jdbcType=BIGINT},
       DELETED_DATE = #{deletedDate,jdbcType=TIMESTAMP}
-    where ORDER_PAYMENT_MAIN_ID = #{orderPaymentMainId,jdbcType=BIGINT}
-      and PAYMENT_METHOD_CODE_ID = #{paymentMethodCodeId,jdbcType=BIGINT}
-      and ORDER_PAYMENT_STATUS_CODE_ID = #{orderPaymentStatusCodeId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

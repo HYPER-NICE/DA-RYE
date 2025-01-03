@@ -1,18 +1,15 @@
 package hyper.darye.mapper;
 
 import hyper.darye.dto.OrderPaymentDetail;
-import hyper.darye.dto.OrderPaymentDetailKey;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface OrderPaymentDetailMapper {
-    int deleteByPrimaryKey(OrderPaymentDetailKey key);
+    int deleteByPrimaryKey(Long id);
 
     int insert(OrderPaymentDetail record);
 
     int insertSelective(OrderPaymentDetail record);
 
-    OrderPaymentDetail selectByPrimaryKey(OrderPaymentDetailKey key);
+    OrderPaymentDetail selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(OrderPaymentDetail record);
 
