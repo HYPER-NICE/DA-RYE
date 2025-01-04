@@ -71,7 +71,7 @@
       )
   </insert>
   <!-- 전체 제품 조회 -->
-  <select id="selectAllProduct" resultType="hyper.darye.dto.Product">
+  <select id="selectAllProduct" resultType="hyper.darye.dto.ProductWithBLOBs">
     SELECT
       id, name, short_description AS shortDescription, long_description AS longDescription,
       price, category_id AS categoryId, product_status_code_id AS productStatusCodeId,
