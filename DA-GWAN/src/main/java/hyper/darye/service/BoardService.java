@@ -1,13 +1,12 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.controller.request.PostReplyDTO;
-import hyper.darye.dto.controller.request.UpdateBoardDTO;
-import hyper.darye.dto.controller.request.PostBoardDTO;
-import hyper.darye.dto.controller.request.UpdateReplyDTO;
-import hyper.darye.dto.controller.response.SearchBoardDTO;
-import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
-import hyper.darye.dto.controller.response.SearchReplyDTO;
-import org.springframework.transaction.annotation.Transactional;
+import hyper.darye.model.dto.controller.request.PostReplyDTO;
+import hyper.darye.model.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.model.dto.controller.request.PostBoardDTO;
+import hyper.darye.model.dto.controller.request.UpdateReplyDTO;
+import hyper.darye.model.dto.controller.response.SearchBoardDTO;
+import hyper.darye.model.dto.controller.response.SearchBoardDetailDTO;
+import hyper.darye.model.dto.controller.response.SearchReplyDTO;
 
 import java.util.List;
 

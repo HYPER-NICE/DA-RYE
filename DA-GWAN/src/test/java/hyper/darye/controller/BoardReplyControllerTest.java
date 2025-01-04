@@ -1,9 +1,9 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.controller.request.PostReplyDTO;
-import hyper.darye.dto.controller.request.UpdateReplyDTO;
-import hyper.darye.security.SecurityConfig;
+import hyper.darye.model.dto.controller.request.PostReplyDTO;
+import hyper.darye.model.dto.controller.request.UpdateReplyDTO;
+import hyper.darye.config.security.SecurityConfig;
 import hyper.darye.service.BoardService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;

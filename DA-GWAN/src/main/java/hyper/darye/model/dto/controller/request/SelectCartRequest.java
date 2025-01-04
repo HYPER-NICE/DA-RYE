@@ -1,4 +1,4 @@
-package hyper.darye.dto.controller.request;
+package hyper.darye.model.dto.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

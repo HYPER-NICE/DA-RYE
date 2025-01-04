@@ -1,7 +1,7 @@
 package hyper.darye.testConfig.mockUser;
 
 import hyper.darye.model.entity.Member;
-import hyper.darye.security.CustomUserDetails;
+import hyper.darye.config.security.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

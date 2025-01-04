@@ -1,4 +1,4 @@
-package hyper.darye.dto.controller.request;
+package hyper.darye.model.dto.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

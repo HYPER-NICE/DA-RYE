@@ -1,11 +1,11 @@
 package hyper.darye.controller;
 
 import hyper.darye.constant.RootCategory;
-import hyper.darye.dto.controller.request.PostBoardDTO;
-import hyper.darye.dto.controller.request.UpdateBoardDTO;
-import hyper.darye.dto.controller.response.SearchBoardDTO;
-import hyper.darye.dto.controller.response.SearchBoardDetailDTO;
-import hyper.darye.security.CustomUserDetails;
+import hyper.darye.model.dto.controller.request.PostBoardDTO;
+import hyper.darye.model.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.model.dto.controller.response.SearchBoardDTO;
+import hyper.darye.model.dto.controller.response.SearchBoardDetailDTO;
+import hyper.darye.config.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

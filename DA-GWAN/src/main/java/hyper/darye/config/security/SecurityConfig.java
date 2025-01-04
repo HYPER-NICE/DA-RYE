@@ -1,4 +1,4 @@
-package hyper.darye.security;
+package hyper.darye.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.controller.request.PostBoardDTO;
-import hyper.darye.dto.controller.request.UpdateBoardDTO;
-import hyper.darye.security.SecurityConfig;
+import hyper.darye.model.dto.controller.request.PostBoardDTO;
+import hyper.darye.model.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.config.security.SecurityConfig;
 import hyper.darye.service.BoardService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BoardOneOnOneController.class)

@@ -1,4 +1,4 @@
-package hyper.darye.dto.controller.request;
+package hyper.darye.model.dto.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

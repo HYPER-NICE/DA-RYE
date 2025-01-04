@@ -3,7 +3,7 @@ package hyper.darye.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.model.entity.Product;
 import hyper.darye.model.entity.ProductWithBLOBs;
-import hyper.darye.security.SecurityConfig;
+import hyper.darye.config.security.SecurityConfig;
 import hyper.darye.service.ProductService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import hyper.darye.validation.FieldCompare.FieldComparisonValidator;

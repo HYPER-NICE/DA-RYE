@@ -2,10 +2,10 @@ package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyper.darye.model.entity.ProductWithBLOBs;
-import hyper.darye.dto.controller.request.RequestDeleteProductDto;
-import hyper.darye.dto.controller.request.RequestPostProductDto;
-import hyper.darye.dto.controller.request.RequestPutProductDto;
-import hyper.darye.security.CustomUserDetails;
+import hyper.darye.model.dto.controller.request.RequestDeleteProductDto;
+import hyper.darye.model.dto.controller.request.RequestPostProductDto;
+import hyper.darye.model.dto.controller.request.RequestPutProductDto;
+import hyper.darye.config.security.CustomUserDetails;
 import hyper.darye.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;

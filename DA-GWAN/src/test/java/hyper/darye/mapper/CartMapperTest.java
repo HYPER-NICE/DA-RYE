@@ -1,7 +1,7 @@
 package hyper.darye.mapper;
 
 import hyper.darye.model.entity.Cart;
-import hyper.darye.dto.controller.request.SelectCartRequest;
+import hyper.darye.model.dto.controller.request.SelectCartRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;

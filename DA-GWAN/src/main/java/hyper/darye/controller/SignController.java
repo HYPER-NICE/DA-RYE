@@ -2,8 +2,8 @@ package hyper.darye.controller;
 
 import hyper.darye.model.entity.Member;
 import hyper.darye.model.entity.SignUp;
-import hyper.darye.dto.controller.request.SignIn;
-import hyper.darye.security.CustomUserDetails;
+import hyper.darye.model.dto.controller.request.SignIn;
+import hyper.darye.config.security.CustomUserDetails;
 import hyper.darye.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;

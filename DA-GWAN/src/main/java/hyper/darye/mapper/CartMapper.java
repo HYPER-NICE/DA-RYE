@@ -1,7 +1,7 @@
 package hyper.darye.mapper;
 
 import hyper.darye.model.entity.Cart;
-import hyper.darye.dto.controller.request.SelectCartRequest;
+import hyper.darye.model.dto.controller.request.SelectCartRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.*;
 

@@ -1,4 +1,4 @@
-package hyper.darye.security;
+package hyper.darye.config.security;
 
 import hyper.darye.model.entity.Member;
 import hyper.darye.mapper.MemberMapper;

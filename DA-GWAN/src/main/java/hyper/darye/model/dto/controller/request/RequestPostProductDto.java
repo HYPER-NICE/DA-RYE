@@ -1,23 +1,12 @@
-package hyper.darye.dto.controller.request;
+package hyper.darye.model.dto.controller.request;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Data
-@Getter
-@Setter
-public class RequestPutProductDto implements Serializable {
-
-    /**
-     * 상품 ID (기본 키)
-     */
-    private Long id;
-
+public class RequestPostProductDto implements Serializable {
     /**
      * 카테고리 ID (외래 키)
      */

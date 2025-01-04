@@ -1,10 +1,9 @@
 package hyper.darye.controller;
 
-import hyper.darye.dto.controller.request.PostReplyDTO;
-import hyper.darye.dto.controller.request.UpdateBoardDTO;
-import hyper.darye.dto.controller.request.UpdateReplyDTO;
-import hyper.darye.dto.controller.response.SearchReplyDTO;
-import hyper.darye.security.CustomUserDetails;
+import hyper.darye.model.dto.controller.request.PostReplyDTO;
+import hyper.darye.model.dto.controller.request.UpdateReplyDTO;
+import hyper.darye.model.dto.controller.response.SearchReplyDTO;
+import hyper.darye.config.security.CustomUserDetails;
 import hyper.darye.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

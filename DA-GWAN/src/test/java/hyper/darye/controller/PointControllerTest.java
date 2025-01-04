@@ -1,7 +1,7 @@
 package hyper.darye.controller;
 
 import hyper.darye.model.entity.Member;
-import hyper.darye.security.SecurityConfig;
+import hyper.darye.config.security.SecurityConfig;
 import hyper.darye.service.MemberService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
