@@ -1,7 +1,7 @@
 package hyper.darye.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -28,12 +28,12 @@ public class DeliveryStatusCode implements Serializable {
     /**
      * 레코드 생성 날짜 및 시간
      */
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     /**
      * 마지막 수정된 날짜 및 시간
      */
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     /**
      * 레코드를 마지막으로 수정한 회원 ID
@@ -43,7 +43,7 @@ public class DeliveryStatusCode implements Serializable {
     /**
      * 레코드가 삭제된 날짜 (논리 삭제)
      */
-    private Date deletedDate;
+    private LocalDateTime deletedDate;
 
     private static final long serialVersionUID = 1L;
 }

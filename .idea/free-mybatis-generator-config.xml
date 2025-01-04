@@ -206,25 +206,25 @@
         <entry key="ORDER_DELIVERY_STATUS">
           <value>
             <Config>
-              <option name="annotationDAO" value="true" />
               <option name="comment" value="true" />
               <option name="daoMvnPath" value="src/main/java" />
-              <option name="daoName" value="OrderDeliveryStatusDao" />
-              <option name="daoPackage" value="generate" />
-              <option name="daoPostfix" value="Dao" />
+              <option name="daoName" value="OrderDeliveryStatusMapper" />
+              <option name="daoPackage" value="hyper.darye.mapper.order.delivery" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="jsr310Support" value="true" />
               <option name="modelMvnPath" value="src/main/java" />
               <option name="modelName" value="OrderDeliveryStatus" />
-              <option name="modelPackage" value="generate" />
+              <option name="modelPackage" value="hyper.darye.dto" />
               <option name="name" value="ORDER_DELIVERY_STATUS" />
               <option name="overrideJava" value="true" />
               <option name="overrideXML" value="true" />
               <option name="primaryKey" value="ID" />
-              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="projectFolder" value="$PROJECT_DIR$/DA-GWAN" />
               <option name="tableName" value="ORDER_DELIVERY_STATUS" />
               <option name="useLombokPlugin" value="true" />
               <option name="useSchemaPrefix" value="true" />
               <option name="xmlMvnPath" value="src/main/resources" />
-              <option name="xmlPackage" value="generator" />
+              <option name="xmlPackage" value="mapper" />
             </Config>
           </value>
         </entry>
