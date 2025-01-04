@@ -1,4 +1,4 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

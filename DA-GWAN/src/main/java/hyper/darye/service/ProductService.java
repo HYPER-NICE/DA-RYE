@@ -1,11 +1,9 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Product;
-import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.model.entity.ProductWithBLOBs;
 import hyper.darye.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

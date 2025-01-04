@@ -1,6 +1,6 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.Member;
+import hyper.darye.model.entity.Member;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

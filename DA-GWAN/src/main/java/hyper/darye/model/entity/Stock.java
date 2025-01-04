@@ -1,4 +1,4 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;

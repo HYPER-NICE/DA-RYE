@@ -1,6 +1,6 @@
 package hyper.darye.mapper.order;
 
-import hyper.darye.dto.OrderMain;
+import hyper.darye.model.entity.OrderMain;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

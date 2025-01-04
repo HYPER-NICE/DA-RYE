@@ -1,6 +1,6 @@
 package hyper.darye.dto.controller.response;
 
-import hyper.darye.dto.BoardImage;
+import hyper.darye.model.entity.BoardImage;
 import lombok.Data;
 
 import java.util.Date;

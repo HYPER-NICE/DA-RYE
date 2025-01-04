@@ -1,6 +1,6 @@
 package hyper.darye.mapper.order.payment;
 
-import hyper.darye.dto.OrderPaymentDetail;
+import hyper.darye.model.entity.OrderPaymentDetail;
 
 public interface OrderPaymentDetailMapper {
     int deleteByPrimaryKey(Long id);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyper.darye.mapper.ProductMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.dto.Product">
+  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.Product">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
     <result column="PRODUCT_STATUS_CODE_ID" jdbcType="BIGINT" property="productStatusCodeId" />
@@ -23,7 +23,7 @@
     <result column="LAST_MODIFIED_MEMBER" jdbcType="BIGINT" property="lastModifiedMember" />
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="hyper.darye.dto.ProductWithBLOBs">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="hyper.darye.model.entity.ProductWithBLOBs">
     <result column="THUMBNAIL_IMAGE" jdbcType="BLOB" property="thumbnailImage" />
     <result column="DESCRIPTION_IMAGE" jdbcType="BLOB" property="descriptionImage" />
   </resultMap>
@@ -52,7 +52,7 @@
     set PRODUCT_STATUS_CODE_ID = #{statusCode}
     where ID = #{id} and PRODUCT_STATUS_CODE_ID != 4
   </update>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT (CATEGORY_ID, PRODUCT_STATUS_CODE_ID, `NAME`,
       SHORT_DESCRIPTION, LONG_DESCRIPTION, PRICE, 
       MANUFACTURER, EXPIRATION_DATE, INGREDIENTS, 
@@ -71,7 +71,7 @@
       )
   </insert>
   <!-- 전체 제품 조회 -->
-  <select id="selectAllProduct" resultType="hyper.darye.dto.ProductWithBLOBs">
+  <select id="selectAllProduct" resultType="hyper.darye.model.entity.ProductWithBLOBs">
     SELECT
       id, name, short_description AS shortDescription, long_description AS longDescription,
       price, category_id AS categoryId, product_status_code_id AS productStatusCodeId,
@@ -80,7 +80,7 @@
     FROM PRODUCT
   </select>
 
-  <select id="searchByKeyword" resultType="hyper.darye.dto.ProductWithBLOBs">
+  <select id="searchByKeyword" resultType="hyper.darye.model.entity.ProductWithBLOBs">
     SELECT *
     FROM PRODUCT
     WHERE (
@@ -110,7 +110,7 @@
 
 
 
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.ProductWithBLOBs" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.ProductWithBLOBs" useGeneratedKeys="true">
     insert into PRODUCT
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
@@ -243,7 +243,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.ProductWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.ProductWithBLOBs">
     update PRODUCT
     <set>
       <if test="categoryId != null">
@@ -312,7 +312,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="hyper.darye.dto.ProductWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="hyper.darye.model.entity.ProductWithBLOBs">
     update PRODUCT
     set CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
       PRODUCT_STATUS_CODE_ID = #{productStatusCodeId,jdbcType=BIGINT},
@@ -337,7 +337,7 @@
       DESCRIPTION_IMAGE = #{descriptionImage,jdbcType=BLOB}
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.Product">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.Product">
     update PRODUCT
     set CATEGORY_ID = #{categoryId,jdbcType=BIGINT},
       PRODUCT_STATUS_CODE_ID = #{productStatusCodeId,jdbcType=BIGINT},

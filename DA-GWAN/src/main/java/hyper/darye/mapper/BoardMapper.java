@@ -1,6 +1,6 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.Board;
+import hyper.darye.model.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;

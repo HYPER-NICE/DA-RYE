@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
 import hyper.darye.constant.StockType;
-import hyper.darye.dto.Stock;
+import hyper.darye.model.entity.Stock;
 import hyper.darye.mapper.StockMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

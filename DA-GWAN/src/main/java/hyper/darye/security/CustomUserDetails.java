@@ -1,6 +1,6 @@
 package hyper.darye.security;
 
-import hyper.darye.dto.Member;
+import hyper.darye.model.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

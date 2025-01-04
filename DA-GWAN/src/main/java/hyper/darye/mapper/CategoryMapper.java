@@ -1,6 +1,6 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.Category;
+import hyper.darye.model.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

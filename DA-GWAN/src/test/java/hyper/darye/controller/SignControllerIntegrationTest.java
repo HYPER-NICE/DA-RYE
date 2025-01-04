@@ -1,7 +1,7 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.SignUp;
+import hyper.darye.model.entity.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

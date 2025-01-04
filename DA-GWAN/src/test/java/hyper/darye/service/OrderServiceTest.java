@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Member;
-import hyper.darye.dto.Product;
+import hyper.darye.model.entity.Member;
+import hyper.darye.model.entity.Product;
 import hyper.darye.mapper.MemberMapper;
 import hyper.darye.mapper.ProductMapper;
 import hyper.darye.service.order.OrderService;

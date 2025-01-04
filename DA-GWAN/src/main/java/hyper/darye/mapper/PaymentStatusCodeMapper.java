@@ -1,6 +1,6 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.PaymentStatusCode;
+import hyper.darye.model.entity.PaymentStatusCode;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

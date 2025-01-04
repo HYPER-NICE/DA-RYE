@@ -1,7 +1,7 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.Member;
+import hyper.darye.model.entity.Member;
 import hyper.darye.dto.controller.request.MemberUpdateRequest;
 import hyper.darye.security.SecurityConfig;
 import hyper.darye.service.MemberService;

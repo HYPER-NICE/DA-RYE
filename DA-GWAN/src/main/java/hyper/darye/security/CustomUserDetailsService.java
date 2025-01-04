@@ -1,6 +1,6 @@
 package hyper.darye.security;
 
-import hyper.darye.dto.Member;
+import hyper.darye.model.entity.Member;
 import hyper.darye.mapper.MemberMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

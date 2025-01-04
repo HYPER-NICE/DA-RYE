@@ -1,4 +1,4 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

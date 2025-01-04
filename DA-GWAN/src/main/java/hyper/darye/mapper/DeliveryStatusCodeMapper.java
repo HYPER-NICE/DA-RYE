@@ -1,6 +1,6 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.DeliveryStatusCode;
+import hyper.darye.model.entity.DeliveryStatusCode;
 
 public interface DeliveryStatusCodeMapper {
     int deleteByPrimaryKey(Long id);

@@ -1,6 +1,6 @@
 package hyper.darye.mapper.order.payment;
 
-import hyper.darye.dto.OrderPaymentMain;
+import hyper.darye.model.entity.OrderPaymentMain;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

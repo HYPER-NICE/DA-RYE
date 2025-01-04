@@ -1,6 +1,6 @@
 package hyper.darye.mapper.order.delivery;
 
-import hyper.darye.dto.OrderDeliveryStatus;
+import hyper.darye.model.entity.OrderDeliveryStatus;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

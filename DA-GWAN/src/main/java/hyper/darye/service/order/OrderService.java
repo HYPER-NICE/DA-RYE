@@ -1,8 +1,8 @@
 package hyper.darye.service.order;
 
-import hyper.darye.dto.OrderDetail;
-import hyper.darye.dto.OrderMain;
-import hyper.darye.dto.Product;
+import hyper.darye.model.entity.OrderDetail;
+import hyper.darye.model.entity.OrderMain;
+import hyper.darye.model.entity.Product;
 import hyper.darye.mapper.order.OrderDetailMapper;
 import hyper.darye.mapper.order.OrderMainMapper;
 import lombok.RequiredArgsConstructor;

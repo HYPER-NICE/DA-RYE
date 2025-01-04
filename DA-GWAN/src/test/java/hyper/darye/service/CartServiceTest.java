@@ -1,4 +1,4 @@
-import hyper.darye.dto.Cart;
+import hyper.darye.model.entity.Cart;
 import hyper.darye.mapper.CartMapper;
 import hyper.darye.service.CartService;
 import org.junit.jupiter.api.DisplayName;

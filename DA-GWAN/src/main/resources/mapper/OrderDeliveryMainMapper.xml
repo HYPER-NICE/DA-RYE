@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyper.darye.mapper.order.delivery.OrderDeliveryMainMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.dto.OrderDeliveryMain">
+  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.OrderDeliveryMain">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="ORDER_MAIN_ID" jdbcType="BIGINT" property="orderMainId" />
     <result column="ORDER_TYPE_CODE_ID" jdbcType="BIGINT" property="orderTypeCodeId" />
@@ -32,7 +32,7 @@
     delete from ORDER_DELIVERY_MAIN
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderDeliveryMain" useGeneratedKeys="true">
     insert into ORDER_DELIVERY_MAIN (ORDER_MAIN_ID, ORDER_TYPE_CODE_ID, RECEIVER_NAME, 
       RECEIVER_CONTACT, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, 
       DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, 
@@ -44,7 +44,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
       #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderDeliveryMain" useGeneratedKeys="true">
     insert into ORDER_DELIVERY_MAIN
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderMainId != null">
@@ -129,7 +129,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.OrderDeliveryMain">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.OrderDeliveryMain">
     update ORDER_DELIVERY_MAIN
     <set>
       <if test="orderMainId != null">
@@ -174,7 +174,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.OrderDeliveryMain">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.OrderDeliveryMain">
     update ORDER_DELIVERY_MAIN
     set ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
       ORDER_TYPE_CODE_ID = #{orderTypeCodeId,jdbcType=BIGINT},

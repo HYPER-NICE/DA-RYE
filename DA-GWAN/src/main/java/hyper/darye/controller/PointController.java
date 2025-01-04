@@ -1,7 +1,6 @@
 package hyper.darye.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.Member;
+import hyper.darye.model.entity.Member;
 import hyper.darye.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

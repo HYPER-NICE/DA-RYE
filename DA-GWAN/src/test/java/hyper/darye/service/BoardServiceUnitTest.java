@@ -5,8 +5,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.Board;
-import hyper.darye.dto.BoardImage;
+import hyper.darye.model.entity.Board;
+import hyper.darye.model.entity.BoardImage;
 import hyper.darye.dto.controller.request.PostBoardDTO;
 import hyper.darye.dto.controller.request.PostReplyDTO;
 import hyper.darye.dto.controller.request.UpdateBoardDTO;

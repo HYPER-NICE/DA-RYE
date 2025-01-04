@@ -1,59 +1,41 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * BOARD
+ * CART
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Board implements Serializable {
+public class Cart implements Serializable {
     /**
-     * 게시판 고유 ID (기본 키)
+     * 장바구니 ID (기본 키)
      */
     private Long id;
 
     /**
-     * 부모 게시판 ID (외래 키)
+     * 회원 ID (외래 키)
      */
-    private Long parentId;
+    private Long memberId;
 
     /**
-     * 게시판 카테고리 ID (외래 키)
+     * 상품 ID (외래 키)
      */
-    private Long categoryId;
+    private Long productId;
 
     /**
-     * 작성자 ID (외래 키)
+     * 상품별 주문 수량
      */
-    private Long writerId;
+    private Long quantity;
 
     /**
-     * 게시글 제목
+     * 장바구니에 담은 날짜
      */
-    private String title;
-
-    /**
-     * 게시글 내용
-     */
-    private String content;
-
-    /**
-     * 게시글 상단 고정 여부
-     */
-    private Boolean fixed;
-
-    /**
-     * 게시글 작성 날짜
-     */
-    private Date regDate;
+    private Date pickedDate;
 
     /**
      * 레코드 생성 날짜 및 시간
@@ -77,4 +59,11 @@ public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Cart(Long memberId, Long productId, Long quantity) {
+        this.memberId = memberId;
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+    public Cart() {
+    }
 }

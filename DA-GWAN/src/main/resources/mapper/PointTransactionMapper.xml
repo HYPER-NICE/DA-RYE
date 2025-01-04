@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyper.darye.mapper.PointTransactionMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.dto.PointTransaction">
+  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.PointTransaction">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
     <result column="POINT_TRANSACTION_TYPE_ID" jdbcType="BIGINT" property="pointTransactionTypeId" />
@@ -26,7 +26,7 @@
     delete from POINT_TRANSACTION
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.PointTransaction" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PointTransaction" useGeneratedKeys="true">
     insert into POINT_TRANSACTION (MEMBER_ID, POINT_TRANSACTION_TYPE_ID, ORDER_MAIN_ID, 
       AMOUNT, DESCRIPTION, CREATED_DATE, 
       LAST_MODIFIED_DATE, DELETED_DATE)
@@ -34,7 +34,7 @@
       #{amount,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
       #{lastModifiedDate,jdbcType=TIMESTAMP}, #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.PointTransaction" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PointTransaction" useGeneratedKeys="true">
     insert into POINT_TRANSACTION
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberId != null">
@@ -89,7 +89,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.dto.PointTransaction">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.PointTransaction">
     update POINT_TRANSACTION
     <set>
       <if test="memberId != null">
@@ -119,7 +119,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.PointTransaction">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.PointTransaction">
     update POINT_TRANSACTION
     set MEMBER_ID = #{memberId,jdbcType=BIGINT},
       POINT_TRANSACTION_TYPE_ID = #{pointTransactionTypeId,jdbcType=BIGINT},

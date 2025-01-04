@@ -1,4 +1,4 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import hyper.darye.validation.FieldCompare.FieldComparison;
 import hyper.darye.validation.FieldCompare.CompareResult;

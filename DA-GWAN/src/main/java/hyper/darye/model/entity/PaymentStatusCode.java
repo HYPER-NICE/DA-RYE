@@ -1,8 +1,8 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.Data;
 
 /**

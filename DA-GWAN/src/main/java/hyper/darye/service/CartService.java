@@ -1,6 +1,6 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Cart;
+import hyper.darye.model.entity.Cart;
 import hyper.darye.dto.controller.request.SelectCartRequest;
 import hyper.darye.mapper.CartMapper;
 import org.springframework.beans.factory.annotation.Autowired;

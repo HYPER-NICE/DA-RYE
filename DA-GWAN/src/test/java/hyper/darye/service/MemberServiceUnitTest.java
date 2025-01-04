@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Member;
-import hyper.darye.dto.SignUp;
+import hyper.darye.model.entity.Member;
+import hyper.darye.model.entity.SignUp;
 import hyper.darye.mapper.MemberMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

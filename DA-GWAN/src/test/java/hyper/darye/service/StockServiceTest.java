@@ -1,6 +1,6 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.Stock;
+import hyper.darye.model.entity.Stock;
 import hyper.darye.mapper.StockMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

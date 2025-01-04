@@ -1,7 +1,7 @@
 package hyper.darye.controller;
 
-import hyper.darye.dto.Member;
-import hyper.darye.dto.SignUp;
+import hyper.darye.model.entity.Member;
+import hyper.darye.model.entity.SignUp;
 import hyper.darye.dto.controller.request.SignIn;
 import hyper.darye.security.CustomUserDetails;
 import hyper.darye.service.MemberService;

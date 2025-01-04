@@ -1,9 +1,8 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

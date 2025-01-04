@@ -1,7 +1,7 @@
 package hyper.darye.service;
 
-import hyper.darye.dto.PointTransaction;
-import hyper.darye.dto.PointTransactionType;
+import hyper.darye.model.entity.PointTransaction;
+import hyper.darye.model.entity.PointTransactionType;
 import hyper.darye.mapper.*;
 import hyper.darye.mapper.order.OrderMainMapper;
 import hyper.darye.mapper.order.payment.OrderPaymentMainMapper;

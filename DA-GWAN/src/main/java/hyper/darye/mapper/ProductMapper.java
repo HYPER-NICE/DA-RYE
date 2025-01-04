@@ -1,7 +1,7 @@
 package hyper.darye.mapper;
 
-import hyper.darye.dto.Product;
-import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.model.entity.Product;
+import hyper.darye.model.entity.ProductWithBLOBs;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

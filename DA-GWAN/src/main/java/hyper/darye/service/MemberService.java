@@ -1,8 +1,8 @@
 package hyper.darye.service;
 
 import hyper.darye.constant.Role;
-import hyper.darye.dto.Member;
-import hyper.darye.dto.SignUp;
+import hyper.darye.model.entity.Member;
+import hyper.darye.model.entity.SignUp;
 import hyper.darye.mapper.MemberMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

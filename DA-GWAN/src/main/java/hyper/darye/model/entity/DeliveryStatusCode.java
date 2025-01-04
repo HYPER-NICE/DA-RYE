@@ -1,29 +1,29 @@
-package hyper.darye.dto;
+package hyper.darye.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
- * 주문의 결제 정보를 저장하는 테이블로, 주문의 결제 방법과 결제 금액을 관리합니다.
- * ORDER_PAYMENT_MAIN
+ * 배송 상태 코드를 저장하며, 배송의 현재 상태를 관리하는 테이블입니다. 예를 들어 배송 준비, 배송 중, 배송 완료 등의 상태를 포함합니다.
+ * DELIVERY_STATUS_CODE
  */
 @Data
-public class OrderPaymentMain implements Serializable {
+public class DeliveryStatusCode implements Serializable {
     /**
-     * 주문 결제 고유 ID (기본 키)
+     * 배송 상태 코드의 고유 ID (기본 키)
      */
     private Long id;
 
     /**
-     * 주문 ID
+     * 배송 상태 이름 (예: 배송 준비, 배송 중, 배송 완료 등)
      */
-    private Long orderId;
+    private String name;
 
     /**
-     * 총 결제 금액
+     * 배송 상태 코드에 대한 상세 설명으로, 상태의 의미와 사용 목적을 설명합니다.
      */
-    private Integer totalAmount;
+    private String description;
 
     /**
      * 레코드 생성 날짜 및 시간

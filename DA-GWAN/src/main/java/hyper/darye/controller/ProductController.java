@@ -1,8 +1,7 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.dto.Product;
-import hyper.darye.dto.ProductWithBLOBs;
+import hyper.darye.model.entity.ProductWithBLOBs;
 import hyper.darye.dto.controller.request.RequestDeleteProductDto;
 import hyper.darye.dto.controller.request.RequestPostProductDto;
 import hyper.darye.dto.controller.request.RequestPutProductDto;
