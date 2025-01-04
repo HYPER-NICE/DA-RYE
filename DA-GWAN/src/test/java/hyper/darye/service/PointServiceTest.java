@@ -1,10 +1,13 @@
 package hyper.darye.service;
 
-import hyper.darye.model.entity.PointTransaction;
-import hyper.darye.model.entity.PointTransactionType;
-import hyper.darye.mapper.*;
-import hyper.darye.mapper.order.OrderMainMapper;
-import hyper.darye.mapper.order.payment.OrderPaymentMainMapper;
+import hyper.darye.mvc.mapper.MemberMapper;
+import hyper.darye.mvc.mapper.PointTransactionMapper;
+import hyper.darye.mvc.mapper.PointTransactionTypeMapper;
+import hyper.darye.mvc.model.entity.PointTransaction;
+import hyper.darye.mvc.model.entity.PointTransactionType;
+import hyper.darye.mvc.mapper.order.OrderMainMapper;
+import hyper.darye.mvc.mapper.order.payment.OrderPaymentMainMapper;
+import hyper.darye.mvc.service.PointService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

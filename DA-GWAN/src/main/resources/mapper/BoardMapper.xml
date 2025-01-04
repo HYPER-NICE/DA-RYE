@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.BoardMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.Board">
+<mapper namespace="hyper.darye.mvc.mapper.BoardMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.Board">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
     <result column="CATEGORY_ID" jdbcType="BIGINT" property="categoryId" />
@@ -34,7 +34,7 @@
     delete from BOARD
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.Board" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.Board" useGeneratedKeys="true">
     insert into BOARD (PARENT_ID, CATEGORY_ID, WRITER_ID, 
       TITLE, CONTENT, FIXED, 
       REG_DATE, CREATED_DATE, LAST_MODIFIED_DATE, 
@@ -44,7 +44,7 @@
       #{regDate,jdbcType=TIMESTAMP}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
       #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.Board" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.Board" useGeneratedKeys="true">
     insert into BOARD
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="parentId != null">
@@ -117,7 +117,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.Board">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.Board">
     update BOARD
     <set>
       <if test="parentId != null">
@@ -156,7 +156,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.Board">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.Board">
     update BOARD
     set PARENT_ID = #{parentId,jdbcType=BIGINT},
       CATEGORY_ID = #{categoryId,jdbcType=BIGINT},

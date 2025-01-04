@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.order.payment.OrderPaymentMainMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.OrderPaymentMain">
+<mapper namespace="hyper.darye.mvc.mapper.order.payment.OrderPaymentMainMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.OrderPaymentMain">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
     <result column="TOTAL_AMOUNT" jdbcType="INTEGER" property="totalAmount" />
@@ -24,7 +24,7 @@
     delete from ORDER_PAYMENT_MAIN
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderPaymentMain" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.OrderPaymentMain" useGeneratedKeys="true">
     insert into ORDER_PAYMENT_MAIN (ORDER_ID, TOTAL_AMOUNT, CREATED_DATE, 
       LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
       DELETED_DATE)
@@ -32,7 +32,7 @@
       #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
       #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderPaymentMain" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.OrderPaymentMain" useGeneratedKeys="true">
     insert into ORDER_PAYMENT_MAIN
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
@@ -75,7 +75,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.OrderPaymentMain">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.OrderPaymentMain">
     update ORDER_PAYMENT_MAIN
     <set>
       <if test="orderId != null">
@@ -99,7 +99,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.OrderPaymentMain">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.OrderPaymentMain">
     update ORDER_PAYMENT_MAIN
     set ORDER_ID = #{orderId,jdbcType=BIGINT},
       TOTAL_AMOUNT = #{totalAmount,jdbcType=INTEGER},

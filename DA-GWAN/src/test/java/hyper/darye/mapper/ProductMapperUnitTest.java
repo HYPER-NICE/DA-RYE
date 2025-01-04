@@ -1,7 +1,8 @@
 package hyper.darye.mapper;
 
-import hyper.darye.model.entity.Product;
-import hyper.darye.model.entity.ProductWithBLOBs;
+import hyper.darye.mvc.mapper.ProductMapper;
+import hyper.darye.mvc.model.entity.Product;
+import hyper.darye.mvc.model.entity.ProductWithBLOBs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

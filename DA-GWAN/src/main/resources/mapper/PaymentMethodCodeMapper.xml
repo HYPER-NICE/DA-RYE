@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.PaymentMethodCodeMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.PaymentMethodCode">
+<mapper namespace="hyper.darye.mvc.mapper.PaymentMethodCodeMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.PaymentMethodCode">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
@@ -24,7 +24,7 @@
     delete from PAYMENT_METHOD_CODE
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PaymentMethodCode" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.PaymentMethodCode" useGeneratedKeys="true">
     insert into PAYMENT_METHOD_CODE (`NAME`, DESCRIPTION, CREATED_DATE, 
       LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
       DELETED_DATE)
@@ -32,7 +32,7 @@
       #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
       #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PaymentMethodCode" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.PaymentMethodCode" useGeneratedKeys="true">
     insert into PAYMENT_METHOD_CODE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -75,7 +75,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.PaymentMethodCode">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.PaymentMethodCode">
     update PAYMENT_METHOD_CODE
     <set>
       <if test="name != null">
@@ -99,7 +99,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.PaymentMethodCode">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.PaymentMethodCode">
     update PAYMENT_METHOD_CODE
     set `NAME` = #{name,jdbcType=VARCHAR},
       DESCRIPTION = #{description,jdbcType=VARCHAR},

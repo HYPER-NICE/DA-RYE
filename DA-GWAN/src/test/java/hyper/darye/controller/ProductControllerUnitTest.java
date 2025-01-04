@@ -1,12 +1,13 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.model.entity.Product;
-import hyper.darye.model.entity.ProductWithBLOBs;
+import hyper.darye.mvc.controller.ProductController;
+import hyper.darye.mvc.model.entity.Product;
+import hyper.darye.mvc.model.entity.ProductWithBLOBs;
 import hyper.darye.config.security.SecurityConfig;
-import hyper.darye.service.ProductService;
+import hyper.darye.mvc.service.ProductService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
-import hyper.darye.validation.FieldCompare.FieldComparisonValidator;
+import hyper.darye.system.validation.FieldCompare.FieldComparisonValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

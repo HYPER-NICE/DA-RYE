@@ -1,6 +1,7 @@
 package hyper.darye.mapper;
 
-import hyper.darye.model.entity.Member;
+import hyper.darye.mvc.mapper.MemberMapper;
+import hyper.darye.mvc.model.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;

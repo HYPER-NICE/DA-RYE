@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.order.OrderDetailMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.OrderDetail">
+<mapper namespace="hyper.darye.mvc.mapper.order.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.OrderDetail">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
     <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
@@ -26,7 +26,7 @@
     delete from ORDER_DETAIL
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderDetail" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.OrderDetail" useGeneratedKeys="true">
     insert into ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, 
       UNIT_PRICE, CREATED_DATE, LAST_MODIFIED_DATE, 
       LAST_MODIFIED_MEMBER, DELETED_DATE)
@@ -34,7 +34,7 @@
       #{unitPrice,jdbcType=INTEGER}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
       #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.OrderDetail" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.OrderDetail" useGeneratedKeys="true">
     insert into ORDER_DETAIL
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
@@ -89,7 +89,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.OrderDetail">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.OrderDetail">
     update ORDER_DETAIL
     <set>
       <if test="orderId != null">
@@ -119,7 +119,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.OrderDetail">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.OrderDetail">
     update ORDER_DETAIL
     set ORDER_ID = #{orderId,jdbcType=BIGINT},
       PRODUCT_ID = #{productId,jdbcType=BIGINT},

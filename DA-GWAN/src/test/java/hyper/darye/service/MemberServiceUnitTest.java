@@ -1,8 +1,9 @@
 package hyper.darye.service;
 
-import hyper.darye.model.entity.Member;
-import hyper.darye.model.entity.SignUp;
-import hyper.darye.mapper.MemberMapper;
+import hyper.darye.mvc.model.entity.Member;
+import hyper.darye.mvc.model.entity.SignUp;
+import hyper.darye.mvc.mapper.MemberMapper;
+import hyper.darye.mvc.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

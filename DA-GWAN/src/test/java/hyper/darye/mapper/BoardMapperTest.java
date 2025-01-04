@@ -1,6 +1,9 @@
 package hyper.darye.mapper;
 
-import hyper.darye.model.entity.Board;
+import hyper.darye.mvc.mapper.BoardCategoryCodeMapper;
+import hyper.darye.mvc.mapper.BoardImageMapper;
+import hyper.darye.mvc.mapper.BoardMapper;
+import hyper.darye.mvc.model.entity.Board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;

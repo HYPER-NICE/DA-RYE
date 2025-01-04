@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.PointTransactionTypeMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.PointTransactionType">
+<mapper namespace="hyper.darye.mvc.mapper.PointTransactionTypeMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.PointTransactionType">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="CODE_TYPE" jdbcType="VARCHAR" property="codeType" />
     <result column="CODE_VALUE" jdbcType="VARCHAR" property="codeValue" />
@@ -25,7 +25,7 @@
     delete from POINT_TRANSACTION_TYPE
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PointTransactionType" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.PointTransactionType" useGeneratedKeys="true">
     insert into POINT_TRANSACTION_TYPE (CODE_TYPE, CODE_VALUE, `NAME`, 
       DESCRIPTION, CREATED_DATE, LAST_MODIFIED_DATE, 
       DELETED_DATE)
@@ -33,7 +33,7 @@
       #{description,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
       #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.PointTransactionType" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.PointTransactionType" useGeneratedKeys="true">
     insert into POINT_TRANSACTION_TYPE
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="codeType != null">
@@ -82,7 +82,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.PointTransactionType">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.PointTransactionType">
     update POINT_TRANSACTION_TYPE
     <set>
       <if test="codeType != null">
@@ -109,7 +109,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.PointTransactionType">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.PointTransactionType">
     update POINT_TRANSACTION_TYPE
     set CODE_TYPE = #{codeType,jdbcType=VARCHAR},
       CODE_VALUE = #{codeValue,jdbcType=VARCHAR},

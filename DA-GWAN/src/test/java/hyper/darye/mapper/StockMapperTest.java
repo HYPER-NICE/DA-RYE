@@ -1,6 +1,7 @@
 package hyper.darye.mapper;
 
-import hyper.darye.model.entity.Stock;
+import hyper.darye.mvc.mapper.StockMapper;
+import hyper.darye.mvc.model.entity.Stock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;

@@ -1,13 +1,14 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.model.entity.Member;
-import hyper.darye.model.entity.SignUp;
-import hyper.darye.model.dto.controller.request.SignIn;
+import hyper.darye.mvc.controller.SignController;
+import hyper.darye.mvc.model.entity.Member;
+import hyper.darye.mvc.model.entity.SignUp;
+import hyper.darye.mvc.model.dto.controller.request.SignIn;
 import hyper.darye.config.security.CustomUserDetails;
 import hyper.darye.config.security.SecurityConfig;
-import hyper.darye.service.MemberService;
-import hyper.darye.validation.FieldCompare.FieldComparisonValidator;
+import hyper.darye.mvc.service.MemberService;
+import hyper.darye.system.validation.FieldCompare.FieldComparisonValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

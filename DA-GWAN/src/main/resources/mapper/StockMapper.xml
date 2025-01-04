@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hyper.darye.mapper.StockMapper">
-  <resultMap id="BaseResultMap" type="hyper.darye.model.entity.Stock">
+<mapper namespace="hyper.darye.mvc.mapper.StockMapper">
+  <resultMap id="BaseResultMap" type="hyper.darye.mvc.model.entity.Stock">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
     <result column="STOCK_INOUT_QUANTITY" jdbcType="BIGINT" property="stockInoutQuantity" />
@@ -26,7 +26,7 @@
     delete from STOCK
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.Stock" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.Stock" useGeneratedKeys="true">
     insert into STOCK (PRODUCT_ID, STOCK_INOUT_QUANTITY, STOCK_INOUT_DATE, 
       CURRENT_STOCK, CREATED_DATE, LAST_MODIFIED_DATE, 
       LAST_MODIFIED_MEMBER, DELETED_DATE)
@@ -34,7 +34,7 @@
       #{currentStock,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
       #{lastModifiedMember,jdbcType=BIGINT}, #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.model.entity.Stock" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.mvc.model.entity.Stock" useGeneratedKeys="true">
     insert into STOCK
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
@@ -95,7 +95,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.model.entity.Stock">
+  <update id="updateByPrimaryKeySelective" parameterType="hyper.darye.mvc.model.entity.Stock">
     update STOCK
     <set>
       <if test="productId != null">
@@ -125,7 +125,7 @@
     </set>
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="hyper.darye.model.entity.Stock">
+  <update id="updateByPrimaryKey" parameterType="hyper.darye.mvc.model.entity.Stock">
     update STOCK
     set PRODUCT_ID = #{productId,jdbcType=BIGINT},
       STOCK_INOUT_QUANTITY = #{stockInoutQuantity,jdbcType=BIGINT},

@@ -1,10 +1,11 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.model.dto.controller.request.PostBoardDTO;
-import hyper.darye.model.dto.controller.request.UpdateBoardDTO;
+import hyper.darye.mvc.controller.BoardFaqController;
+import hyper.darye.mvc.model.dto.controller.request.PostBoardDTO;
+import hyper.darye.mvc.model.dto.controller.request.UpdateBoardDTO;
 import hyper.darye.config.security.SecurityConfig;
-import hyper.darye.service.BoardService;
+import hyper.darye.mvc.service.BoardService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

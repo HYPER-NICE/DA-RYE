@@ -1,10 +1,11 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.model.entity.Member;
-import hyper.darye.model.dto.controller.request.MemberUpdateRequest;
+import hyper.darye.mvc.controller.MemberController;
+import hyper.darye.mvc.model.entity.Member;
+import hyper.darye.mvc.model.dto.controller.request.MemberUpdateRequest;
 import hyper.darye.config.security.SecurityConfig;
-import hyper.darye.service.MemberService;
+import hyper.darye.mvc.service.MemberService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

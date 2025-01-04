@@ -1,9 +1,10 @@
 package hyper.darye.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hyper.darye.model.dto.controller.request.SelectCartRequest;
+import hyper.darye.mvc.controller.CartController;
+import hyper.darye.mvc.model.dto.controller.request.SelectCartRequest;
 import hyper.darye.config.security.SecurityConfig;
-import hyper.darye.service.CartService;
+import hyper.darye.mvc.service.CartService;
 import hyper.darye.testConfig.mockUser.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,7 +1,8 @@
 package hyper.darye.service;
 
-import hyper.darye.model.entity.ProductWithBLOBs;
-import hyper.darye.mapper.ProductMapper;
+import hyper.darye.mvc.model.entity.ProductWithBLOBs;
+import hyper.darye.mvc.mapper.ProductMapper;
+import hyper.darye.mvc.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

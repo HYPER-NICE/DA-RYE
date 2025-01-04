@@ -1,7 +1,7 @@
 package hyper.darye.config.security;
 
-import hyper.darye.model.entity.Member;
-import hyper.darye.mapper.MemberMapper;
+import hyper.darye.mvc.model.entity.Member;
+import hyper.darye.mvc.mapper.MemberMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
