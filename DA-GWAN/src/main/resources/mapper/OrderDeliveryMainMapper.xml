@@ -4,6 +4,11 @@
   <resultMap id="BaseResultMap" type="hyper.darye.dto.OrderDeliveryMain">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="ORDER_MAIN_ID" jdbcType="BIGINT" property="orderMainId" />
+    <result column="ORDER_TYPE_CODE_ID" jdbcType="BIGINT" property="orderTypeCodeId" />
+    <result column="RECEIVER_NAME" jdbcType="VARCHAR" property="receiverName" />
+    <result column="RECEIVER_CONTACT" jdbcType="VARCHAR" property="receiverContact" />
+    <result column="DELIVERY_ADDRESS" jdbcType="VARCHAR" property="deliveryAddress" />
+    <result column="DELIVERY_DETAIL_ADDRESS" jdbcType="VARCHAR" property="deliveryDetailAddress" />
     <result column="DELIVERY_COMPANY_NAME" jdbcType="VARCHAR" property="deliveryCompanyName" />
     <result column="TRACKING_NUMBER" jdbcType="VARCHAR" property="trackingNumber" />
     <result column="DELIVERY_REQUEST_NOTE" jdbcType="VARCHAR" property="deliveryRequestNote" />
@@ -13,7 +18,8 @@
     <result column="DELETED_DATE" jdbcType="TIMESTAMP" property="deletedDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, 
+    ID, ORDER_MAIN_ID, ORDER_TYPE_CODE_ID, RECEIVER_NAME, RECEIVER_CONTACT, DELIVERY_ADDRESS, 
+    DELIVERY_DETAIL_ADDRESS, DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, 
     CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, DELETED_DATE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,13 +33,15 @@
     where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
-    insert into ORDER_DELIVERY_MAIN (ORDER_MAIN_ID, DELIVERY_COMPANY_NAME, 
-      TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, CREATED_DATE, 
-      LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
+    insert into ORDER_DELIVERY_MAIN (ORDER_MAIN_ID, ORDER_TYPE_CODE_ID, RECEIVER_NAME, 
+      RECEIVER_CONTACT, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, 
+      DELIVERY_COMPANY_NAME, TRACKING_NUMBER, DELIVERY_REQUEST_NOTE, 
+      CREATED_DATE, LAST_MODIFIED_DATE, LAST_MODIFIED_MEMBER, 
       DELETED_DATE)
-    values (#{orderMainId,jdbcType=BIGINT}, #{deliveryCompanyName,jdbcType=VARCHAR}, 
-      #{trackingNumber,jdbcType=VARCHAR}, #{deliveryRequestNote,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
+    values (#{orderMainId,jdbcType=BIGINT}, #{orderTypeCodeId,jdbcType=BIGINT}, #{receiverName,jdbcType=VARCHAR}, 
+      #{receiverContact,jdbcType=VARCHAR}, #{deliveryAddress,jdbcType=VARCHAR}, #{deliveryDetailAddress,jdbcType=VARCHAR}, 
+      #{deliveryCompanyName,jdbcType=VARCHAR}, #{trackingNumber,jdbcType=VARCHAR}, #{deliveryRequestNote,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{lastModifiedMember,jdbcType=BIGINT}, 
       #{deletedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="hyper.darye.dto.OrderDeliveryMain" useGeneratedKeys="true">
@@ -41,6 +49,21 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderMainId != null">
         ORDER_MAIN_ID,
+      </if>
+      <if test="orderTypeCodeId != null">
+        ORDER_TYPE_CODE_ID,
+      </if>
+      <if test="receiverName != null">
+        RECEIVER_NAME,
+      </if>
+      <if test="receiverContact != null">
+        RECEIVER_CONTACT,
+      </if>
+      <if test="deliveryAddress != null">
+        DELIVERY_ADDRESS,
+      </if>
+      <if test="deliveryDetailAddress != null">
+        DELIVERY_DETAIL_ADDRESS,
       </if>
       <if test="deliveryCompanyName != null">
         DELIVERY_COMPANY_NAME,
@@ -67,6 +90,21 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderMainId != null">
         #{orderMainId,jdbcType=BIGINT},
+      </if>
+      <if test="orderTypeCodeId != null">
+        #{orderTypeCodeId,jdbcType=BIGINT},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverContact != null">
+        #{receiverContact,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryAddress != null">
+        #{deliveryAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryDetailAddress != null">
+        #{deliveryDetailAddress,jdbcType=VARCHAR},
       </if>
       <if test="deliveryCompanyName != null">
         #{deliveryCompanyName,jdbcType=VARCHAR},
@@ -97,6 +135,21 @@
       <if test="orderMainId != null">
         ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
       </if>
+      <if test="orderTypeCodeId != null">
+        ORDER_TYPE_CODE_ID = #{orderTypeCodeId,jdbcType=BIGINT},
+      </if>
+      <if test="receiverName != null">
+        RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverContact != null">
+        RECEIVER_CONTACT = #{receiverContact,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryAddress != null">
+        DELIVERY_ADDRESS = #{deliveryAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryDetailAddress != null">
+        DELIVERY_DETAIL_ADDRESS = #{deliveryDetailAddress,jdbcType=VARCHAR},
+      </if>
       <if test="deliveryCompanyName != null">
         DELIVERY_COMPANY_NAME = #{deliveryCompanyName,jdbcType=VARCHAR},
       </if>
@@ -124,6 +177,11 @@
   <update id="updateByPrimaryKey" parameterType="hyper.darye.dto.OrderDeliveryMain">
     update ORDER_DELIVERY_MAIN
     set ORDER_MAIN_ID = #{orderMainId,jdbcType=BIGINT},
+      ORDER_TYPE_CODE_ID = #{orderTypeCodeId,jdbcType=BIGINT},
+      RECEIVER_NAME = #{receiverName,jdbcType=VARCHAR},
+      RECEIVER_CONTACT = #{receiverContact,jdbcType=VARCHAR},
+      DELIVERY_ADDRESS = #{deliveryAddress,jdbcType=VARCHAR},
+      DELIVERY_DETAIL_ADDRESS = #{deliveryDetailAddress,jdbcType=VARCHAR},
       DELIVERY_COMPANY_NAME = #{deliveryCompanyName,jdbcType=VARCHAR},
       TRACKING_NUMBER = #{trackingNumber,jdbcType=VARCHAR},
       DELIVERY_REQUEST_NOTE = #{deliveryRequestNote,jdbcType=VARCHAR},
